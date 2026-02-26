@@ -1,0 +1,6 @@
+# slots_search_package.gbnf — constrain slot-filling output for search_package intent
+root ::= slot-query
+
+slot-query ::= "query=" quoted-string
+
+quoted-string ::= "\"" [^\"]* "\""

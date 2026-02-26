@@ -1,0 +1,20 @@
+{
+  "recursive": {
+    "flag": "-R",
+    "description": "Operate on files and directories recursively",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "reference": {
+    "flag": "--reference",
+    "description": "Set ownership to match the specified reference file",
+    "min_version": {"gnu": "5.0", "bsd": null},
+    "fallback": null
+  },
+  "from": {
+    "flag": "--from",
+    "description": "Only change ownership if current owner:group matches the specified values",
+    "min_version": {"gnu": "5.0", "bsd": null},
+    "fallback": null
+  }
+}

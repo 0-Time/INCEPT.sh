@@ -1,0 +1,6 @@
+# slots_stop_service.gbnf — constrain slot-filling output for stop_service intent
+root ::= slot-service-name
+
+slot-service-name ::= "service_name=" identifier
+
+identifier ::= [a-zA-Z_] [a-zA-Z0-9_.-]*

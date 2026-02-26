@@ -1,0 +1,12 @@
+# slots_remove_cron.gbnf — constrain slot-filling output for remove_cron intent
+root ::= slot-job-id-or-pattern optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-job-id-or-pattern ::= "job_id_or_pattern=" quoted-string
+
+optional-slot ::= slot-user
+
+slot-user ::= "user=" identifier
+
+identifier    ::= [a-zA-Z_] [a-zA-Z0-9_.-]*
+quoted-string ::= "\"" [^\"]* "\""

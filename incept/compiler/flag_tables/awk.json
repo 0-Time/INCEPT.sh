@@ -1,0 +1,20 @@
+{
+  "field_separator": {
+    "flag": "-F",
+    "description": "Set the input field separator to the given string",
+    "min_version": {"gnu": "3.0", "bsd": "20050424"},
+    "fallback": null
+  },
+  "variable": {
+    "flag": "-v",
+    "description": "Assign a value to a program variable before execution begins",
+    "min_version": {"gnu": "3.0", "bsd": "20050424"},
+    "fallback": null
+  },
+  "csv": {
+    "flag": "--csv",
+    "description": "Enable proper RFC 4180 CSV record and field splitting",
+    "min_version": {"gnu": "5.3", "bsd": null},
+    "fallback": null
+  }
+}

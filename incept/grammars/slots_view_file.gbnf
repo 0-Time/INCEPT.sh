@@ -1,0 +1,14 @@
+# slots_view_file.gbnf — constrain slot-filling output for view_file intent
+root ::= slot-file optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-file ::= "file=" path-value
+
+optional-slot ::= slot-lines | slot-from-end
+
+slot-lines    ::= "lines=" number
+slot-from-end ::= "from_end=" bool-value
+
+path-value ::= "/" [a-zA-Z0-9_./-]* | "."
+bool-value ::= "true" | "false"
+number     ::= [0-9]+

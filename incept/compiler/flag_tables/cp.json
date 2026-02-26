@@ -1,0 +1,38 @@
+{
+  "recursive": {
+    "flag": "-r",
+    "description": "Copy directories recursively",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": "-R"
+  },
+  "preserve": {
+    "flag": "-p",
+    "description": "Preserve file mode, ownership, and timestamps",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "archive": {
+    "flag": "-a",
+    "description": "Archive mode; equivalent to -dR --preserve=all (GNU) or -RpP (BSD)",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": "-r -p"
+  },
+  "reflink": {
+    "flag": "--reflink",
+    "description": "Perform lightweight copy-on-write clone if supported by filesystem (auto/always/never)",
+    "min_version": {"gnu": "8.25", "bsd": null},
+    "fallback": null
+  },
+  "sparse": {
+    "flag": "--sparse",
+    "description": "Control creation of sparse files (auto/always/never)",
+    "min_version": {"gnu": "5.3", "bsd": null},
+    "fallback": null
+  },
+  "no_clobber": {
+    "flag": "-n",
+    "description": "Do not overwrite an existing file",
+    "min_version": {"gnu": "8.0", "bsd": "8.1"},
+    "fallback": null
+  }
+}

@@ -1,0 +1,5 @@
+# slots_unsafe_request.gbnf — constrains UNSAFE_REQUEST slot output
+root ::= reason-slot | ""
+reason-slot ::= "reason=" quoted-string
+
+quoted-string ::= "\"" [^\"]* "\""

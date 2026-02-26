@@ -1,0 +1,20 @@
+{
+  "no_clobber": {
+    "flag": "-n",
+    "description": "Do not overwrite an existing destination file",
+    "min_version": {"gnu": "8.0", "bsd": "8.1"},
+    "fallback": null
+  },
+  "backup": {
+    "flag": "-b",
+    "description": "Make a backup of each existing destination file before overwriting",
+    "min_version": {"gnu": "4.0", "bsd": null},
+    "fallback": null
+  },
+  "suffix": {
+    "flag": "--suffix",
+    "description": "Override the default backup suffix (~) with the specified string",
+    "min_version": {"gnu": "4.0", "bsd": null},
+    "fallback": null
+  }
+}

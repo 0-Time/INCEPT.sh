@@ -1,0 +1,32 @@
+{
+  "output_document": {
+    "flag": "-O",
+    "description": "Write downloaded content to the specified file; use '-' for stdout",
+    "min_version": {"gnu": null, "bsd": null, "wget": "1.4"},
+    "fallback": null
+  },
+  "quiet": {
+    "flag": "-q",
+    "description": "Suppress all output except errors",
+    "min_version": {"gnu": null, "bsd": null, "wget": "1.4"},
+    "fallback": null
+  },
+  "continue": {
+    "flag": "-c",
+    "description": "Resume a partially downloaded file",
+    "min_version": {"gnu": null, "bsd": null, "wget": "1.5"},
+    "fallback": null
+  },
+  "no_check_certificate": {
+    "flag": "--no-check-certificate",
+    "description": "Skip TLS certificate validation",
+    "min_version": {"gnu": null, "bsd": null, "wget": "1.10"},
+    "fallback": null
+  },
+  "recursive": {
+    "flag": "-r",
+    "description": "Turn on recursive retrieving of linked pages",
+    "min_version": {"gnu": null, "bsd": null, "wget": "1.4"},
+    "fallback": null
+  }
+}

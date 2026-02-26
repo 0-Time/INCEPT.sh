@@ -1,0 +1,44 @@
+{
+  "gzip": {
+    "flag": "-z",
+    "description": "Filter the archive through gzip for compression/decompression",
+    "min_version": {"gnu": "1.12", "bsd": "1.0"},
+    "fallback": null
+  },
+  "bzip2": {
+    "flag": "-j",
+    "description": "Filter the archive through bzip2 for compression/decompression",
+    "min_version": {"gnu": "1.14", "bsd": "1.0"},
+    "fallback": null
+  },
+  "xz": {
+    "flag": "-J",
+    "description": "Filter the archive through xz for compression/decompression",
+    "min_version": {"gnu": "1.22", "bsd": "2.8"},
+    "fallback": null
+  },
+  "exclude": {
+    "flag": "--exclude",
+    "description": "Exclude files matching the given glob pattern from the archive",
+    "min_version": {"gnu": "1.12", "bsd": "2.0"},
+    "fallback": null
+  },
+  "strip_components": {
+    "flag": "--strip-components",
+    "description": "Strip N leading path components from file names on extraction",
+    "min_version": {"gnu": "1.14", "bsd": "2.0"},
+    "fallback": null
+  },
+  "directory": {
+    "flag": "-C",
+    "description": "Change to the specified directory before performing operations",
+    "min_version": {"gnu": "1.12", "bsd": "1.0"},
+    "fallback": null
+  },
+  "xattrs": {
+    "flag": "--xattrs",
+    "description": "Save and restore extended attributes when creating or extracting",
+    "min_version": {"gnu": "1.27", "bsd": null},
+    "fallback": null
+  }
+}

@@ -1,0 +1,11 @@
+# slots_extract_archive.gbnf — constrain slot-filling output for extract_archive intent
+root ::= slot-source optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-source ::= "source=" path-value
+
+optional-slot ::= slot-destination
+
+slot-destination ::= "destination=" path-value
+
+path-value ::= "/" [a-zA-Z0-9_./-]* | "."

@@ -1,0 +1,14 @@
+# slots_list_directory.gbnf — constrain slot-filling output for list_directory intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-path | slot-long-format | slot-all-files | slot-sort-by
+
+slot-path        ::= "path=" path-value
+slot-long-format ::= "long_format=" bool-value
+slot-all-files   ::= "all_files=" bool-value
+slot-sort-by     ::= "sort_by=" sort-value
+
+sort-value ::= "name" | "size" | "time"
+path-value ::= "/" [a-zA-Z0-9_./-]* | "."
+bool-value ::= "true" | "false"

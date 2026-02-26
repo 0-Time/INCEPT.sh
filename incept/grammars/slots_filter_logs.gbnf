@@ -1,0 +1,14 @@
+# slots_filter_logs.gbnf — constrain slot-filling output for filter_logs intent
+root ::= slot-pattern optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-pattern ::= "pattern=" quoted-string
+
+optional-slot ::= slot-unit | slot-since | slot-until
+
+slot-unit  ::= "unit=" identifier
+slot-since ::= "since=" quoted-string
+slot-until ::= "until=" quoted-string
+
+identifier    ::= [a-zA-Z_] [a-zA-Z0-9_.-]*
+quoted-string ::= "\"" [^\"]* "\""

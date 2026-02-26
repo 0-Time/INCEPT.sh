@@ -1,0 +1,9 @@
+# slots_list_cron.gbnf — constrain slot-filling output for list_cron intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-user
+
+slot-user ::= "user=" identifier
+
+identifier ::= [a-zA-Z_] [a-zA-Z0-9_.-]*

@@ -1,0 +1,50 @@
+{
+  "archive": {
+    "flag": "-a",
+    "description": "Archive mode; equivalent to -rlptgoD, preserving symlinks, permissions, times, groups, owner, devices",
+    "min_version": {"rsync": "2.0"},
+    "fallback": null
+  },
+  "verbose": {
+    "flag": "-v",
+    "description": "Increase verbosity of output",
+    "min_version": {"rsync": "2.0"},
+    "fallback": null
+  },
+  "compress": {
+    "flag": "-z",
+    "description": "Compress file data during the transfer",
+    "min_version": {"rsync": "2.0"},
+    "fallback": null
+  },
+  "delete": {
+    "flag": "--delete",
+    "description": "Delete extraneous files from the destination directory during sync",
+    "min_version": {"rsync": "2.0"},
+    "fallback": null
+  },
+  "exclude": {
+    "flag": "--exclude",
+    "description": "Exclude files matching the given pattern from the transfer",
+    "min_version": {"rsync": "2.0"},
+    "fallback": null
+  },
+  "remote_shell": {
+    "flag": "-e",
+    "description": "Specify the remote shell to use (e.g. 'ssh -p 2222')",
+    "min_version": {"rsync": "2.0"},
+    "fallback": null
+  },
+  "progress": {
+    "flag": "--progress",
+    "description": "Show progress during file transfer",
+    "min_version": {"rsync": "2.5.1"},
+    "fallback": null
+  },
+  "partial": {
+    "flag": "--partial",
+    "description": "Keep partially transferred files for resuming interrupted transfers",
+    "min_version": {"rsync": "2.5.1"},
+    "fallback": null
+  }
+}

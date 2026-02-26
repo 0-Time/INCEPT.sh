@@ -1,0 +1,14 @@
+{
+  "recursive": {
+    "flag": "-R",
+    "description": "Change files and directories recursively",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "reference": {
+    "flag": "--reference",
+    "description": "Set permissions to match the specified reference file instead of a mode value",
+    "min_version": {"gnu": "5.0", "bsd": null},
+    "fallback": null
+  }
+}

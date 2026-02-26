@@ -1,0 +1,44 @@
+{
+  "long": {
+    "flag": "-l",
+    "description": "Use long listing format showing permissions, owner, size, and modification time",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "all": {
+    "flag": "-a",
+    "description": "Include directory entries whose names begin with a dot",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "human_readable": {
+    "flag": "-h",
+    "description": "Print file sizes in human-readable format (e.g. 1K, 234M, 2G)",
+    "min_version": {"gnu": "5.0", "bsd": "4.7"},
+    "fallback": null
+  },
+  "sort_by_size": {
+    "flag": "-S",
+    "description": "Sort by file size, largest first",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "sort_by_time": {
+    "flag": "-t",
+    "description": "Sort by modification time, newest first",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "color": {
+    "flag": "--color",
+    "description": "Colorize output based on file type and attributes (auto/always/never)",
+    "min_version": {"gnu": "5.0", "bsd": null},
+    "fallback": "-G"
+  },
+  "group_directories_first": {
+    "flag": "--group-directories-first",
+    "description": "List directories before files in the output",
+    "min_version": {"gnu": "8.0", "bsd": null},
+    "fallback": null
+  }
+}

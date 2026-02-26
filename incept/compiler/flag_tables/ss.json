@@ -1,0 +1,50 @@
+{
+  "tcp": {
+    "flag": "-t",
+    "description": "Display TCP sockets only",
+    "min_version": {"iproute2": "2.6"},
+    "fallback": null
+  },
+  "udp": {
+    "flag": "-u",
+    "description": "Display UDP sockets only",
+    "min_version": {"iproute2": "2.6"},
+    "fallback": null
+  },
+  "listening": {
+    "flag": "-l",
+    "description": "Display only listening sockets",
+    "min_version": {"iproute2": "2.6"},
+    "fallback": null
+  },
+  "numeric": {
+    "flag": "-n",
+    "description": "Do not resolve service names; show numeric port numbers",
+    "min_version": {"iproute2": "2.6"},
+    "fallback": null
+  },
+  "process": {
+    "flag": "-p",
+    "description": "Show process information using the socket (PID and process name)",
+    "min_version": {"iproute2": "2.6"},
+    "fallback": null
+  },
+  "all": {
+    "flag": "-a",
+    "description": "Display both listening and non-listening (established) sockets",
+    "min_version": {"iproute2": "2.6"},
+    "fallback": null
+  },
+  "ipv4": {
+    "flag": "-4",
+    "description": "Display only IPv4 sockets",
+    "min_version": {"iproute2": "2.6"},
+    "fallback": null
+  },
+  "ipv6": {
+    "flag": "-6",
+    "description": "Display only IPv6 sockets",
+    "min_version": {"iproute2": "2.6"},
+    "fallback": null
+  }
+}

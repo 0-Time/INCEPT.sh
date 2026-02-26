@@ -1,0 +1,12 @@
+# slots_remove_package.gbnf — constrain slot-filling output for remove_package intent
+root ::= slot-package optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-package ::= "package=" package-name
+
+optional-slot ::= slot-purge-config
+
+slot-purge-config ::= "purge_config=" bool-value
+
+package-name ::= [a-zA-Z0-9] [a-zA-Z0-9_.+-]*
+bool-value   ::= "true" | "false"

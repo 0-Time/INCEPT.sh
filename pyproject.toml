@@ -1,0 +1,84 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "incept"
+version = "0.1.0"
+description = "Offline NL to Linux command compiler using constrained small-model decoding"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "pydantic>=2.0",
+    "bashlex>=0.18",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.4",
+    "mypy>=1.10",
+]
+ml = [
+    "transformers>=4.40",
+    "peft>=0.10",
+    "trl>=0.8",
+    "datasets>=2.19",
+    "accelerate>=0.30",
+    "tensorboard>=2.16",
+    "safetensors>=0.4",
+]
+eval = [
+    "scikit-learn>=1.4",
+    "tabulate>=0.9",
+]
+all = ["incept[ml,eval,dev]"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"incept/core/preclassifier.py" = ["E501"]
+"incept/templates/explanations.py" = ["E501"]
+"incept/safety/validator.py" = ["E501"]
+"incept/data/adversarial.py" = ["E501"]
+"incept/data/templates.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["bashlex.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "transformers.*",
+    "peft.*",
+    "trl.*",
+    "datasets.*",
+    "accelerate.*",
+    "bitsandbytes.*",
+    "tensorboard.*",
+    "safetensors.*",
+    "torch.*",
+    "sklearn.*",
+    "tabulate.*",
+    "llama_cpp.*",
+    "yaml.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--tb=short -q"

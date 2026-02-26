@@ -1,0 +1,13 @@
+# slots_unmount_device.gbnf — constrain slot-filling output for unmount_device intent
+root ::= slot-mount-point optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-mount-point ::= "mount_point=" path-value
+
+optional-slot ::= slot-force | slot-lazy
+
+slot-force ::= "force=" bool-value
+slot-lazy  ::= "lazy=" bool-value
+
+path-value ::= "/" [a-zA-Z0-9_./-]* | "."
+bool-value ::= "true" | "false"

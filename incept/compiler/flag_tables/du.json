@@ -1,0 +1,38 @@
+{
+  "human_readable": {
+    "flag": "-h",
+    "description": "Print sizes in human-readable format (e.g. 1K, 234M, 2G)",
+    "min_version": {"gnu": "5.0", "bsd": "4.4"},
+    "fallback": null
+  },
+  "summary": {
+    "flag": "-s",
+    "description": "Display only a total for each argument",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "max_depth": {
+    "flag": "-d",
+    "description": "Display totals for directories at most N levels deep",
+    "min_version": {"gnu": "8.0", "bsd": "4.4"},
+    "fallback": "--max-depth"
+  },
+  "max_depth_long": {
+    "flag": "--max-depth",
+    "description": "Display totals for directories at most N levels deep (GNU long form)",
+    "min_version": {"gnu": "5.0", "bsd": null},
+    "fallback": "-d"
+  },
+  "apparent_size": {
+    "flag": "--apparent-size",
+    "description": "Print apparent sizes rather than disk usage",
+    "min_version": {"gnu": "5.0", "bsd": null},
+    "fallback": null
+  },
+  "exclude": {
+    "flag": "--exclude",
+    "description": "Exclude files matching the given glob pattern",
+    "min_version": {"gnu": "5.0", "bsd": null},
+    "fallback": null
+  }
+}

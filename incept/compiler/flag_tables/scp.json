@@ -1,0 +1,32 @@
+{
+  "port": {
+    "flag": "-P",
+    "description": "Specify the port to connect to on the remote host (uppercase P, unlike ssh)",
+    "min_version": {"openssh": "1.0"},
+    "fallback": null
+  },
+  "recursive": {
+    "flag": "-r",
+    "description": "Recursively copy entire directories",
+    "min_version": {"openssh": "1.0"},
+    "fallback": null
+  },
+  "preserve_times": {
+    "flag": "-p",
+    "description": "Preserve modification times, access times, and modes from the original files",
+    "min_version": {"openssh": "1.0"},
+    "fallback": null
+  },
+  "compression": {
+    "flag": "-C",
+    "description": "Enable compression during transfer",
+    "min_version": {"openssh": "1.0"},
+    "fallback": null
+  },
+  "identity": {
+    "flag": "-i",
+    "description": "Select the identity file (private key) for public key authentication",
+    "min_version": {"openssh": "1.0"},
+    "fallback": null
+  }
+}

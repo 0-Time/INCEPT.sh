@@ -1,0 +1,13 @@
+# slots_disk_usage.gbnf — constrain slot-filling output for disk_usage intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-path | slot-human-readable | slot-max-depth
+
+slot-path           ::= "path=" path-value
+slot-human-readable ::= "human_readable=" bool-value
+slot-max-depth      ::= "max_depth=" number
+
+path-value ::= "/" [a-zA-Z0-9_./-]* | "."
+bool-value ::= "true" | "false"
+number     ::= [0-9]+

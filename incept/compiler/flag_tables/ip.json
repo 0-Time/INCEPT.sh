@@ -1,0 +1,38 @@
+{
+  "addr": {
+    "flag": "addr",
+    "description": "Manage and display IP addresses assigned to network interfaces",
+    "min_version": {"iproute2": "2.2"},
+    "fallback": null
+  },
+  "link": {
+    "flag": "link",
+    "description": "Manage and display network device state and attributes",
+    "min_version": {"iproute2": "2.2"},
+    "fallback": null
+  },
+  "route": {
+    "flag": "route",
+    "description": "Manage and display the kernel routing table",
+    "min_version": {"iproute2": "2.2"},
+    "fallback": null
+  },
+  "json": {
+    "flag": "-j",
+    "description": "Output results in machine-readable JSON format",
+    "min_version": {"iproute2": "4.14"},
+    "fallback": null
+  },
+  "brief": {
+    "flag": "-br",
+    "description": "Print only basic information in a tabular format",
+    "min_version": {"iproute2": "4.10"},
+    "fallback": null
+  },
+  "color": {
+    "flag": "-c",
+    "description": "Use color output to distinguish different fields",
+    "min_version": {"iproute2": "4.1"},
+    "fallback": null
+  }
+}

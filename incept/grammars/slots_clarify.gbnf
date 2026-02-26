@@ -1,0 +1,12 @@
+# slots_clarify.gbnf — constrain slot-filling output for clarify intent
+root ::= reason "\n" template
+
+reason   ::= "reason=" reason-type
+template ::= "template=" template-key
+
+reason-type ::= "missing_required_param" | "ambiguous_intent"
+              | "ambiguous_scope" | "missing_distro" | "unclear_target"
+
+template-key ::= "which_package" | "which_directory" | "which_distro"
+               | "which_compression" | "which_service" | "which_user"
+               | "which_file" | "confirm_scope" | "clarify_intent"

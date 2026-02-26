@@ -1,0 +1,7 @@
+# slots_create_symlink.gbnf — constrain slot-filling output for create_symlink intent
+root ::= slot-target "\n" slot-link-name
+
+slot-target    ::= "target=" path-value
+slot-link-name ::= "link_name=" path-value
+
+path-value ::= "/" [a-zA-Z0-9_./-]* | "."

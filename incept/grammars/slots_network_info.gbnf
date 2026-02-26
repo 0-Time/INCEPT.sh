@@ -1,0 +1,9 @@
+# slots_network_info.gbnf — constrain slot-filling output for network_info intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-interface
+
+slot-interface ::= "interface=" identifier
+
+identifier ::= [a-zA-Z_] [a-zA-Z0-9_.-]*

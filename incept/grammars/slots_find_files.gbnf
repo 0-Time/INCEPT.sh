@@ -1,0 +1,24 @@
+# slots_find_files.gbnf — constrain slot-filling output for find_files intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-path | slot-name-pattern | slot-type | slot-size-gt | slot-size-lt
+       | slot-mtime-days-gt | slot-mtime-days-lt | slot-user | slot-permissions
+
+slot-path         ::= "path=" path-value
+slot-name-pattern ::= "name_pattern=" glob-value
+slot-type         ::= "type=" type-value
+slot-size-gt      ::= "size_gt=" number size-unit
+slot-size-lt      ::= "size_lt=" number size-unit
+slot-mtime-days-gt ::= "mtime_days_gt=" number
+slot-mtime-days-lt ::= "mtime_days_lt=" number
+slot-user         ::= "user=" identifier
+slot-permissions  ::= "permissions=" octal-perm
+
+type-value  ::= "file" | "directory" | "link"
+path-value  ::= "/" [a-zA-Z0-9_./-]* | "."
+glob-value  ::= [a-zA-Z0-9_.*?/-]+
+identifier  ::= [a-zA-Z_] [a-zA-Z0-9_.-]*
+number      ::= [0-9]+
+size-unit   ::= "k" | "M" | "G"
+octal-perm  ::= [0-7] [0-7] [0-7] [0-7]?

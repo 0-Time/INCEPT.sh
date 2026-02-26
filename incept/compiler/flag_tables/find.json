@@ -1,0 +1,68 @@
+{
+  "maxdepth": {
+    "flag": "-maxdepth",
+    "description": "Descend at most N levels of directories below the starting-points",
+    "min_version": {"gnu": "4.1", "bsd": "4.3"},
+    "fallback": null
+  },
+  "name": {
+    "flag": "-name",
+    "description": "Match filename against shell glob pattern",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "type": {
+    "flag": "-type",
+    "description": "Match by file type (f=file, d=directory, l=symlink, etc.)",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "size": {
+    "flag": "-size",
+    "description": "Match by file size with optional suffix (c=bytes, k=KiB, M=MiB, G=GiB)",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "user": {
+    "flag": "-user",
+    "description": "Match files owned by specified user name or UID",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "perm": {
+    "flag": "-perm",
+    "description": "Match files with specified permission bits",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "mtime": {
+    "flag": "-mtime",
+    "description": "Match by modification time in days (+N=more than, -N=less than, N=exactly)",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "newer": {
+    "flag": "-newer",
+    "description": "Match files modified more recently than the given reference file",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "exec": {
+    "flag": "-exec",
+    "description": "Execute a command on each matched file; terminated by ';' or '+' for batch",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "print0": {
+    "flag": "-print0",
+    "description": "Print full filename followed by NUL character instead of newline",
+    "min_version": {"gnu": "4.1", "bsd": "4.1"},
+    "fallback": "-print"
+  },
+  "regextype": {
+    "flag": "-regextype",
+    "description": "Set regex dialect for -regex (posix-basic, posix-extended, emacs, etc.)",
+    "min_version": {"gnu": "4.2", "bsd": null},
+    "fallback": null
+  }
+}

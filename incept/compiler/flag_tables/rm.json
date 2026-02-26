@@ -1,0 +1,26 @@
+{
+  "recursive": {
+    "flag": "-r",
+    "description": "Remove directories and their contents recursively",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": "-R"
+  },
+  "force": {
+    "flag": "-f",
+    "description": "Ignore nonexistent files and arguments; never prompt for confirmation",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "interactive": {
+    "flag": "-i",
+    "description": "Prompt before every removal",
+    "min_version": {"gnu": "4.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "one_file_system": {
+    "flag": "--one-file-system",
+    "description": "Skip directories on different filesystems during recursive removal",
+    "min_version": {"gnu": "6.4", "bsd": null},
+    "fallback": null
+  }
+}

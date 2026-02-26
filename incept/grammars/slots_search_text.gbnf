@@ -1,0 +1,22 @@
+# slots_search_text.gbnf — constrain slot-filling output for search_text intent
+root ::= slot-pattern optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-pattern ::= "pattern=" quoted-string
+
+optional-slot ::= slot-path | slot-recursive | slot-ignore-case
+                | slot-regex-type | slot-show-line-numbers
+
+slot-path              ::= "path=" path-value
+slot-recursive         ::= "recursive=" bool-value
+slot-ignore-case       ::= "ignore_case=" bool-value
+slot-regex-type        ::= "regex_type=" regex-type-value
+slot-show-line-numbers ::= "show_line_numbers=" bool-value
+
+regex-type-value ::= "basic" | "extended" | "perl"
+
+path-value     ::= "/" [a-zA-Z0-9_./-]* | "."
+identifier     ::= [a-zA-Z_] [a-zA-Z0-9_.-]*
+number         ::= [0-9]+
+bool-value     ::= "true" | "false"
+quoted-string  ::= "\"" [^\"]* "\""

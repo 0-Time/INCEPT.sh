@@ -1,0 +1,14 @@
+# slots_install_package.gbnf — constrain slot-filling output for install_package intent
+root ::= slot-package optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-package ::= "package=" package-name
+
+optional-slot ::= slot-assume-yes | slot-version
+
+slot-assume-yes ::= "assume_yes=" bool-value
+slot-version    ::= "version=" version-string
+
+package-name    ::= [a-zA-Z0-9] [a-zA-Z0-9_.+-]*
+version-string  ::= [0-9] [a-zA-Z0-9_.+-~:]*
+bool-value      ::= "true" | "false"

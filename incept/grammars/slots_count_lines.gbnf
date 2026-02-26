@@ -1,0 +1,12 @@
+# slots_count_lines.gbnf — constrain slot-filling output for count_lines intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-input-file | slot-mode
+
+slot-input-file ::= "input_file=" path-value
+slot-mode       ::= "mode=" mode-value
+
+mode-value ::= "lines" | "words" | "chars"
+
+path-value ::= "/" [a-zA-Z0-9_./-]* | "."

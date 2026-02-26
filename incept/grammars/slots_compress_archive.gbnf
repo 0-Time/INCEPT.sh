@@ -1,0 +1,16 @@
+# slots_compress_archive.gbnf — constrain slot-filling output for compress_archive intent
+root ::= slot-source optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-source ::= "source=" path-value
+
+optional-slot ::= slot-destination | slot-format | slot-exclude-pattern
+
+slot-destination     ::= "destination=" path-value
+slot-format          ::= "format=" format-value
+slot-exclude-pattern ::= "exclude_pattern=" quoted-string
+
+format-value ::= "tar.gz" | "tar.bz2" | "tar.xz" | "zip"
+
+path-value     ::= "/" [a-zA-Z0-9_./-]* | "."
+quoted-string  ::= "\"" [^\"]* "\""

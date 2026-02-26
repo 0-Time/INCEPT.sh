@@ -1,0 +1,11 @@
+# slots_port_check.gbnf — constrain slot-filling output for port_check intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-port | slot-host
+
+slot-port ::= "port=" number
+slot-host ::= "host=" hostname
+
+hostname ::= [a-zA-Z0-9] [a-zA-Z0-9._:-]*
+number   ::= [0-9]+

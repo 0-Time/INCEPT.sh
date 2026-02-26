@@ -1,0 +1,7 @@
+# slots_move_files.gbnf — constrain slot-filling output for move_files intent
+root ::= slot-source "\n" slot-destination
+
+slot-source      ::= "source=" path-value
+slot-destination ::= "destination=" path-value
+
+path-value ::= "/" [a-zA-Z0-9_./-]* | "."

@@ -1,0 +1,12 @@
+# slots_delete_user.gbnf — constrain slot-filling output for delete_user intent
+root ::= slot-username optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-username ::= "username=" identifier
+
+optional-slot ::= slot-remove-home
+
+slot-remove-home ::= "remove_home=" bool-value
+
+identifier ::= [a-zA-Z_] [a-zA-Z0-9_.-]*
+bool-value ::= "true" | "false"

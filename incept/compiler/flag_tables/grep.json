@@ -1,0 +1,68 @@
+{
+  "pcre": {
+    "flag": "-P",
+    "description": "Interpret pattern as a Perl-compatible regular expression (PCRE)",
+    "min_version": {"gnu": "2.5", "bsd": null},
+    "fallback": "-E"
+  },
+  "extended_regex": {
+    "flag": "-E",
+    "description": "Interpret pattern as an extended regular expression (ERE)",
+    "min_version": {"gnu": "2.0", "bsd": "2.5.1"},
+    "fallback": null
+  },
+  "recursive": {
+    "flag": "-r",
+    "description": "Read all files under each directory recursively",
+    "min_version": {"gnu": "2.5.1", "bsd": "2.5.1"},
+    "fallback": null
+  },
+  "line_number": {
+    "flag": "-n",
+    "description": "Prefix each line of output with the 1-based line number within its file",
+    "min_version": {"gnu": "2.0", "bsd": "2.5.1"},
+    "fallback": null
+  },
+  "ignore_case": {
+    "flag": "-i",
+    "description": "Perform case-insensitive matching",
+    "min_version": {"gnu": "2.0", "bsd": "2.5.1"},
+    "fallback": null
+  },
+  "count": {
+    "flag": "-c",
+    "description": "Print only the count of matching lines per file",
+    "min_version": {"gnu": "2.0", "bsd": "2.5.1"},
+    "fallback": null
+  },
+  "files_with_matches": {
+    "flag": "-l",
+    "description": "Print only the names of files containing matches",
+    "min_version": {"gnu": "2.0", "bsd": "2.5.1"},
+    "fallback": null
+  },
+  "null_delim": {
+    "flag": "-Z",
+    "description": "Output NUL byte after each filename instead of newline",
+    "min_version": {"gnu": "2.5.1", "bsd": null},
+    "fallback": null
+  },
+  "include": {
+    "flag": "--include",
+    "description": "Search only files matching the given glob pattern",
+    "min_version": {"gnu": "2.5.3", "bsd": "2.5.1"},
+    "fallback": null
+  },
+  "exclude_dir": {
+    "flag": "--exclude-dir",
+    "description": "Skip directories matching the given glob pattern during recursive search",
+    "min_version": {"gnu": "2.5.4", "bsd": "2.5.1"},
+    "fallback": null
+  },
+  "color": {
+    "flag": "--color",
+    "description": "Surround matching strings with ANSI color escape sequences (auto/always/never)",
+    "min_version": {"gnu": "2.5.1", "bsd": "2.5.1"},
+    "fallback": null
+  }
+}

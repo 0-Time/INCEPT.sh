@@ -1,0 +1,20 @@
+{
+  "human_readable": {
+    "flag": "-h",
+    "description": "Print sizes in human-readable format using powers of 1024",
+    "min_version": {"gnu": "5.0", "bsd": "4.4"},
+    "fallback": null
+  },
+  "filesystem_type": {
+    "flag": "-T",
+    "description": "Display the filesystem type for each mounted filesystem",
+    "min_version": {"gnu": "5.0", "bsd": "4.1"},
+    "fallback": null
+  },
+  "output": {
+    "flag": "--output",
+    "description": "Select which columns to display (source, fstype, size, used, avail, pcent, target, etc.)",
+    "min_version": {"gnu": "8.21", "bsd": null},
+    "fallback": null
+  }
+}

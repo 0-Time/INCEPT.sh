@@ -1,0 +1,6 @@
+# slots_service_status.gbnf — constrain slot-filling output for service_status intent
+root ::= slot-service-name
+
+slot-service-name ::= "service_name=" identifier
+
+identifier ::= [a-zA-Z_] [a-zA-Z0-9_.-]*

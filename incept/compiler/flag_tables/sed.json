@@ -1,0 +1,32 @@
+{
+  "in_place": {
+    "flag": "-i",
+    "description": "Edit files in place; GNU requires no argument, BSD requires a backup suffix (use '' for none)",
+    "min_version": {"gnu": "4.0", "bsd": "1.0"},
+    "fallback": null
+  },
+  "extended_regex_E": {
+    "flag": "-E",
+    "description": "Use extended regular expressions (POSIX ERE); portable across GNU and BSD",
+    "min_version": {"gnu": "4.2", "bsd": "1.0"},
+    "fallback": "-r"
+  },
+  "extended_regex_r": {
+    "flag": "-r",
+    "description": "Use extended regular expressions (GNU-specific alias for -E)",
+    "min_version": {"gnu": "3.02", "bsd": null},
+    "fallback": "-E"
+  },
+  "in_place_long": {
+    "flag": "--in-place",
+    "description": "Long form of -i for in-place editing (GNU only)",
+    "min_version": {"gnu": "4.0", "bsd": null},
+    "fallback": "-i"
+  },
+  "null_delim": {
+    "flag": "-z",
+    "description": "Separate input lines by NUL characters instead of newlines",
+    "min_version": {"gnu": "4.2.2", "bsd": null},
+    "fallback": null
+  }
+}

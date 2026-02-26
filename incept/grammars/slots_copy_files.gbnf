@@ -1,0 +1,15 @@
+# slots_copy_files.gbnf — constrain slot-filling output for copy_files intent
+root ::= required-slots optional-slots
+required-slots ::= slot-source "\n" slot-destination
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-source      ::= "source=" path-value
+slot-destination ::= "destination=" path-value
+
+optional-slot ::= slot-recursive | slot-preserve-attrs
+
+slot-recursive     ::= "recursive=" bool-value
+slot-preserve-attrs ::= "preserve_attrs=" bool-value
+
+path-value  ::= "/" [a-zA-Z0-9_./-]* | "."
+bool-value  ::= "true" | "false"

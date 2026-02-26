@@ -1,0 +1,32 @@
+{
+  "port": {
+    "flag": "-p",
+    "description": "Specify the port to connect to on the remote host",
+    "min_version": {"openssh": "1.0"},
+    "fallback": null
+  },
+  "identity": {
+    "flag": "-i",
+    "description": "Select the file from which the identity (private key) is read for authentication",
+    "min_version": {"openssh": "1.0"},
+    "fallback": null
+  },
+  "option": {
+    "flag": "-o",
+    "description": "Pass a configuration option in the format used by ssh_config",
+    "min_version": {"openssh": "1.0"},
+    "fallback": null
+  },
+  "no_command": {
+    "flag": "-N",
+    "description": "Do not execute a remote command; useful for port forwarding only",
+    "min_version": {"openssh": "2.0"},
+    "fallback": null
+  },
+  "local_forward": {
+    "flag": "-L",
+    "description": "Forward connections from a local port to a specified remote host and port",
+    "min_version": {"openssh": "1.0"},
+    "fallback": null
+  }
+}

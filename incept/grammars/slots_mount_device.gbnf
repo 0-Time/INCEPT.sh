@@ -1,0 +1,16 @@
+# slots_mount_device.gbnf — constrain slot-filling output for mount_device intent
+root ::= required-slots optional-slots
+required-slots ::= slot-device "\n" slot-mount-point
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-device      ::= "device=" path-value
+slot-mount-point ::= "mount_point=" path-value
+
+optional-slot ::= slot-filesystem-type | slot-options
+
+slot-filesystem-type ::= "filesystem_type=" identifier
+slot-options         ::= "options=" quoted-string
+
+path-value    ::= "/" [a-zA-Z0-9_./-]* | "."
+identifier    ::= [a-zA-Z_] [a-zA-Z0-9_.-]*
+quoted-string ::= "\"" [^\"]* "\""

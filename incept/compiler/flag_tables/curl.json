@@ -1,0 +1,44 @@
+{
+  "output": {
+    "flag": "-o",
+    "description": "Write output to the specified file instead of stdout",
+    "min_version": {"gnu": null, "bsd": null, "curl": "4.0"},
+    "fallback": null
+  },
+  "follow_redirects": {
+    "flag": "-L",
+    "description": "Follow HTTP 3xx redirects automatically",
+    "min_version": {"gnu": null, "bsd": null, "curl": "4.9"},
+    "fallback": null
+  },
+  "silent": {
+    "flag": "-s",
+    "description": "Suppress progress meter and error messages",
+    "min_version": {"gnu": null, "bsd": null, "curl": "4.0"},
+    "fallback": null
+  },
+  "insecure": {
+    "flag": "-k",
+    "description": "Allow connections to TLS sites without certificate validation",
+    "min_version": {"gnu": null, "bsd": null, "curl": "7.10"},
+    "fallback": null
+  },
+  "fail_with_body": {
+    "flag": "--fail-with-body",
+    "description": "Return error exit code on HTTP errors but still output the response body",
+    "min_version": {"gnu": null, "bsd": null, "curl": "7.76.0"},
+    "fallback": "--fail"
+  },
+  "retry": {
+    "flag": "--retry",
+    "description": "Retry the request N times on transient errors",
+    "min_version": {"gnu": null, "bsd": null, "curl": "7.12.3"},
+    "fallback": null
+  },
+  "method": {
+    "flag": "-X",
+    "description": "Specify the HTTP method to use (GET, POST, PUT, DELETE, etc.)",
+    "min_version": {"gnu": null, "bsd": null, "curl": "6.0"},
+    "fallback": null
+  }
+}

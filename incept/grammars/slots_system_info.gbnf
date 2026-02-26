@@ -1,0 +1,9 @@
+# slots_system_info.gbnf — constrain slot-filling output for system_info intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-info-type
+
+slot-info-type ::= "info_type=" info-type-value
+
+info-type-value ::= "memory" | "cpu" | "uptime" | "all"

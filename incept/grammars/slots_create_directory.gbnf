@@ -1,0 +1,12 @@
+# slots_create_directory.gbnf — constrain slot-filling output for create_directory intent
+root ::= slot-path optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-path ::= "path=" path-value
+
+optional-slot ::= slot-parents
+
+slot-parents ::= "parents=" bool-value
+
+path-value ::= "/" [a-zA-Z0-9_./-]* | "."
+bool-value ::= "true" | "false"

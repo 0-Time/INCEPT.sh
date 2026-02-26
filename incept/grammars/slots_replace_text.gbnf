@@ -1,0 +1,18 @@
+# slots_replace_text.gbnf — constrain slot-filling output for replace_text intent
+root ::= required-slots optional-slots
+required-slots ::= slot-pattern "\n" slot-replacement "\n" slot-file
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-pattern     ::= "pattern=" quoted-string
+slot-replacement ::= "replacement=" quoted-string
+slot-file        ::= "file=" path-value
+
+optional-slot ::= slot-global-replace | slot-in-place | slot-backup
+
+slot-global-replace ::= "global_replace=" bool-value
+slot-in-place       ::= "in_place=" bool-value
+slot-backup         ::= "backup=" quoted-string
+
+path-value     ::= "/" [a-zA-Z0-9_./-]* | "."
+bool-value     ::= "true" | "false"
+quoted-string  ::= "\"" [^\"]* "\""

@@ -1,0 +1,13 @@
+# slots_test_connectivity.gbnf — constrain slot-filling output for test_connectivity intent
+root ::= slot-host optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-host ::= "host=" hostname
+
+optional-slot ::= slot-count | slot-timeout
+
+slot-count   ::= "count=" number
+slot-timeout ::= "timeout=" number
+
+hostname ::= [a-zA-Z0-9] [a-zA-Z0-9._:-]*
+number   ::= [0-9]+

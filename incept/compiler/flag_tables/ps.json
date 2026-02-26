@@ -1,0 +1,32 @@
+{
+  "aux": {
+    "flag": "aux",
+    "description": "Display all processes in BSD-style user-oriented format with terminal and CPU/memory stats",
+    "min_version": {"procps": "2.0", "bsd": "4.0"},
+    "fallback": null
+  },
+  "ef": {
+    "flag": "-ef",
+    "description": "Display all processes in full POSIX format with UID, PID, PPID, and command line",
+    "min_version": {"procps": "2.0", "bsd": "4.0"},
+    "fallback": null
+  },
+  "sort": {
+    "flag": "--sort",
+    "description": "Sort output by the specified column (prefix with + for ascending, - for descending)",
+    "min_version": {"procps": "3.0", "bsd": null},
+    "fallback": null
+  },
+  "format": {
+    "flag": "-o",
+    "description": "Specify user-defined output format as a comma-separated list of column keywords",
+    "min_version": {"procps": "2.0", "bsd": "4.0"},
+    "fallback": null
+  },
+  "forest": {
+    "flag": "--forest",
+    "description": "Display process hierarchy as an ASCII art tree",
+    "min_version": {"procps": "3.0", "bsd": null},
+    "fallback": null
+  }
+}

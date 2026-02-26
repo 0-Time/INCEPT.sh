@@ -1,0 +1,6 @@
+# slots_out_of_scope.gbnf — constrain slot-filling output for out_of_scope intent
+root ::= slot-reason | ""
+
+slot-reason ::= "reason=" quoted-string
+
+quoted-string ::= "\"" [^\"]* "\""

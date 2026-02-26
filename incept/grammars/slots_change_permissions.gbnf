@@ -1,0 +1,20 @@
+# slots_change_permissions.gbnf — constrain slot-filling output for change_permissions intent
+root ::= slot-target "\n" slot-permissions optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-target      ::= "target=" path-value
+slot-permissions ::= "permissions=" perm-value
+
+optional-slot ::= slot-recursive
+
+slot-recursive ::= "recursive=" bool-value
+
+perm-value    ::= octal-perm | symbolic-perm
+octal-perm    ::= [0-7] [0-7] [0-7] [0-7]?
+symbolic-perm ::= who-part op-part what-part
+who-part      ::= [ugoa]+
+op-part       ::= "+" | "-" | "="
+what-part     ::= [rwxXst]+
+
+path-value ::= "/" [a-zA-Z0-9_./-]* | "."
+bool-value ::= "true" | "false"

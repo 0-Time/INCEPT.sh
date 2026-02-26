@@ -1,0 +1,14 @@
+# slots_schedule_cron.gbnf — constrain slot-filling output for schedule_cron intent
+root ::= required-slots optional-slots
+required-slots ::= slot-schedule "\n" slot-command
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-schedule ::= "schedule=" quoted-string
+slot-command  ::= "command=" quoted-string
+
+optional-slot ::= slot-user
+
+slot-user ::= "user=" identifier
+
+identifier    ::= [a-zA-Z_] [a-zA-Z0-9_.-]*
+quoted-string ::= "\"" [^\"]* "\""

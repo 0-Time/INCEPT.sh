@@ -1,0 +1,9 @@
+# slots_update_packages.gbnf — constrain slot-filling output for update_packages intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-upgrade-all
+
+slot-upgrade-all ::= "upgrade_all=" bool-value
+
+bool-value ::= "true" | "false"

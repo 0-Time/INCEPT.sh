@@ -1,0 +1,16 @@
+# slots_transfer_file.gbnf — constrain slot-filling output for transfer_file intent
+root ::= required-slots optional-slots
+required-slots ::= slot-source "\n" slot-destination
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-source      ::= "source=" quoted-string
+slot-destination ::= "destination=" quoted-string
+
+optional-slot ::= slot-recursive | slot-port
+
+slot-recursive ::= "recursive=" bool-value
+slot-port      ::= "port=" number
+
+number        ::= [0-9]+
+bool-value    ::= "true" | "false"
+quoted-string ::= "\"" [^\"]* "\""

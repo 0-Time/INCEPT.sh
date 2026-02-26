@@ -1,0 +1,21 @@
+# intent_grammar.gbnf — constrains intent classifier output to exactly one valid label
+root ::= intent
+intent ::= ( "find_files" | "copy_files" | "move_files" | "delete_files"
+           | "change_permissions" | "change_ownership" | "create_directory"
+           | "list_directory" | "disk_usage" | "view_file"
+           | "create_symlink" | "compare_files"
+           | "search_text" | "replace_text" | "sort_output"
+           | "count_lines" | "extract_columns" | "unique_lines"
+           | "compress_archive" | "extract_archive"
+           | "install_package" | "remove_package" | "update_packages"
+           | "search_package"
+           | "start_service" | "stop_service" | "restart_service"
+           | "enable_service" | "service_status"
+           | "create_user" | "delete_user" | "modify_user"
+           | "view_logs" | "follow_logs" | "filter_logs"
+           | "schedule_cron" | "list_cron" | "remove_cron"
+           | "network_info" | "test_connectivity" | "download_file"
+           | "transfer_file" | "ssh_connect" | "port_check"
+           | "process_list" | "kill_process" | "system_info"
+           | "mount_device" | "unmount_device"
+           | "CLARIFY" | "OUT_OF_SCOPE" | "UNSAFE_REQUEST" )
