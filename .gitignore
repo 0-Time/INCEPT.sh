@@ -41,3 +41,6 @@ htmlcov/
 
 # Claude
 .claude/
+
+# Sprint docs (internal)
+Sprints/
