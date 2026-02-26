@@ -1,4 +1,4 @@
-PYTHON := .venv/bin/python
+PYTHON := $(shell if [ -f .venv/bin/python ]; then echo .venv/bin/python; else echo python; fi)
 
 .PHONY: test lint format typecheck eval all train-intent train-slot export eval-report
 
