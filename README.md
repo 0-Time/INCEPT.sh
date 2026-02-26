@@ -26,8 +26,12 @@ INCEPT translates plain English requests like *"find all log files larger than 1
 ### Install
 
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -e ".[cli,server]"
 ```
+
+> **Note:** Requires Python 3.11+ and pip 21.3+. The editable install uses `pyproject.toml` with hatchling, which older pip versions don't support. The virtual environment ensures a compatible pip.
 
 ### Interactive REPL
 
@@ -194,7 +198,9 @@ incept/
 ## Development
 
 ```bash
-# Install dev dependencies
+# Create venv and install all dev dependencies
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -e ".[cli,server,dev]"
 
 # Run tests (2,073 tests)
