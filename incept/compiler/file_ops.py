@@ -103,8 +103,7 @@ def compile_delete_files(params: dict[str, Any], ctx: EnvironmentContext) -> str
     target: str = params.get("target", "")
     if not target or target.strip() == "/":
         raise ValueError(
-            "Refusing to compile delete command: "
-            "target is root or empty (would destroy filesystem)"
+            "Refusing to compile delete command: target is root or empty (would destroy filesystem)"
         )
 
     parts: list[str] = ["rm"]
@@ -118,9 +117,7 @@ def compile_delete_files(params: dict[str, Any], ctx: EnvironmentContext) -> str
     return " ".join(parts)
 
 
-def compile_change_permissions(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_change_permissions(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a ``chmod`` command from *change_permissions* params."""
     parts: list[str] = ["chmod"]
 
@@ -132,9 +129,7 @@ def compile_change_permissions(
     return " ".join(parts)
 
 
-def compile_change_ownership(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_change_ownership(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a ``chown`` command from *change_ownership* params."""
     parts: list[str] = ["chown"]
 
@@ -150,9 +145,7 @@ def compile_change_ownership(
     return " ".join(parts)
 
 
-def compile_create_directory(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_create_directory(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a ``mkdir`` command from *create_directory* params."""
     parts: list[str] = ["mkdir"]
 
@@ -163,9 +156,7 @@ def compile_create_directory(
     return " ".join(parts)
 
 
-def compile_list_directory(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_list_directory(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile an ``ls`` command from *list_directory* params."""
     parts: list[str] = ["ls"]
 
@@ -197,9 +188,10 @@ def compile_disk_usage(params: dict[str, Any], ctx: EnvironmentContext) -> str:
 
     max_depth = params.get("max_depth")
     if max_depth is not None:
-        if ctx.distro_family == "debian":
+        if ctx.distro_family in ("debian",):
             parts.append(f"--max-depth={max_depth}")
         else:
+            # macOS, arch, rhel, suse use -d
             parts.extend(["-d", str(max_depth)])
 
     path = params.get("path")
@@ -225,9 +217,7 @@ def compile_view_file(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     return f"cat {file_path}"
 
 
-def compile_create_symlink(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_create_symlink(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile an ``ln -s`` command from *create_symlink* params."""
     parts: list[str] = [
         "ln",
@@ -238,9 +228,7 @@ def compile_create_symlink(
     return " ".join(parts)
 
 
-def compile_compare_files(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_compare_files(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a ``diff`` command from *compare_files* params."""
     context_lines: int | None = params.get("context_lines")
 

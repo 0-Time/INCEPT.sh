@@ -1,0 +1,9 @@
+# slots_docker_ps.gbnf — constrain slot-filling output for docker_ps intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-all
+
+slot-all ::= "all=" bool-value
+
+bool-value ::= "true" | "false"

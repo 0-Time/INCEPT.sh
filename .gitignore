@@ -38,3 +38,6 @@ htmlcov/
 
 # ruff
 .ruff_cache/
+
+# Claude
+.claude/

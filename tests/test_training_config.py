@@ -7,10 +7,12 @@ from pathlib import Path
 import pytest
 
 from incept.training.config import (
+    DPOConfig,
     LoraConfig,
     QuantizationConfig,
     TaskType,
     TrainingConfig,
+    TrainingMode,
     load_config,
 )
 
@@ -158,3 +160,90 @@ class TestLoadConfig:
         assert cfg.save_strategy == "epoch"
         assert cfg.logging_steps == 10
         assert cfg.seed == 42
+
+
+# ========================== Sprint 5: TrainingMode + DPOConfig ==========================
+
+
+class TestTrainingMode:
+    def test_values(self) -> None:
+        assert TrainingMode.SFT == "sft"
+        assert TrainingMode.DPO == "dpo"
+
+    def test_from_string(self) -> None:
+        assert TrainingMode("sft") is TrainingMode.SFT
+        assert TrainingMode("dpo") is TrainingMode.DPO
+
+    def test_invalid_mode_raises(self) -> None:
+        with pytest.raises(ValueError):
+            TrainingMode("rlhf")
+
+
+class TestDPOConfig:
+    def test_defaults(self) -> None:
+        cfg = DPOConfig()
+        assert cfg.beta == 0.1
+        assert cfg.learning_rate == 5e-5
+        assert cfg.num_epochs == 2
+        assert cfg.max_length == 512
+        assert cfg.max_prompt_length == 256
+        assert cfg.reference_model is None
+
+    def test_custom_values(self) -> None:
+        cfg = DPOConfig(
+            beta=0.2,
+            learning_rate=1e-4,
+            num_epochs=3,
+            max_length=1024,
+            max_prompt_length=512,
+            reference_model="Qwen/Qwen2.5-0.5B-Instruct",
+        )
+        assert cfg.beta == 0.2
+        assert cfg.learning_rate == 1e-4
+        assert cfg.num_epochs == 3
+        assert cfg.reference_model == "Qwen/Qwen2.5-0.5B-Instruct"
+
+    def test_beta_bounds(self) -> None:
+        with pytest.raises(ValueError):
+            DPOConfig(beta=-0.1)
+
+    def test_learning_rate_positive(self) -> None:
+        with pytest.raises(ValueError):
+            DPOConfig(learning_rate=0.0)
+
+
+class TestTrainingConfigDPO:
+    def _minimal(self, **overrides: object) -> TrainingConfig:
+        defaults: dict[str, object] = {
+            "task": "intent",
+            "train_file": "data/training/intent_train.jsonl",
+        }
+        defaults.update(overrides)
+        return TrainingConfig(**defaults)  # type: ignore[arg-type]
+
+    def test_default_mode_is_sft(self) -> None:
+        cfg = self._minimal()
+        assert cfg.mode == TrainingMode.SFT
+
+    def test_dpo_mode(self) -> None:
+        cfg = self._minimal(mode="dpo")
+        assert cfg.mode == TrainingMode.DPO
+
+    def test_dpo_config_embedded(self) -> None:
+        cfg = self._minimal(mode="dpo", dpo={"beta": 0.2, "learning_rate": 1e-4})
+        assert cfg.dpo.beta == 0.2
+        assert cfg.dpo.learning_rate == 1e-4
+
+    def test_dpo_config_defaults(self) -> None:
+        cfg = self._minimal(mode="dpo")
+        assert cfg.dpo.beta == 0.1
+        assert cfg.dpo.num_epochs == 2
+
+    def test_load_dpo_yaml(self) -> None:
+        cfg = load_config(CONFIGS_DIR / "training_dpo.yaml")
+        assert cfg.mode == TrainingMode.DPO
+        assert cfg.dpo.beta == 0.1
+        assert cfg.dpo.learning_rate == 5e-5
+        assert cfg.dpo.num_epochs == 2
+        assert cfg.train_file == "data/training/dpo_pairs.jsonl"
+        assert cfg.output_dir == "outputs/dpo"

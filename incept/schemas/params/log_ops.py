@@ -1,6 +1,5 @@
 """Parameter schemas for Log Operations (3 intents)."""
 
-
 from pydantic import BaseModel
 
 

@@ -183,9 +183,7 @@ _TAR_FLAGS: dict[str, str] = {
 }
 
 
-def compile_compress_archive(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_compress_archive(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a tar or zip compression command.
 
     Selects the appropriate compression utility and flags based on the
@@ -220,9 +218,7 @@ def compile_compress_archive(
     return " ".join(parts)
 
 
-def compile_extract_archive(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_extract_archive(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile an archive extraction command.
 
     Auto-detects the archive format from the file extension and selects

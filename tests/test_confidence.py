@@ -103,9 +103,7 @@ class TestComputeConfidence:
     def test_weights_sum(self) -> None:
         """Verify weights: 0.5 intent + 0.3 slots + 0.2 retrieval."""
         # intent = 1.0 (logprob=0), slots = 1.0 (none), retrieval = 0.0
-        result = compute_confidence(
-            intent_logprob=0.0, slot_logprobs=None, retrieval_score=0.0
-        )
+        result = compute_confidence(intent_logprob=0.0, slot_logprobs=None, retrieval_score=0.0)
         # 0.5 * 1.0 + 0.3 * 1.0 + 0.2 * 0.0 = 0.8
         assert result.composite == pytest.approx(0.8, abs=0.01)
 
@@ -146,8 +144,11 @@ class TestToConfidenceScore:
 
     def test_roundtrip_values(self) -> None:
         cr = ConfidenceResult(
-            intent=0.85, slots=0.72, composite=0.80,
-            level=ConfidenceLevel.MEDIUM, display="MEDIUM (80%)"
+            intent=0.85,
+            slots=0.72,
+            composite=0.80,
+            level=ConfidenceLevel.MEDIUM,
+            display="MEDIUM (80%)",
         )
         cs = to_confidence_score(cr)
         assert cs.intent == 0.85

@@ -1,0 +1,11 @@
+# slots_git_log.gbnf — constrain slot-filling output for git_log intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-count | slot-oneline
+
+slot-count   ::= "count=" number
+slot-oneline ::= "oneline=" bool-value
+
+number     ::= [0-9]+
+bool-value ::= "true" | "false"

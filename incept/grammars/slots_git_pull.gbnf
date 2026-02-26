@@ -1,0 +1,10 @@
+# slots_git_pull.gbnf — constrain slot-filling output for git_pull intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-remote | slot-branch
+
+slot-remote ::= "remote=" identifier
+slot-branch ::= "branch=" identifier
+
+identifier ::= [a-zA-Z0-9] [a-zA-Z0-9_./~-]*

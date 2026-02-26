@@ -75,6 +75,5 @@ class TestGoldenSlotsValidation:
                     validate_params(t.expected_intent, t.expected_slots)
                 except Exception as e:
                     pytest.fail(
-                        f"Test {t.id} ({t.expected_intent.value}): "
-                        f"slots validation failed: {e}"
+                        f"Test {t.id} ({t.expected_intent.value}): slots validation failed: {e}"
                     )

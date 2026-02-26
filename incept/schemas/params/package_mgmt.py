@@ -1,6 +1,5 @@
 """Parameter schemas for Package Management (4 intents)."""
 
-
 from pydantic import BaseModel
 
 

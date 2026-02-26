@@ -38,6 +38,7 @@ from incept.core.context import EnvironmentContext
 # Fixtures
 # ---------------------------------------------------------------------------
 
+
 @pytest.fixture()
 def ctx() -> EnvironmentContext:
     """Default Debian/bash context."""
@@ -202,9 +203,7 @@ class TestCompileDeleteFiles:
         assert "junk.tmp" in result
 
     def test_recursive_and_force(self, ctx: EnvironmentContext) -> None:
-        result = compile_delete_files(
-            {"target": "/tmp/old", "recursive": True, "force": True}, ctx
-        )
+        result = compile_delete_files({"target": "/tmp/old", "recursive": True, "force": True}, ctx)
         assert "-r" in result
         assert "-f" in result
 
@@ -454,9 +453,7 @@ class TestCompileCompareFiles:
         assert "-u" not in result
 
     def test_context_lines_zero(self, ctx: EnvironmentContext) -> None:
-        result = compile_compare_files(
-            {"file1": "x", "file2": "y", "context_lines": 0}, ctx
-        )
+        result = compile_compare_files({"file1": "x", "file2": "y", "context_lines": 0}, ctx)
         assert "-C 0" in result
 
 
@@ -480,15 +477,11 @@ class TestCompileSearchText:
         assert "-i" in result
 
     def test_perl_regex(self, ctx: EnvironmentContext) -> None:
-        result = compile_search_text(
-            {"pattern": r"\d{3}-\d{4}", "regex_type": "perl"}, ctx
-        )
+        result = compile_search_text({"pattern": r"\d{3}-\d{4}", "regex_type": "perl"}, ctx)
         assert "-P" in result
 
     def test_extended_regex(self, ctx: EnvironmentContext) -> None:
-        result = compile_search_text(
-            {"pattern": "foo|bar", "regex_type": "extended"}, ctx
-        )
+        result = compile_search_text({"pattern": "foo|bar", "regex_type": "extended"}, ctx)
         assert "-E" in result
 
     def test_line_numbers(self, ctx: EnvironmentContext) -> None:
@@ -498,9 +491,7 @@ class TestCompileSearchText:
         assert "-n" in result
 
     def test_basic_regex_no_flag(self, ctx: EnvironmentContext) -> None:
-        result = compile_search_text(
-            {"pattern": "hello", "regex_type": "basic"}, ctx
-        )
+        result = compile_search_text({"pattern": "hello", "regex_type": "basic"}, ctx)
         assert "-P" not in result
         assert "-E" not in result
 
@@ -561,9 +552,7 @@ class TestCompileReplaceText:
         assert "s/x/y/g" not in result
 
     def test_global_is_default(self, ctx: EnvironmentContext) -> None:
-        result = compile_replace_text(
-            {"pattern": "a", "replacement": "b", "file": "f.txt"}, ctx
-        )
+        result = compile_replace_text({"pattern": "a", "replacement": "b", "file": "f.txt"}, ctx)
         assert "s/a/b/g" in result
 
 
@@ -716,9 +705,7 @@ class TestCompileCompressArchive:
         assert "project.zip" in result
 
     def test_with_exclude(self, ctx: EnvironmentContext) -> None:
-        result = compile_compress_archive(
-            {"source": "src", "exclude_pattern": "*.pyc"}, ctx
-        )
+        result = compile_compress_archive({"source": "src", "exclude_pattern": "*.pyc"}, ctx)
         assert "--exclude" in result
         assert "*.pyc" in result
 

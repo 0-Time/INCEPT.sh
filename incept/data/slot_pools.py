@@ -66,6 +66,22 @@ PACKAGES_RHEL: list[str] = [
     "firewalld", "supervisor", "openssl-devel", "pkgconfig", "ImageMagick",
 ]
 
+PACKAGES_ARCH: list[str] = [
+    "nginx", "apache", "curl", "wget", "git", "docker", "nodejs",
+    "python", "python-pip", "vim", "htop", "tree", "net-tools", "nmap",
+    "openssh", "postgresql", "mariadb", "redis", "tmux", "base-devel",
+    "unzip", "jq", "certbot", "fail2ban", "ufw", "cronie",
+    "openssl", "pkgconf", "imagemagick", "ffmpeg",
+]
+
+PACKAGES_SUSE: list[str] = [
+    "nginx", "apache2", "curl", "wget", "git", "docker", "nodejs",
+    "python3", "python3-pip", "vim", "htop", "tree", "net-tools", "nmap",
+    "openssh", "postgresql-server", "mariadb", "redis", "tmux",
+    "gcc", "make", "unzip", "jq", "certbot", "fail2ban",
+    "firewalld", "openssl-devel", "pkg-config", "ImageMagick", "ffmpeg",
+]
+
 # ── Service names ─────────────────────────────────────────────────────────────
 
 SERVICES: list[str] = [
@@ -204,6 +220,16 @@ MOUNT_POINTS: list[str] = [
 
 FILESYSTEMS: list[str] = ["ext4", "xfs", "btrfs", "ntfs", "vfat"]
 
+# ── macOS Homebrew packages ────────────────────────────────────────────────────
+
+PACKAGES_MACOS: list[str] = [
+    "nginx", "httpd", "curl", "wget", "git", "docker", "node",
+    "python@3", "vim", "htop", "tree", "nmap", "openssh",
+    "postgresql", "mysql", "redis", "tmux", "gcc", "make",
+    "unzip", "jq", "certbot", "wireguard-tools", "logrotate",
+    "ffmpeg", "imagemagick", "go", "rustup", "cmake", "pkg-config",
+]
+
 # ── Context lines ─────────────────────────────────────────────────────────────
 
 CONTEXT_LINES: list[str] = [
@@ -215,6 +241,16 @@ CONTEXT_LINES: list[str] = [
     "rhel bash root safe",
     "debian zsh non-root safe",
     "ubuntu zsh non-root safe",
+    "arch bash non-root safe",
+    "arch bash root safe",
+    "arch zsh non-root safe",
+    "manjaro bash non-root safe",
+    "suse bash non-root safe",
+    "suse bash root safe",
+    "opensuse-leap bash non-root safe",
+    "opensuse-tumbleweed bash non-root safe",
+    "macos zsh non-root safe",
+    "macos bash non-root safe",
 ]
 
 # ── Distro-specific pools ────────────────────────────────────────────────────
@@ -231,6 +267,24 @@ DISTRO_POOLS: dict[str, dict[str, list[str]]] = {
         "package_manager": ["dnf", "yum"],
         "service_manager": ["systemctl"],
         "contexts": [c for c in CONTEXT_LINES if "rhel" in c],
+    },
+    "arch": {
+        "packages": PACKAGES_ARCH,
+        "package_manager": ["pacman"],
+        "service_manager": ["systemctl"],
+        "contexts": [c for c in CONTEXT_LINES if "arch" in c or "manjaro" in c],
+    },
+    "suse": {
+        "packages": PACKAGES_SUSE,
+        "package_manager": ["zypper"],
+        "service_manager": ["systemctl"],
+        "contexts": [c for c in CONTEXT_LINES if "suse" in c or "opensuse" in c],
+    },
+    "macos": {
+        "packages": PACKAGES_MACOS,
+        "package_manager": ["brew"],
+        "service_manager": ["brew services", "launchctl"],
+        "contexts": [c for c in CONTEXT_LINES if "macos" in c],
     },
 }
 # fmt: on

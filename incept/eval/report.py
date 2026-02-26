@@ -45,8 +45,7 @@ def generate_report(report: BaselineReport) -> str:
         lines.append("## Intent Classification — Golden Tests\n")
         lines.append(f"- **Accuracy**: {report.intent_golden.accuracy:.1%}")
         lines.append(
-            f"- **Total / Correct**: "
-            f"{report.intent_golden.total} / {report.intent_golden.correct}"
+            f"- **Total / Correct**: {report.intent_golden.total} / {report.intent_golden.correct}"
         )
         lines.append("")
 

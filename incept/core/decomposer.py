@@ -185,9 +185,7 @@ def decompose(text: str) -> DecompositionResult:
     # Not compound if only 1 part
     if len(parts) <= 1:
         result.is_compound = False
-        result.sub_requests = [
-            SubRequest(text=text.strip(), index=0)
-        ]
+        result.sub_requests = [SubRequest(text=text.strip(), index=0)]
         return result
 
     # Enforce complexity limit

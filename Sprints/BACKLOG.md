@@ -45,7 +45,7 @@
 | ID | Story | Points | Priority | Sprint | Status |
 |----|-------|--------|----------|--------|--------|
 | 3.1 | Template-based training data (8,000+) | 8 | P0 | 3 | TODO |
-| 3.2 | Paraphrase generation via Claude Code — one-time build step (4,000+) | 5 | P0 | 3 | TODO |
+| 3.2 | Paraphrase generation via LLM — one-time build step (4,000+) | 5 | P0 | 3 | TODO |
 | 3.2b | Forum mining — offline data dump, real-world phrasing (1,000+) | 3 | P1 | 3 | TODO |
 | 3.3 | Adversarial & negative data (3,000+) | 5 | P0 | 3 | TODO |
 | 3.4 | Dataset assembly, dedup, stratified split | 3 | P0 | 3 | TODO |
@@ -86,7 +86,7 @@
 | 6.7 | Client-side context script (polished) | 2 | P1 | 6 | TODO |
 | 6.8 | Load testing & soak testing (concurrency, memory) | 5 | P0 | 6 | TODO |
 | 6.9 | Smoke test & rollback procedure | 3 | P0 | 6 | TODO |
-| **6.10** | **Interactive terminal — primary interface (Claude Code-style REPL)** | **13** | **P0** | **6** | **TODO** |
+| **6.10** | **Interactive terminal — primary interface (CLI REPL)** | **13** | **P0** | **6** | **TODO** |
 | 6.11 | Documentation (API, deployment, security, operations runbook) | 5 | P0 | 6 | TODO |
 
 ---
@@ -103,26 +103,37 @@ Covered by Stories 6.5, 6.6, 6.8 above.
 |----|-------|--------|----------|--------|--------|
 | 7.1 | Arch Linux distro family support | 5 | P1 | 7 | TODO |
 | 7.2 | SUSE distro family support | 5 | P1 | 7 | TODO |
-| 7.3 | Shell plugin (bash/zsh keybinding) | 5 | P2 | 7 | TODO |
+| 7.3 | Shell plugin (bash/zsh keybinding) | 5 | P2 | 8 | DONE |
 | 7.4 | Intent expansion (50 → 80+ intents) | 8 | P2 | 7 | TODO |
 | 7.5 | Security audit & hardening (OWASP, deps, container) | 5 | P0 | 7 | TODO |
 | 7.6 | Open-source release preparation | 5 | P1 | 7 | TODO |
 
 ---
 
-## Future Backlog (Post-Sprint 7)
+## Epic 7: Post-MVP Expansion (Sprint 8)
+
+| ID | Story | Points | Priority | Sprint | Status |
+|----|-------|--------|----------|--------|--------|
+| 8.1 | macOS distro family support (brew, launchctl, macOS paths) | 8 | P1 | 8 | DONE |
+| 8.2 | Explain mode — reverse pipeline (command → NL explanation) | 8 | P1 | 8 | DONE |
+| 8.3 | Security hardening (per-IP rate limit, security headers, session limits, table whitelist) | 8 | P1 | 8 | DONE |
+| 8.4 | Shell plugin for bash/zsh (Ctrl+I keybinding) | 5 | P2 | 8 | DONE |
+
+---
+
+## Future Backlog (Post-Sprint 8)
 
 | ID | Story | Points | Priority | Notes |
 |----|-------|--------|----------|-------|
 | F1 | V1 model accuracy targets (97% intent, 92% slot EM) | 13 | P3 | More data + larger model experiments |
 | F2 | Expand to 200+ intents | 13 | P3 | Docker, git, systemd timers, firewall, etc. |
-| F3 | BSD/macOS support | 8 | P3 | Different coreutils, no systemd |
+| F3 | BSD/macOS support | 8 | P3 | **DONE (Sprint 8)** — brew, launchctl, macOS-specific commands |
 | F4 | Offline mode (no server, embedded inference) | 8 | P3 | CLI directly loads model |
 | F5 | Web UI | 13 | P3 | Browser-based NL → command interface |
 | F6 | VS Code / terminal extension | 8 | P3 | IDE integration |
 | F7 | Command history learning | 8 | P3 | Personalize based on user's shell history |
 | F8 | Multilingual NL input (Spanish, Portuguese, etc.) | 13 | P3 | Requires multilingual training data |
-| F9 | Explain mode (paste command → NL explanation) | 5 | P3 | Reverse direction: command → explanation |
+| F9 | Explain mode (paste command → NL explanation) | 5 | P3 | **DONE (Sprint 8)** — 17 parsers, API + CLI + REPL |
 | F10 | Audit log for enterprise (who ran what, when) | 5 | P3 | Compliance feature |
 | F11 | Rust/Go pipeline rewrite for minimal runtime | 13 | P3 | Eliminate Python dependency |
 | F12 | ARM-optimized GGUF for Raspberry Pi | 3 | P3 | NEON-tuned quantization |
@@ -142,9 +153,11 @@ Covered by Stories 6.5, 6.6, 6.8 above.
 | 4 | 32 | 155 | 51% | Model baseline |
 | 5 | 29 | 184 | 60% | Model hardened + integrated |
 | 6 | 58 | 242 | 79% | **Interactive terminal + production hardening (heaviest)** |
-| 7 | 33 | 275 | 100% | Security audit + expansion + release |
+| 7 | 33 | 275 | 89% | Security audit + expansion + release |
+| 8 | 34 | 309 | 100% | macOS + explain + hardening + shell plugin |
 
-**Total MVP: 275 story points across 7 sprints (14 weeks)**
+**Total: 309 story points across 8 sprints (16 weeks)**
+**MVP (Sprints 1-7): 275 SP | Post-MVP (Sprint 8): 34 SP**
 **Production-critical points (P0 only): ~200 SP**
 
 > **Note:** Sprint 6 can be split into 6a + 6b (15 weeks total) if 58 SP is too heavy.

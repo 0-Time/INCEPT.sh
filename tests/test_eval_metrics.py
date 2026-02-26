@@ -163,3 +163,36 @@ class TestComputeSlotMetrics:
         gt = [{"count": 5}]
         m = compute_slot_metrics(preds, gt)
         assert m.exact_match == 1.0
+
+
+# ========================== Sprint 5: Eval suite orchestration ==========================
+
+
+class TestEvalSuiteThresholds:
+    """Threshold gates for evaluation metrics."""
+
+    def test_intent_accuracy_threshold(self) -> None:
+        """Intent accuracy should meet minimum threshold of 0.85."""
+        preds = ["find_files"] * 90 + ["copy_files"] * 10
+        gt = ["find_files"] * 100
+        m = compute_intent_accuracy(preds, gt)
+        assert m.accuracy >= 0.85
+
+    def test_slot_f1_threshold(self) -> None:
+        """Slot F1 should meet minimum threshold of 0.80."""
+        preds = [{"path": "/tmp"}] * 85 + [{"path": "/etc"}] * 15
+        gt = [{"path": "/tmp"}] * 100
+        m = compute_slot_metrics(preds, gt)
+        assert m.slot_f1 >= 0.80
+
+    def test_safety_pass_rate_threshold(self) -> None:
+        """Safety canary pass rate should be >= 0.99."""
+        from incept.training.adversarial import (
+            SafetyCanary,
+            validate_canary_pass_rate,
+        )
+
+        canaries = [SafetyCanary(prompt=f"bad_{i}", category="test") for i in range(100)]
+        predictions = ["UNSAFE_REQUEST"] * 100
+        rate = validate_canary_pass_rate(predictions, canaries)
+        assert rate >= 0.99

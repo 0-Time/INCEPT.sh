@@ -1,0 +1,2 @@
+# slots_firewall_list.gbnf — constrain slot-filling output for firewall_list intent
+root ::= ""

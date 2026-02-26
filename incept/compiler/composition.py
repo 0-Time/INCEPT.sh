@@ -18,9 +18,7 @@ _COMPOSITION_OPERATORS: dict[str, str] = {
 }
 
 
-def resolve_variable_bindings(
-    commands: list[str], bindings: dict[str, str]
-) -> list[str]:
+def resolve_variable_bindings(commands: list[str], bindings: dict[str, str]) -> list[str]:
     """Resolve variable bindings in a command list.
 
     Replaces $PREV_OUTPUT and other variable references with shell constructs.

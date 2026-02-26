@@ -1,0 +1,11 @@
+# slots_git_diff.gbnf — constrain slot-filling output for git_diff intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-staged | slot-path
+
+slot-staged ::= "staged=" bool-value
+slot-path   ::= "path=" path-value
+
+bool-value ::= "true" | "false"
+path-value ::= "/" [a-zA-Z0-9_./-]* | "."

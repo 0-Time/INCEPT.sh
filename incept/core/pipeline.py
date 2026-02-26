@@ -11,6 +11,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
+from incept.compiler.expanded_ops import EXPANDED_OPS_COMPILERS
 from incept.compiler.file_ops import FILE_OPS_COMPILERS
 from incept.compiler.router import CompileResult, IntentRouter
 from incept.compiler.system_ops import SYSTEM_OPS_COMPILERS
@@ -42,6 +43,7 @@ def _build_router() -> IntentRouter:
     router.register_many(FILE_OPS_COMPILERS)
     router.register_many(TEXT_OPS_COMPILERS)
     router.register_many(SYSTEM_OPS_COMPILERS)
+    router.register_many(EXPANDED_OPS_COMPILERS)
     return router
 
 
@@ -55,13 +57,17 @@ def _compile_and_validate(
     ctx: EnvironmentContext,
     requires_sudo: bool,
     verbosity: Literal["minimal", "normal", "detailed"] = "normal",
+    confidence: Any | None = None,
 ) -> FormattedResponse:
     """Compile a single intent and validate the result."""
     from incept.schemas.ir import ConfidenceScore, SingleIR
 
+    if confidence is None:
+        confidence = ConfidenceScore(intent=0.9, slots=0.9, composite=0.9)
+
     ir = SingleIR(
         intent=intent,
-        confidence=ConfidenceScore(intent=0.9, slots=0.9, composite=0.9),
+        confidence=confidence,
         params=params,
         requires_sudo=requires_sudo,
     )
@@ -102,6 +108,8 @@ def run_pipeline(
     nl_request: str,
     context_json: str = "{}",
     verbosity: Literal["minimal", "normal", "detailed"] = "normal",
+    use_model_classifier: bool = False,
+    model: Any = None,
 ) -> PipelineResponse:
     """Run the full NL → command pipeline.
 
@@ -111,6 +119,13 @@ def run_pipeline(
     3. Decompose compound requests
     4. For each sub-request: classify → compile → validate → format
     5. Return assembled response
+
+    Args:
+        nl_request: Natural language request.
+        context_json: JSON string with environment context.
+        verbosity: Response detail level.
+        use_model_classifier: Whether to use model classifier for unmatched intents.
+        model: A llama-cpp-python Llama model instance (required if use_model_classifier=True).
     """
     ctx = parse_context(context_json)
     response = PipelineResponse(original_request=nl_request)
@@ -158,7 +173,74 @@ def run_pipeline(
         sub_result = preclassify(sub_text)
 
         if sub_result.matched_intent is None:
-            # No match — would go to model in Sprint 4
+            # No match from preclassifier — try model classifier if enabled
+            if use_model_classifier and model is not None:
+                from incept.core.model_classifier import model_classify
+
+                ctx_str = context_json
+                mc_result = model_classify(model, sub_text, ctx_str)
+
+                if mc_result.intent == IntentLabel.UNSAFE_REQUEST:
+                    response.status = "blocked"
+                    response.responses.append(
+                        FormattedResponse(
+                            status="blocked",
+                            error={  # type: ignore[arg-type]
+                                "error": "Unsafe request detected by model",
+                                "reason": "model_safety",
+                            },
+                        )
+                    )
+                    continue
+
+                if mc_result.intent == IntentLabel.CLARIFY:
+                    response.status = "no_match"
+                    response.responses.append(
+                        format_clarification(
+                            template_key="clarify_intent",
+                            reason="model_low_confidence",
+                        )
+                    )
+                    continue
+
+                if mc_result.intent == IntentLabel.OUT_OF_SCOPE:
+                    response.responses.append(
+                        FormattedResponse(
+                            status="error",
+                            error={  # type: ignore[arg-type]
+                                "error": "Out of scope",
+                                "reason": "model_out_of_scope",
+                            },
+                        )
+                    )
+                    continue
+
+                # Model returned a valid intent — compile with real confidence
+                mc_intent = mc_result.intent
+                mc_params: dict[str, Any] = mc_result.slots
+                mc_sudo = _needs_sudo(mc_intent)
+
+                if not _ROUTER.has_compiler(mc_intent):
+                    response.responses.append(
+                        format_clarification(
+                            template_key="clarify_intent",
+                            reason=f"no_compiler_for_{mc_intent.value}",
+                        )
+                    )
+                    continue
+
+                fmt_response = _compile_and_validate(
+                    mc_intent,
+                    mc_params,
+                    ctx,
+                    mc_sudo,
+                    verbosity,
+                    confidence=mc_result.confidence,
+                )
+                response.responses.append(fmt_response)
+                continue
+
+            # No model available — fall back to clarification
             response.status = "no_match"
             response.responses.append(
                 format_clarification(
@@ -211,9 +293,7 @@ def run_pipeline(
             )
             continue
 
-        fmt_response = _compile_and_validate(
-            intent, params, ctx, requires_sudo, verbosity
-        )
+        fmt_response = _compile_and_validate(intent, params, ctx, requires_sudo, verbosity)
         response.responses.append(fmt_response)
 
     if not response.responses:

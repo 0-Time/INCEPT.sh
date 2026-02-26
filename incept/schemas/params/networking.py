@@ -1,6 +1,5 @@
 """Parameter schemas for Networking (6 intents)."""
 
-
 from pydantic import BaseModel, Field
 
 

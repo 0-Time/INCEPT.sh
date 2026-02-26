@@ -173,10 +173,7 @@ class TestGenerateDpoPairs:
         examples = [
             _near_miss_example(text=f"task {i}", correct="find_files", distractor="search_text")
             for i in range(50)
-        ] + [
-            _example(text=f"install thing {i}", intent="install_package")
-            for i in range(100)
-        ]
+        ] + [_example(text=f"install thing {i}", intent="install_package") for i in range(100)]
         pairs = generate_dpo_pairs(examples, target_count=80)
         assert len(pairs) == 80
 
@@ -184,19 +181,15 @@ class TestGenerateDpoPairs:
         examples = [
             _near_miss_example(text=f"task {i}", correct="find_files", distractor="search_text")
             for i in range(20)
-        ] + [
-            _example(text=f"install {i}", intent="install_package")
-            for i in range(50)
-        ]
+        ] + [_example(text=f"install {i}", intent="install_package") for i in range(50)]
         pairs = generate_dpo_pairs(examples, target_count=30)
         for pair in pairs:
             assert pair["chosen"] != pair["rejected"]
 
     def test_pair_has_required_fields(self) -> None:
-        examples = [
-            _near_miss_example(text=f"example {i}")
-            for i in range(20)
-        ] + [_example(text=f"normal {i}") for i in range(50)]
+        examples = [_near_miss_example(text=f"example {i}") for i in range(20)] + [
+            _example(text=f"normal {i}") for i in range(50)
+        ]
         pairs = generate_dpo_pairs(examples, target_count=20)
         for pair in pairs:
             assert "id" in pair
@@ -212,10 +205,9 @@ class TestGenerateDpoPairs:
             assert pair["id"] == f"DPO-{i:05d}"
 
     def test_prompt_contains_intent_marker(self) -> None:
-        examples = [
-            _near_miss_example(text=f"near miss {i}")
-            for i in range(20)
-        ] + [_example(text=f"ex {i}") for i in range(50)]
+        examples = [_near_miss_example(text=f"near miss {i}") for i in range(20)] + [
+            _example(text=f"ex {i}") for i in range(50)
+        ]
         pairs = generate_dpo_pairs(examples, target_count=10)
         for pair in pairs:
             assert "[INTENT]" in pair["prompt"]
@@ -244,8 +236,7 @@ class TestGenerateDpoPairs:
         # CLARIFY, OUT_OF_SCOPE, UNSAFE_REQUEST should not be used as source for synthetic pairs
         examples = [_example(text="ambiguous request", intent="CLARIFY")]
         examples += [
-            _example(text=f"install something {i}", intent="install_package")
-            for i in range(30)
+            _example(text=f"install something {i}", intent="install_package") for i in range(30)
         ]
         pairs = generate_dpo_pairs(examples, target_count=10)
         for pair in pairs:

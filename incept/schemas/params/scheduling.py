@@ -1,6 +1,5 @@
 """Parameter schemas for Scheduling (3 intents)."""
 
-
 from pydantic import BaseModel
 
 

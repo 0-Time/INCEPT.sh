@@ -1,0 +1,12 @@
+# slots_dns_lookup.gbnf — constrain slot-filling output for dns_lookup intent
+root ::= slot-domain optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-domain ::= "domain=" hostname
+
+optional-slot ::= slot-record-type
+
+slot-record-type ::= "record_type=" record-type-value
+
+record-type-value ::= "A" | "AAAA" | "MX" | "NS" | "TXT" | "CNAME" | "SOA"
+hostname          ::= [a-zA-Z0-9] [a-zA-Z0-9._-]*

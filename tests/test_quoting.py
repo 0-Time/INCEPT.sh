@@ -23,6 +23,7 @@ from incept.schemas.ir import (
 # Helpers / factories
 # ---------------------------------------------------------------------------
 
+
 def _confidence(value: float = 0.9) -> ConfidenceScore:
     """Factory for a uniform confidence score."""
     return ConfidenceScore(intent=value, slots=value, composite=value)
@@ -116,9 +117,7 @@ class TestNeedsAnsiCQuoting:
             ("col1\tcol2", "embedded_tab"),
         ],
     )
-    def test_returns_true_for_control_characters(
-        self, value: str, description: str
-    ) -> None:
+    def test_returns_true_for_control_characters(self, value: str, description: str) -> None:
         assert needs_ansi_c_quoting(value) is True
 
     def test_mixed_normal_and_control(self) -> None:
@@ -350,7 +349,7 @@ class TestQuoteValue:
     # --- Compound edge cases ---
 
     def test_value_with_all_specials(self) -> None:
-        value = "it's a \"test\" with $VAR and `cmd`"
+        value = 'it\'s a "test" with $VAR and `cmd`'
         result = quote_value(value)
         expected = shlex.quote(value)
         assert result == expected
@@ -433,10 +432,12 @@ class TestIntentRouter:
 
     def test_register_many(self) -> None:
         router = IntentRouter()
-        router.register_many({
-            IntentLabel.list_directory: _echo_compiler,
-            IntentLabel.find_files: _echo_compiler,
-        })
+        router.register_many(
+            {
+                IntentLabel.list_directory: _echo_compiler,
+                IntentLabel.find_files: _echo_compiler,
+            }
+        )
 
         assert router.has_compiler(IntentLabel.list_directory) is True
         assert router.has_compiler(IntentLabel.find_files) is True
@@ -486,9 +487,7 @@ class TestIntentRouter:
         [IntentLabel.CLARIFY, IntentLabel.OUT_OF_SCOPE, IntentLabel.UNSAFE_REQUEST],
         ids=["CLARIFY", "OUT_OF_SCOPE", "UNSAFE_REQUEST"],
     )
-    def test_compile_single_raises_for_special_intents(
-        self, intent: IntentLabel
-    ) -> None:
+    def test_compile_single_raises_for_special_intents(self, intent: IntentLabel) -> None:
         router = IntentRouter()
         ir = _single_ir(intent=intent)
 
@@ -565,9 +564,7 @@ class TestIntentRouter:
         """Verify the compiler function receives the EnvironmentContext."""
         received_ctx: list[EnvironmentContext] = []
 
-        def capturing_compiler(
-            params: dict[str, Any], ctx: EnvironmentContext
-        ) -> str:
+        def capturing_compiler(params: dict[str, Any], ctx: EnvironmentContext) -> str:
             received_ctx.append(ctx)
             return "captured"
 
@@ -768,22 +765,20 @@ class TestRouterCompositionIntegration:
     def _make_router(self) -> IntentRouter:
         """Build a router with echo compilers for common intents."""
         router = IntentRouter()
-        router.register_many({
-            IntentLabel.list_directory: _echo_compiler,
-            IntentLabel.find_files: _echo_compiler,
-            IntentLabel.search_text: _echo_compiler,
-        })
+        router.register_many(
+            {
+                IntentLabel.list_directory: _echo_compiler,
+                IntentLabel.find_files: _echo_compiler,
+                IntentLabel.search_text: _echo_compiler,
+            }
+        )
         return router
 
     def test_pipe_two_step_pipeline(self) -> None:
         router = self._make_router()
 
-        step1 = _single_ir(
-            intent=IntentLabel.list_directory, params={"cmd": "ls"}
-        )
-        step2 = _single_ir(
-            intent=IntentLabel.search_text, params={"cmd": "grep test"}
-        )
+        step1 = _single_ir(intent=IntentLabel.list_directory, params={"cmd": "ls"})
+        step2 = _single_ir(intent=IntentLabel.search_text, params={"cmd": "grep test"})
         ir = _pipeline_ir(steps=[step1, step2], composition="pipe")
 
         result = router.compile(ir, _default_ctx())
@@ -792,12 +787,8 @@ class TestRouterCompositionIntegration:
     def test_sequential_pipeline(self) -> None:
         router = self._make_router()
 
-        step1 = _single_ir(
-            intent=IntentLabel.find_files, params={"cmd": "mkdir /tmp/out"}
-        )
-        step2 = _single_ir(
-            intent=IntentLabel.list_directory, params={"cmd": "ls /tmp/out"}
-        )
+        step1 = _single_ir(intent=IntentLabel.find_files, params={"cmd": "mkdir /tmp/out"})
+        step2 = _single_ir(intent=IntentLabel.list_directory, params={"cmd": "ls /tmp/out"})
         ir = _pipeline_ir(steps=[step1, step2], composition="sequential")
 
         result = router.compile(ir, _default_ctx())
@@ -825,9 +816,7 @@ class TestRouterCompositionIntegration:
     def test_single_step_pipeline(self) -> None:
         router = self._make_router()
 
-        step = _single_ir(
-            intent=IntentLabel.list_directory, params={"cmd": "ls"}
-        )
+        step = _single_ir(intent=IntentLabel.list_directory, params={"cmd": "ls"})
         ir = _pipeline_ir(steps=[step], composition="sequential")
 
         result = router.compile(ir, _default_ctx())

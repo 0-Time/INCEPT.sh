@@ -166,9 +166,7 @@ class TestRunConstrainedInference:
         from incept.training.export import run_constrained_inference
 
         mock_model = MagicMock()
-        mock_model.return_value = {
-            "choices": [{"text": "find_files", "logprobs": {}}]
-        }
+        mock_model.return_value = {"choices": [{"text": "find_files", "logprobs": {}}]}
 
         result = run_constrained_inference(mock_model, "test")
         assert result["text"] == "find_files"

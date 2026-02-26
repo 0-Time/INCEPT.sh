@@ -70,8 +70,9 @@ class TestCanUseBnb:
     def test_bnb_not_available(self) -> None:
         from incept.training.sft_trainer import _can_use_bnb
 
-        with patch.dict("sys.modules", {"bitsandbytes": None}), patch(
-            "builtins.__import__", side_effect=ImportError
+        with (
+            patch.dict("sys.modules", {"bitsandbytes": None}),
+            patch("builtins.__import__", side_effect=ImportError),
         ):
             assert _can_use_bnb() is False
 
@@ -80,9 +81,7 @@ class TestBuildTrainingArgs:
     @patch("incept.training.sft_trainer.TrainingArguments", create=True)
     def test_cuda_enables_fp16(self, mock_ta: MagicMock) -> None:
         mock_ta_cls = MagicMock()
-        with patch.dict(
-            "sys.modules", {"transformers": MagicMock(TrainingArguments=mock_ta_cls)}
-        ):
+        with patch.dict("sys.modules", {"transformers": MagicMock(TrainingArguments=mock_ta_cls)}):
             from importlib import reload
 
             import incept.training.sft_trainer as mod
@@ -97,9 +96,7 @@ class TestBuildTrainingArgs:
     @patch("incept.training.sft_trainer.TrainingArguments", create=True)
     def test_cpu_disables_fp16(self, mock_ta: MagicMock) -> None:
         mock_ta_cls = MagicMock()
-        with patch.dict(
-            "sys.modules", {"transformers": MagicMock(TrainingArguments=mock_ta_cls)}
-        ):
+        with patch.dict("sys.modules", {"transformers": MagicMock(TrainingArguments=mock_ta_cls)}):
             from importlib import reload
 
             import incept.training.sft_trainer as mod

@@ -135,7 +135,7 @@ class TestClarificationIR:
 
 class TestIntentLabel:
     def test_count(self) -> None:
-        assert len(IntentLabel) == 52
+        assert len(IntentLabel) == 78
 
     def test_special_intents(self) -> None:
         assert IntentLabel.CLARIFY.value == "CLARIFY"
@@ -201,6 +201,43 @@ _VALID_PARAMS: dict[IntentLabel, dict[str, object]] = {
     IntentLabel.system_info: {"info_type": "all"},
     IntentLabel.mount_device: {"device": "/dev/sdb1", "mount_point": "/mnt/data"},
     IntentLabel.unmount_device: {"mount_point": "/mnt/data"},
+    # Docker (6)
+    IntentLabel.docker_run: {"image": "nginx", "detach": True},
+    IntentLabel.docker_ps: {"all": True},
+    IntentLabel.docker_stop: {"container": "my-app"},
+    IntentLabel.docker_logs: {"container": "my-app", "follow": True},
+    IntentLabel.docker_build: {"path": ".", "tag": "myapp:latest"},
+    IntentLabel.docker_exec: {"container": "my-app", "command": "bash"},
+    # Git (7)
+    IntentLabel.git_status: {"short": True},
+    IntentLabel.git_commit: {"message": "fix bug", "all": True},
+    IntentLabel.git_push: {"remote": "origin", "branch": "main"},
+    IntentLabel.git_pull: {"remote": "origin", "branch": "main"},
+    IntentLabel.git_log: {"count": 10, "oneline": True},
+    IntentLabel.git_diff: {"staged": True},
+    IntentLabel.git_branch: {"name": "feature/new"},
+    # SSH Keys (2)
+    IntentLabel.generate_ssh_key: {"key_type": "ed25519", "comment": "user@host"},
+    IntentLabel.copy_ssh_key: {"host": "server.com", "user": "deploy"},
+    # Disk Info (2)
+    IntentLabel.list_partitions: {"device": "/dev/sda"},
+    IntentLabel.check_filesystem: {"device": "/dev/sda1"},
+    # Firewall (3)
+    IntentLabel.firewall_allow: {"port": 80, "protocol": "tcp"},
+    IntentLabel.firewall_deny: {"port": 22, "protocol": "tcp"},
+    IntentLabel.firewall_list: {},
+    # DNS (2)
+    IntentLabel.dns_lookup: {"domain": "example.com", "record_type": "MX"},
+    IntentLabel.dns_resolve: {"domain": "example.com"},
+    # Environment (2)
+    IntentLabel.set_env_var: {"name": "MY_VAR", "value": "hello"},
+    IntentLabel.list_env_vars: {"filter": "PATH"},
+    # Systemd Timers (2)
+    IntentLabel.create_timer: {
+        "name": "backup", "on_calendar": "daily", "command": "/opt/backup.sh",
+    },
+    IntentLabel.list_timers: {"all": True},
+    # Special (3)
     IntentLabel.CLARIFY: {"reason": "ambiguous_intent", "template_key": "clarify_intent"},
     IntentLabel.OUT_OF_SCOPE: {"reason": "Not a Linux command"},
     IntentLabel.UNSAFE_REQUEST: {"reason": "Destructive operation"},
@@ -266,6 +303,18 @@ class TestParamSchemas:
             IntentLabel.port_check,
             IntentLabel.process_list,
             IntentLabel.system_info,
+            IntentLabel.docker_ps,
+            IntentLabel.git_status,
+            IntentLabel.git_push,
+            IntentLabel.git_pull,
+            IntentLabel.git_log,
+            IntentLabel.git_diff,
+            IntentLabel.git_branch,
+            IntentLabel.generate_ssh_key,
+            IntentLabel.list_partitions,
+            IntentLabel.firewall_list,
+            IntentLabel.list_env_vars,
+            IntentLabel.list_timers,
             IntentLabel.OUT_OF_SCOPE,
             IntentLabel.UNSAFE_REQUEST,
         ]:

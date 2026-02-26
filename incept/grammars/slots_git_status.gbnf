@@ -1,0 +1,9 @@
+# slots_git_status.gbnf — constrain slot-filling output for git_status intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-short
+
+slot-short ::= "short=" bool-value
+
+bool-value ::= "true" | "false"

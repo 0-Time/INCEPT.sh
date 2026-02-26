@@ -113,9 +113,7 @@ class TestFillTemplate:
         import random
 
         rng = random.Random(42)
-        _text, slots = _fill_template(
-            "install {package}", "install_package", rng, distro="debian"
-        )
+        _text, slots = _fill_template("install {package}", "install_package", rng, distro="debian")
         from incept.data.slot_pools import PACKAGES_DEBIAN
 
         assert slots["package"] in PACKAGES_DEBIAN

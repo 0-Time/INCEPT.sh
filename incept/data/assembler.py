@@ -15,14 +15,27 @@ from typing import Any
 from pydantic import BaseModel, Field
 
 # Required fields in every training example
-_REQUIRED_FIELDS = frozenset({
-    "id", "source", "nl_request", "expected_intent", "tags",
-})
+_REQUIRED_FIELDS = frozenset(
+    {
+        "id",
+        "source",
+        "nl_request",
+        "expected_intent",
+        "tags",
+    }
+)
 
 # Valid sources
-_VALID_SOURCES = frozenset({
-    "template", "paraphrase", "adversarial", "forum", "golden", "manual",
-})
+_VALID_SOURCES = frozenset(
+    {
+        "template",
+        "paraphrase",
+        "adversarial",
+        "forum",
+        "golden",
+        "manual",
+    }
+)
 
 
 class DatasetStats(BaseModel):
@@ -65,7 +78,7 @@ def _text_similarity(a: str, b: str) -> float:
         return 0.0
 
     def trigrams(s: str) -> set[str]:
-        return {s[i:i + 3] for i in range(len(s) - 2)}
+        return {s[i : i + 3] for i in range(len(s) - 2)}
 
     tri_a = trigrams(a)
     tri_b = trigrams(b)
@@ -166,10 +179,7 @@ def deduplicate(
                     remove_indices.add(group[j][0])
 
     near_dupes = len(remove_indices)
-    deduplicated = [
-        ex for i, ex in enumerate(unique_pass1)
-        if i not in remove_indices
-    ]
+    deduplicated = [ex for i, ex in enumerate(unique_pass1) if i not in remove_indices]
 
     return deduplicated, exact_dupes + near_dupes
 
@@ -196,8 +206,7 @@ def stratified_split(
     2. Source type (secondary)
     3. Adversarial tag (ensures adversarial examples in all splits)
     """
-    assert abs(train_ratio + val_ratio + test_ratio - 1.0) < 1e-6, \
-        "Ratios must sum to 1.0"
+    assert abs(train_ratio + val_ratio + test_ratio - 1.0) < 1e-6, "Ratios must sum to 1.0"
 
     rng = random.Random(seed)
 
@@ -231,8 +240,8 @@ def stratified_split(
                 n_test -= 1
 
         train.extend(group[:n_train])
-        val.extend(group[n_train:n_train + n_val])
-        test.extend(group[n_train + n_val:])
+        val.extend(group[n_train : n_train + n_val])
+        test.extend(group[n_train + n_val :])
 
     # Shuffle each split
     rng.shuffle(train)

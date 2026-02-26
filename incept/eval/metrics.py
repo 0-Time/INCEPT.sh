@@ -43,10 +43,7 @@ def compute_intent_accuracy(
         IntentMetrics with accuracy, per-intent accuracy, and confusion pairs.
     """
     if len(predictions) != len(ground_truth):
-        msg = (
-            f"Length mismatch: {len(predictions)} predictions "
-            f"vs {len(ground_truth)} ground truth"
-        )
+        msg = f"Length mismatch: {len(predictions)} predictions vs {len(ground_truth)} ground truth"
         raise ValueError(msg)
 
     total = len(predictions)
@@ -69,8 +66,7 @@ def compute_intent_accuracy(
             confusion[(gt, pred)] += 1
 
     per_intent = {
-        intent: intent_correct[intent] / intent_total[intent]
-        for intent in sorted(intent_total)
+        intent: intent_correct[intent] / intent_total[intent] for intent in sorted(intent_total)
     }
 
     # Top confusion pairs, sorted by count descending
@@ -131,10 +127,7 @@ def compute_slot_metrics(
         SlotMetrics with exact_match, slot_f1, and per-intent breakdowns.
     """
     if len(predictions) != len(ground_truth):
-        msg = (
-            f"Length mismatch: {len(predictions)} predictions "
-            f"vs {len(ground_truth)} ground truth"
-        )
+        msg = f"Length mismatch: {len(predictions)} predictions vs {len(ground_truth)} ground truth"
         raise ValueError(msg)
 
     total = len(predictions)
@@ -168,12 +161,10 @@ def compute_slot_metrics(
     avg_f1 = sum(f1_scores) / len(f1_scores)
 
     per_intent_em = {
-        intent: sum(matches) / len(matches)
-        for intent, matches in sorted(intent_exact.items())
+        intent: sum(matches) / len(matches) for intent, matches in sorted(intent_exact.items())
     }
     per_intent_f1_avg = {
-        intent: sum(scores) / len(scores)
-        for intent, scores in sorted(intent_f1.items())
+        intent: sum(scores) / len(scores) for intent, scores in sorted(intent_f1.items())
     }
 
     # Worst intents by F1 (bottom 10)

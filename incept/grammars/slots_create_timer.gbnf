@@ -1,0 +1,15 @@
+# slots_create_timer.gbnf — constrain slot-filling output for create_timer intent
+root ::= required-slots optional-slots
+required-slots ::= slot-name "\n" slot-on-calendar "\n" slot-command
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-name        ::= "name=" identifier
+slot-on-calendar ::= "on_calendar=" quoted-string
+slot-command     ::= "command=" quoted-string
+
+optional-slot ::= slot-description
+
+slot-description ::= "description=" quoted-string
+
+identifier    ::= [a-zA-Z0-9] [a-zA-Z0-9_.-]*
+quoted-string ::= "\"" [^\"]* "\""

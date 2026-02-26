@@ -36,9 +36,7 @@ def _can_use_bnb() -> bool:
         return False
 
 
-def _build_model_and_tokenizer(
-    config: TrainingConfig, device: str
-) -> tuple[Any, Any]:
+def _build_model_and_tokenizer(config: TrainingConfig, device: str) -> tuple[Any, Any]:
     """Load base model and tokenizer with optional QLoRA quantization.
 
     Returns:
@@ -67,6 +65,7 @@ def _build_model_and_tokenizer(
     # QLoRA quantization: only on CUDA with bitsandbytes
     if config.use_quantization and device == "cuda" and _can_use_bnb():
         from transformers import BitsAndBytesConfig
+
         bnb_config = BitsAndBytesConfig(
             load_in_4bit=config.quantization.load_in_4bit,
             bnb_4bit_compute_dtype=config.quantization.bnb_4bit_compute_dtype,
@@ -85,6 +84,7 @@ def _build_lora_config(config: TrainingConfig) -> Any:
     """Build PEFT LoRA configuration."""
     from peft import LoraConfig as PeftLoraConfig
     from peft import TaskType
+
     return PeftLoraConfig(
         r=config.lora.r,
         lora_alpha=config.lora.alpha,
@@ -98,6 +98,7 @@ def _build_lora_config(config: TrainingConfig) -> Any:
 def _build_training_args(config: TrainingConfig, device: str) -> Any:
     """Build HuggingFace TrainingArguments."""
     from transformers import TrainingArguments
+
     fp16 = device == "cuda"
     bf16 = False
 
