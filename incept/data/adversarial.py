@@ -304,9 +304,7 @@ _NEAR_MISS_PAIRS: list[dict[str, Any]] = [
 # fmt: on
 
 
-def _generate_injection_examples(
-    rng: random.Random, count: int = 500
-) -> list[dict[str, Any]]:
+def _generate_injection_examples(rng: random.Random, count: int = 500) -> list[dict[str, Any]]:
     """Generate prompt injection examples."""
     examples: list[dict[str, Any]] = []
     for i in range(count):
@@ -314,48 +312,50 @@ def _generate_injection_examples(
         action = rng.choice(_INJECTION_ACTIONS)
         role = rng.choice(_INJECTION_ROLES)
         text = template.format(action=action, role=role)
-        examples.append({
-            "id": f"ADV-INJ-{i:04d}",
-            "source": "adversarial",
-            "license": "MIT",
-            "nl_request": text,
-            "context_line": rng.choice(["debian bash non-root safe", "ubuntu bash non-root safe"]),
-            "expected_intent": "UNSAFE_REQUEST",
-            "expected_slots": {},
-            "tags": ["adversarial", "prompt_injection", "safety"],
-        })
+        examples.append(
+            {
+                "id": f"ADV-INJ-{i:04d}",
+                "source": "adversarial",
+                "license": "MIT",
+                "nl_request": text,
+                "context_line": rng.choice(
+                    ["debian bash non-root safe", "ubuntu bash non-root safe"]
+                ),
+                "expected_intent": "UNSAFE_REQUEST",
+                "expected_slots": {},
+                "tags": ["adversarial", "prompt_injection", "safety"],
+            }
+        )
     return examples
 
 
-def _generate_dangerous_examples(
-    rng: random.Random, count: int = 500
-) -> list[dict[str, Any]]:
+def _generate_dangerous_examples(rng: random.Random, count: int = 500) -> list[dict[str, Any]]:
     """Generate dangerous request recognition examples."""
     examples: list[dict[str, Any]] = []
     for i in range(count):
         template = rng.choice(_DANGEROUS_TEMPLATES)
         text = template.format(
             url=rng.choice(_DANGEROUS_URLS),
-            host=f"{rng.randint(1,254)}.{rng.randint(0,254)}.{rng.randint(0,254)}.{rng.randint(1,254)}",
+            host=f"{rng.randint(1, 254)}.{rng.randint(0, 254)}.{rng.randint(0, 254)}.{rng.randint(1, 254)}",
             port=rng.choice([4444, 5555, 6666, 1337, 31337]),
             encoded="YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS80NDQ0IDA+JjE=",
         )
-        examples.append({
-            "id": f"ADV-DNG-{i:04d}",
-            "source": "adversarial",
-            "license": "MIT",
-            "nl_request": text,
-            "context_line": rng.choice(["debian bash non-root safe", "ubuntu bash root safe"]),
-            "expected_intent": "UNSAFE_REQUEST",
-            "expected_slots": {},
-            "tags": ["adversarial", "dangerous", "safety"],
-        })
+        examples.append(
+            {
+                "id": f"ADV-DNG-{i:04d}",
+                "source": "adversarial",
+                "license": "MIT",
+                "nl_request": text,
+                "context_line": rng.choice(["debian bash non-root safe", "ubuntu bash root safe"]),
+                "expected_intent": "UNSAFE_REQUEST",
+                "expected_slots": {},
+                "tags": ["adversarial", "dangerous", "safety"],
+            }
+        )
     return examples
 
 
-def _generate_wrong_distro_examples(
-    rng: random.Random, count: int = 300
-) -> list[dict[str, Any]]:
+def _generate_wrong_distro_examples(rng: random.Random, count: int = 300) -> list[dict[str, Any]]:
     """Generate wrong-distro trap examples."""
     from incept.data.slot_pools import PACKAGES_DEBIAN, SERVICES
 
@@ -375,81 +375,95 @@ def _generate_wrong_distro_examples(
         else:
             ctx = rng.choice(["debian bash non-root safe", "ubuntu bash non-root safe"])
 
-        examples.append({
-            "id": f"ADV-WD-{i:04d}",
-            "source": "adversarial",
-            "license": "MIT",
-            "nl_request": text,
-            "context_line": ctx,
-            "expected_intent": "CLARIFY",
-            "expected_slots": {"trap_type": trap["trap"]},
-            "tags": ["adversarial", "wrong_distro", distro],
-        })
+        examples.append(
+            {
+                "id": f"ADV-WD-{i:04d}",
+                "source": "adversarial",
+                "license": "MIT",
+                "nl_request": text,
+                "context_line": ctx,
+                "expected_intent": "CLARIFY",
+                "expected_slots": {"trap_type": trap["trap"]},
+                "tags": ["adversarial", "wrong_distro", distro],
+            }
+        )
     return examples
 
 
-def _generate_ambiguous_examples(
-    rng: random.Random, count: int = 400
-) -> list[dict[str, Any]]:
+def _generate_ambiguous_examples(rng: random.Random, count: int = 400) -> list[dict[str, Any]]:
     """Generate ambiguous/CLARIFY examples."""
     examples: list[dict[str, Any]] = []
     templates = _AMBIGUOUS_TEMPLATES.copy()
     for i in range(count):
         text = rng.choice(templates)
-        examples.append({
-            "id": f"ADV-AMB-{i:04d}",
-            "source": "adversarial",
-            "license": "MIT",
-            "nl_request": text,
-            "context_line": rng.choice(["debian bash non-root safe", "ubuntu bash non-root safe",
-                                        "rhel bash non-root safe"]),
-            "expected_intent": "CLARIFY",
-            "expected_slots": {},
-            "tags": ["adversarial", "ambiguous", "clarify"],
-        })
+        examples.append(
+            {
+                "id": f"ADV-AMB-{i:04d}",
+                "source": "adversarial",
+                "license": "MIT",
+                "nl_request": text,
+                "context_line": rng.choice(
+                    [
+                        "debian bash non-root safe",
+                        "ubuntu bash non-root safe",
+                        "rhel bash non-root safe",
+                    ]
+                ),
+                "expected_intent": "CLARIFY",
+                "expected_slots": {},
+                "tags": ["adversarial", "ambiguous", "clarify"],
+            }
+        )
     return examples
 
 
-def _generate_oos_examples(
-    rng: random.Random, count: int = 300
-) -> list[dict[str, Any]]:
+def _generate_oos_examples(rng: random.Random, count: int = 300) -> list[dict[str, Any]]:
     """Generate out-of-scope examples."""
     examples: list[dict[str, Any]] = []
     templates = _OOS_TEMPLATES.copy()
     for i in range(count):
         text = rng.choice(templates)
-        examples.append({
-            "id": f"ADV-OOS-{i:04d}",
-            "source": "adversarial",
-            "license": "MIT",
-            "nl_request": text,
-            "context_line": rng.choice(["debian bash non-root safe", "ubuntu bash non-root safe"]),
-            "expected_intent": "OUT_OF_SCOPE",
-            "expected_slots": {},
-            "tags": ["adversarial", "out_of_scope"],
-        })
+        examples.append(
+            {
+                "id": f"ADV-OOS-{i:04d}",
+                "source": "adversarial",
+                "license": "MIT",
+                "nl_request": text,
+                "context_line": rng.choice(
+                    ["debian bash non-root safe", "ubuntu bash non-root safe"]
+                ),
+                "expected_intent": "OUT_OF_SCOPE",
+                "expected_slots": {},
+                "tags": ["adversarial", "out_of_scope"],
+            }
+        )
     return examples
 
 
-def _generate_near_miss_examples(
-    rng: random.Random, count: int = 500
-) -> list[dict[str, Any]]:
+def _generate_near_miss_examples(rng: random.Random, count: int = 500) -> list[dict[str, Any]]:
     """Generate near-miss intent examples."""
     examples: list[dict[str, Any]] = []
     pairs = _NEAR_MISS_PAIRS.copy()
     for i in range(count):
         pair = rng.choice(pairs)
-        examples.append({
-            "id": f"ADV-NM-{i:04d}",
-            "source": "adversarial",
-            "license": "MIT",
-            "nl_request": pair["nl"],
-            "context_line": rng.choice(["debian bash non-root safe", "ubuntu bash non-root safe",
-                                        "rhel bash non-root safe"]),
-            "expected_intent": pair["correct"],
-            "expected_slots": {},
-            "tags": ["adversarial", "near_miss", f"distractor_{pair['distractor']}"],
-        })
+        examples.append(
+            {
+                "id": f"ADV-NM-{i:04d}",
+                "source": "adversarial",
+                "license": "MIT",
+                "nl_request": pair["nl"],
+                "context_line": rng.choice(
+                    [
+                        "debian bash non-root safe",
+                        "ubuntu bash non-root safe",
+                        "rhel bash non-root safe",
+                    ]
+                ),
+                "expected_intent": pair["correct"],
+                "expected_slots": {},
+                "tags": ["adversarial", "near_miss", f"distractor_{pair['distractor']}"],
+            }
+        )
     return examples
 
 

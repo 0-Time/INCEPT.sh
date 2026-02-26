@@ -1,0 +1,6 @@
+# slots_dns_resolve.gbnf — constrain slot-filling output for dns_resolve intent
+root ::= slot-domain
+
+slot-domain ::= "domain=" hostname
+
+hostname ::= [a-zA-Z0-9] [a-zA-Z0-9._-]*

@@ -1,6 +1,5 @@
 """Parameter schemas for User Management (3 intents)."""
 
-
 from pydantic import BaseModel
 
 

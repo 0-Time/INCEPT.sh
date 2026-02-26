@@ -1,0 +1,9 @@
+# slots_list_timers.gbnf — constrain slot-filling output for list_timers intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-all
+
+slot-all ::= "all=" bool-value
+
+bool-value ::= "true" | "false"

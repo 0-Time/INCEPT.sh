@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from pydantic import BaseModel
+
 
 def load_jsonl(path: str | Path) -> list[dict[str, Any]]:
     """Load records from a JSONL file. Pure Python, no ML deps."""
@@ -31,9 +33,7 @@ def format_for_sft(record: dict[str, Any]) -> dict[str, str]:
     return {"text": f"{prompt}{completion}"}
 
 
-def load_validation_dataset(
-    val_path: str | Path, task: str
-) -> list[dict[str, Any]]:
+def load_validation_dataset(val_path: str | Path, task: str) -> list[dict[str, Any]]:
     """Load raw assembled JSONL for evaluation.
 
     Preserves expected_intent / expected_slots fields for evaluation use.
@@ -59,6 +59,52 @@ def load_validation_dataset(
     return validated
 
 
+class DPORecord(BaseModel):
+    """A single DPO preference pair."""
+
+    id: str
+    prompt: str
+    chosen: str
+    rejected: str
+    source_id: str | None = None
+
+
+def load_dpo_pairs(path: str | Path) -> list[DPORecord]:
+    """Load DPO preference pairs from a JSONL file."""
+    records = load_jsonl(path)
+    return [DPORecord(**r) for r in records]
+
+
+def format_for_dpo(records: list[DPORecord]) -> list[dict[str, str]]:
+    """Format DPO records for the DPO trainer.
+
+    Strips </s> tokens from chosen/rejected fields.
+    """
+    formatted: list[dict[str, str]] = []
+    for rec in records:
+        chosen = rec.chosen.replace("</s>", "")
+        rejected = rec.rejected.replace("</s>", "")
+        formatted.append({"prompt": rec.prompt, "chosen": chosen, "rejected": rejected})
+    return formatted
+
+
+def load_dpo_as_hf_dataset(path: str | Path, seed: int = 42) -> Any:
+    """Load DPO JSONL and convert to HuggingFace Dataset.
+
+    Records are formatted via format_for_dpo before loading.
+    """
+    from incept.training import _require_ml_deps
+
+    _require_ml_deps()
+    from datasets import Dataset
+
+    pairs = load_dpo_pairs(path)
+    formatted = format_for_dpo(pairs)
+    dataset: Any = Dataset.from_list(formatted)
+    dataset = dataset.shuffle(seed=seed)
+    return dataset
+
+
 def load_as_hf_dataset(path: str | Path, seed: int = 42) -> Any:
     """Load JSONL and convert to HuggingFace Dataset.
 
@@ -69,6 +115,7 @@ def load_as_hf_dataset(path: str | Path, seed: int = 42) -> Any:
 
     _require_ml_deps()
     from datasets import Dataset
+
     records = load_jsonl(path)
     formatted = [format_for_sft(r) for r in records]
     dataset: Any = Dataset.from_list(formatted)

@@ -46,8 +46,7 @@ def _valid_example(
 def _make_examples(n: int, intent: str = "install_package") -> list[dict[str, Any]]:
     """Create n distinct valid examples with the given intent."""
     return [
-        _valid_example(text=f"do task variant {i} for {intent}", intent=intent)
-        for i in range(n)
+        _valid_example(text=f"do task variant {i} for {intent}", intent=intent) for i in range(n)
     ]
 
 

@@ -13,9 +13,7 @@ from incept.schemas.ir import AnyIR, ClarificationIR, PipelineIR, SingleIR
 class CompilerFunc(Protocol):
     """Protocol for compiler functions."""
 
-    def __call__(
-        self, params: dict[str, Any], ctx: EnvironmentContext
-    ) -> str: ...
+    def __call__(self, params: dict[str, Any], ctx: EnvironmentContext) -> str: ...
 
 
 class CompileResult:
@@ -60,9 +58,7 @@ class IntentRouter:
         """Check if a compiler is registered for an intent."""
         return intent in self._registry
 
-    def compile_single(
-        self, ir: SingleIR, ctx: EnvironmentContext
-    ) -> CompileResult:
+    def compile_single(self, ir: SingleIR, ctx: EnvironmentContext) -> CompileResult:
         """Compile a SingleIR to a shell command string."""
         if ir.intent in (
             IntentLabel.CLARIFY,
@@ -81,9 +77,7 @@ class IntentRouter:
             requires_sudo=ir.requires_sudo and ctx.allow_sudo,
         )
 
-    def compile_pipeline(
-        self, ir: PipelineIR, ctx: EnvironmentContext
-    ) -> CompileResult:
+    def compile_pipeline(self, ir: PipelineIR, ctx: EnvironmentContext) -> CompileResult:
         """Compile a PipelineIR to a composed shell command."""
         commands: list[str] = []
         for step in ir.steps:

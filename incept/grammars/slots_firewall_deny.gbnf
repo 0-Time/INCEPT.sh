@@ -1,0 +1,12 @@
+# slots_firewall_deny.gbnf — constrain slot-filling output for firewall_deny intent
+root ::= slot-port optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-port ::= "port=" number
+
+optional-slot ::= slot-protocol
+
+slot-protocol ::= "protocol=" protocol-value
+
+protocol-value ::= "tcp" | "udp"
+number         ::= [0-9]+

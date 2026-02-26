@@ -332,21 +332,45 @@ class TestAdversarialDeterminism:
     """Same seed should produce identical output."""
 
     def test_deterministic_with_same_seed(self) -> None:
-        a = generate_adversarial(seed=99, injection_count=10, dangerous_count=10,
-                                 wrong_distro_count=10, ambiguous_count=10,
-                                 oos_count=10, near_miss_count=10)
-        b = generate_adversarial(seed=99, injection_count=10, dangerous_count=10,
-                                 wrong_distro_count=10, ambiguous_count=10,
-                                 oos_count=10, near_miss_count=10)
+        a = generate_adversarial(
+            seed=99,
+            injection_count=10,
+            dangerous_count=10,
+            wrong_distro_count=10,
+            ambiguous_count=10,
+            oos_count=10,
+            near_miss_count=10,
+        )
+        b = generate_adversarial(
+            seed=99,
+            injection_count=10,
+            dangerous_count=10,
+            wrong_distro_count=10,
+            ambiguous_count=10,
+            oos_count=10,
+            near_miss_count=10,
+        )
         assert a == b
 
     def test_different_seeds_differ(self) -> None:
-        a = generate_adversarial(seed=1, injection_count=10, dangerous_count=10,
-                                 wrong_distro_count=10, ambiguous_count=10,
-                                 oos_count=10, near_miss_count=10)
-        b = generate_adversarial(seed=2, injection_count=10, dangerous_count=10,
-                                 wrong_distro_count=10, ambiguous_count=10,
-                                 oos_count=10, near_miss_count=10)
+        a = generate_adversarial(
+            seed=1,
+            injection_count=10,
+            dangerous_count=10,
+            wrong_distro_count=10,
+            ambiguous_count=10,
+            oos_count=10,
+            near_miss_count=10,
+        )
+        b = generate_adversarial(
+            seed=2,
+            injection_count=10,
+            dangerous_count=10,
+            wrong_distro_count=10,
+            ambiguous_count=10,
+            oos_count=10,
+            near_miss_count=10,
+        )
         texts_a = [ex["nl_request"] for ex in a]
         texts_b = [ex["nl_request"] for ex in b]
         assert texts_a != texts_b
@@ -395,7 +419,11 @@ class TestAdversarialTagCategories:
             all_tags.update(ex["tags"])
         # All category tags should be present in the full default set
         expected_tags = {
-            "prompt_injection", "dangerous", "wrong_distro",
-            "ambiguous", "out_of_scope", "near_miss",
+            "prompt_injection",
+            "dangerous",
+            "wrong_distro",
+            "ambiguous",
+            "out_of_scope",
+            "near_miss",
         }
         assert expected_tags.issubset(all_tags)

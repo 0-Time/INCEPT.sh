@@ -1,0 +1,14 @@
+# slots_docker_logs.gbnf — constrain slot-filling output for docker_logs intent
+root ::= slot-container optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-container ::= "container=" identifier
+
+optional-slot ::= slot-follow | slot-tail
+
+slot-follow ::= "follow=" bool-value
+slot-tail   ::= "tail=" number
+
+identifier ::= [a-zA-Z0-9] [a-zA-Z0-9_.-]*
+bool-value ::= "true" | "false"
+number     ::= [0-9]+

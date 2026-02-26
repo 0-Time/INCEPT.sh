@@ -320,7 +320,7 @@
 **Priority:** P0 — Critical
 
 **As a** Linux user,
-**I want** to launch `incept` and get an interactive terminal session — like Claude Code —
+**I want** to launch `incept` and get an interactive terminal session —
 **So that** I can have a persistent conversation with the system, not just fire one-off commands.
 
 > **This is the product.** The API server is the backend. The interactive terminal is what users see and use.
@@ -335,7 +335,7 @@
 - [ ] Environment auto-detected on launch (runs context snapshot internally)
 - [ ] Session context maintained — "install nginx" then "start it" works
 
-**Core Interaction Loop (like Claude Code):**
+**Core Interaction Loop:**
 - [ ] User types natural language → system shows:
   ```
   incept> find all log files bigger than 50MB

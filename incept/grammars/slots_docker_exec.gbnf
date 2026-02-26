@@ -1,0 +1,15 @@
+# slots_docker_exec.gbnf — constrain slot-filling output for docker_exec intent
+root ::= required-slots optional-slots
+required-slots ::= slot-container "\n" slot-command
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-container ::= "container=" identifier
+slot-command   ::= "command=" quoted-string
+
+optional-slot ::= slot-interactive
+
+slot-interactive ::= "interactive=" bool-value
+
+identifier    ::= [a-zA-Z0-9] [a-zA-Z0-9_.-]*
+bool-value    ::= "true" | "false"
+quoted-string ::= "\"" [^\"]* "\""

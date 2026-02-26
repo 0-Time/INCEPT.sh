@@ -62,6 +62,7 @@ _SAFE_MODE_PATTERNS: list[tuple[re.Pattern[str], str]] = [
 _SYSTEM_PATHS = frozenset({
     "/etc", "/boot", "/usr", "/bin", "/sbin", "/dev",
     "/lib", "/lib64", "/proc", "/sys",
+    "/System", "/Library", "/Applications",
 })
 
 _WRITE_INDICATORS = re.compile(
@@ -109,9 +110,7 @@ def check_syntax(command: str) -> tuple[bool, str | None]:
         return False, str(e)
 
 
-def check_banned_patterns(
-    command: str, safe_mode: bool = True
-) -> tuple[bool, str | None]:
+def check_banned_patterns(command: str, safe_mode: bool = True) -> tuple[bool, str | None]:
     """Check if command matches any banned pattern.
 
     Returns (is_banned, reason).
@@ -181,9 +180,7 @@ def check_path_safety(command: str) -> list[str]:
     return warnings
 
 
-def validate_command(
-    command: str, ctx: EnvironmentContext
-) -> ValidationResult:
+def validate_command(command: str, ctx: EnvironmentContext) -> ValidationResult:
     """Full validation pipeline for a generated command.
 
     Steps:

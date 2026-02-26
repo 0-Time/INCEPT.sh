@@ -33,9 +33,7 @@ def merge_lora_adapter(
     output_path.mkdir(parents=True, exist_ok=True)
 
     tokenizer = AutoTokenizer.from_pretrained(str(base_path), trust_remote_code=True)
-    base_model = AutoModelForCausalLM.from_pretrained(
-        str(base_path), trust_remote_code=True
-    )
+    base_model = AutoModelForCausalLM.from_pretrained(str(base_path), trust_remote_code=True)
     model = PeftModel.from_pretrained(base_model, str(adapter_path))
     merged = model.merge_and_unload()
 
@@ -71,10 +69,15 @@ def convert_to_gguf(
     f16_path = output_path.with_suffix(".f16.gguf")
     subprocess.run(
         [
-            "python", "-m", "llama_cpp.convert",
-            "--model", str(model_path),
-            "--outfile", str(f16_path),
-            "--outtype", "f16",
+            "python",
+            "-m",
+            "llama_cpp.convert",
+            "--model",
+            str(model_path),
+            "--outfile",
+            str(f16_path),
+            "--outtype",
+            "f16",
         ],
         check=True,
         capture_output=True,
@@ -165,7 +168,7 @@ def run_constrained_inference(
     if grammar is not None:
         kwargs["grammar"] = grammar
 
-    output = model(** kwargs)
+    output = model(**kwargs)
 
     choice = output["choices"][0]
     text = choice["text"]
@@ -173,9 +176,7 @@ def run_constrained_inference(
 
     token_logprobs: list[float] = []
     if logprobs_data and "token_logprobs" in logprobs_data:
-        token_logprobs = [
-            lp for lp in logprobs_data["token_logprobs"] if lp is not None
-        ]
+        token_logprobs = [lp for lp in logprobs_data["token_logprobs"] if lp is not None]
 
     return {
         "text": text,

@@ -17,6 +17,13 @@ class TaskType(StrEnum):
     SLOT = "slot"
 
 
+class TrainingMode(StrEnum):
+    """Training mode: SFT or DPO."""
+
+    SFT = "sft"
+    DPO = "dpo"
+
+
 class LoraConfig(BaseModel):
     """LoRA adapter configuration."""
 
@@ -26,6 +33,17 @@ class LoraConfig(BaseModel):
     target_modules: list[str] = Field(
         default_factory=lambda: ["q_proj", "k_proj", "v_proj", "o_proj"]
     )
+
+
+class DPOConfig(BaseModel):
+    """DPO preference tuning configuration."""
+
+    beta: float = Field(default=0.1, ge=0.0)
+    learning_rate: float = Field(default=5e-5, gt=0.0)
+    num_epochs: int = Field(default=2, ge=1)
+    max_length: int = Field(default=512, ge=32)
+    max_prompt_length: int = Field(default=256, ge=16)
+    reference_model: str | None = None
 
 
 class QuantizationConfig(BaseModel):
@@ -40,12 +58,16 @@ class TrainingConfig(BaseModel):
     """Full SFT training configuration."""
 
     task: TaskType
+    mode: TrainingMode = TrainingMode.SFT
     base_model: str = "Qwen/Qwen2.5-0.5B-Instruct"
     model_local_path: str | None = None
     max_seq_length: int = Field(default=512, ge=32, le=4096)
 
     # LoRA
     lora: LoraConfig = Field(default_factory=LoraConfig)
+
+    # DPO
+    dpo: DPOConfig = Field(default_factory=DPOConfig)
 
     # Quantization
     quantization: QuantizationConfig = Field(default_factory=QuantizationConfig)

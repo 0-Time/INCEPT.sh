@@ -136,14 +136,16 @@ class TestPipelineContext:
     """Verify that context_json is parsed and affects pipeline behavior."""
 
     def test_valid_context_json_accepted(self) -> None:
-        ctx = json.dumps({
-            "distro_id": "ubuntu",
-            "distro_family": "debian",
-            "shell": "bash",
-            "user": "deploy",
-            "safe_mode": True,
-            "allow_sudo": True,
-        })
+        ctx = json.dumps(
+            {
+                "distro_id": "ubuntu",
+                "distro_family": "debian",
+                "shell": "bash",
+                "user": "deploy",
+                "safe_mode": True,
+                "allow_sudo": True,
+            }
+        )
         # Should not raise — context is parsed successfully
         result = run_pipeline("find log files in /var/log", context_json=ctx)
         assert isinstance(result, PipelineResponse)

@@ -1,0 +1,12 @@
+# slots_git_branch.gbnf — constrain slot-filling output for git_branch intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-name | slot-delete | slot-all
+
+slot-name   ::= "name=" identifier
+slot-delete ::= "delete=" bool-value
+slot-all    ::= "all=" bool-value
+
+identifier ::= [a-zA-Z0-9] [a-zA-Z0-9_./~-]*
+bool-value ::= "true" | "false"

@@ -37,7 +37,9 @@ class TestGenerateReport:
     def test_intent_section(self) -> None:
         r = BaselineReport(
             intent_val=IntentMetrics(
-                accuracy=0.95, total=100, correct=95,
+                accuracy=0.95,
+                total=100,
+                correct=95,
                 confusion_pairs=[("find_files", "copy_files", 3)],
             ),
         )
@@ -50,7 +52,9 @@ class TestGenerateReport:
     def test_slot_section(self) -> None:
         r = BaselineReport(
             slot_val=SlotMetrics(
-                exact_match=0.80, slot_f1=0.85, total=100,
+                exact_match=0.80,
+                slot_f1=0.85,
+                total=100,
                 worst_intents=[("schedule_cron", 0.5)],
             ),
         )

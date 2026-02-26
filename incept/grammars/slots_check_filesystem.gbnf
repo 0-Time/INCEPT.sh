@@ -1,0 +1,6 @@
+# slots_check_filesystem.gbnf — constrain slot-filling output for check_filesystem intent
+root ::= slot-device
+
+slot-device ::= "device=" path-value
+
+path-value ::= "/" [a-zA-Z0-9_./-]* | "."

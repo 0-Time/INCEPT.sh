@@ -21,6 +21,7 @@ from incept.schemas.intents import IntentLabel
 # Internal helpers
 # ---------------------------------------------------------------------------
 
+
 def _q(value: str, ctx: EnvironmentContext) -> str:
     return quote_value(value, ctx.shell)
 
@@ -38,16 +39,33 @@ _PS_SORT_MAP = {
 # ---------------------------------------------------------------------------
 
 
-def compile_install_package(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile a package install command (apt-get or dnf)."""
+def compile_install_package(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a package install command (apt-get, dnf, pacman, zypper, or brew)."""
     pkg = params["package"]
     assume_yes: bool = params.get("assume_yes", False)
     version: str | None = params.get("version")
 
-    if ctx.distro_family == "debian":
-        parts: list[str] = ["apt-get", "install"]
+    if ctx.distro_family == "macos":
+        parts: list[str] = ["brew", "install"]
+        if version is not None:
+            parts.append(_q(f"{pkg}@{version}", ctx))
+        else:
+            parts.append(_q(pkg, ctx))
+    elif ctx.distro_family == "debian":
+        parts = ["apt-get", "install"]
+        if assume_yes:
+            parts.append("-y")
+        if version is not None:
+            parts.append(_q(f"{pkg}={version}", ctx))
+        else:
+            parts.append(_q(pkg, ctx))
+    elif ctx.distro_family == "arch":
+        parts = ["pacman", "-S"]
+        if assume_yes:
+            parts.append("--noconfirm")
+        parts.append(_q(pkg, ctx))
+    elif ctx.distro_family == "suse":
+        parts = ["zypper", "install"]
         if assume_yes:
             parts.append("-y")
         if version is not None:
@@ -66,18 +84,26 @@ def compile_install_package(
     return " ".join(parts)
 
 
-def compile_remove_package(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile a package removal command (apt-get or dnf)."""
+def compile_remove_package(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a package removal command (apt-get, dnf, pacman, zypper, or brew)."""
     pkg = params["package"]
     purge_config: bool = params.get("purge_config", False)
 
-    if ctx.distro_family == "debian":
+    if ctx.distro_family == "macos":
+        parts: list[str] = ["brew", "uninstall"]
         if purge_config:
-            parts: list[str] = ["apt-get", "purge"]
-        else:
-            parts = ["apt-get", "remove"]
+            parts.append("--zap")
+        parts.append(_q(pkg, ctx))
+    elif ctx.distro_family == "debian":
+        parts = ["apt-get", "purge"] if purge_config else ["apt-get", "remove"]
+        parts.append(_q(pkg, ctx))
+    elif ctx.distro_family == "arch":
+        parts = ["pacman", "-Rns"] if purge_config else ["pacman", "-R"]
+        parts.append(_q(pkg, ctx))
+    elif ctx.distro_family == "suse":
+        parts = ["zypper", "remove"]
+        if purge_config:
+            parts.append("--clean-deps")
         parts.append(_q(pkg, ctx))
     else:
         parts = ["dnf", "remove", _q(pkg, ctx)]
@@ -85,30 +111,44 @@ def compile_remove_package(
     return " ".join(parts)
 
 
-def compile_update_packages(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile a package update/upgrade command (apt-get or dnf)."""
+def compile_update_packages(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a package update/upgrade command (apt-get, dnf, pacman, zypper, or brew)."""
     upgrade_all: bool = params.get("upgrade_all", False)
 
-    if ctx.distro_family == "debian":
+    if ctx.distro_family == "macos":
+        if upgrade_all:
+            return "brew update && brew upgrade"
+        return "brew update"
+    elif ctx.distro_family == "debian":
         if upgrade_all:
             return "apt-get update && apt-get upgrade"
         return "apt-get update"
+    elif ctx.distro_family == "arch":
+        if upgrade_all:
+            return "pacman -Syu"
+        return "pacman -Sy"
+    elif ctx.distro_family == "suse":
+        if upgrade_all:
+            return "zypper refresh && zypper update"
+        return "zypper refresh"
     else:
         if upgrade_all:
             return "dnf upgrade"
         return "dnf check-update"
 
 
-def compile_search_package(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile a package search command (apt-cache or dnf)."""
+def compile_search_package(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a package search command (apt-cache, dnf, pacman, zypper, or brew)."""
     query = params["query"]
 
-    if ctx.distro_family == "debian":
+    if ctx.distro_family == "macos":
+        return f"brew search {_q(query, ctx)}"
+    elif ctx.distro_family == "debian":
         return f"apt-cache search {_q(query, ctx)}"
+    elif ctx.distro_family == "arch":
+        return f"pacman -Ss {_q(query, ctx)}"
+    elif ctx.distro_family == "suse":
+        return f"zypper search {_q(query, ctx)}"
     return f"dnf search {_q(query, ctx)}"
 
 
@@ -117,39 +157,44 @@ def compile_search_package(
 # ---------------------------------------------------------------------------
 
 
-def compile_start_service(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile a ``systemctl start`` command."""
-    return f"systemctl start {_q(params['service_name'], ctx)}"
+def compile_start_service(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a service start command (systemctl or brew services)."""
+    svc = _q(params["service_name"], ctx)
+    if ctx.distro_family == "macos":
+        return f"brew services start {svc}"
+    return f"systemctl start {svc}"
 
 
-def compile_stop_service(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile a ``systemctl stop`` command."""
-    return f"systemctl stop {_q(params['service_name'], ctx)}"
+def compile_stop_service(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a service stop command (systemctl or brew services)."""
+    svc = _q(params["service_name"], ctx)
+    if ctx.distro_family == "macos":
+        return f"brew services stop {svc}"
+    return f"systemctl stop {svc}"
 
 
-def compile_restart_service(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile a ``systemctl restart`` command."""
-    return f"systemctl restart {_q(params['service_name'], ctx)}"
+def compile_restart_service(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a service restart command (systemctl or brew services)."""
+    svc = _q(params["service_name"], ctx)
+    if ctx.distro_family == "macos":
+        return f"brew services restart {svc}"
+    return f"systemctl restart {svc}"
 
 
-def compile_enable_service(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile a ``systemctl enable`` command."""
-    return f"systemctl enable {_q(params['service_name'], ctx)}"
+def compile_enable_service(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a service enable command (systemctl or brew services)."""
+    svc = _q(params["service_name"], ctx)
+    if ctx.distro_family == "macos":
+        return f"brew services start {svc}"
+    return f"systemctl enable {svc}"
 
 
-def compile_service_status(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile a ``systemctl status`` command."""
-    return f"systemctl status {_q(params['service_name'], ctx)}"
+def compile_service_status(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a service status command (systemctl or brew services)."""
+    svc = _q(params["service_name"], ctx)
+    if ctx.distro_family == "macos":
+        return f"brew services info {svc}"
+    return f"systemctl status {svc}"
 
 
 # ---------------------------------------------------------------------------
@@ -157,9 +202,7 @@ def compile_service_status(
 # ---------------------------------------------------------------------------
 
 
-def compile_create_user(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_create_user(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a ``useradd`` command from *create_user* params."""
     parts: list[str] = ["useradd"]
 
@@ -181,9 +224,7 @@ def compile_create_user(
     return " ".join(parts)
 
 
-def compile_delete_user(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_delete_user(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a ``userdel`` command from *delete_user* params."""
     parts: list[str] = ["userdel"]
 
@@ -194,9 +235,7 @@ def compile_delete_user(
     return " ".join(parts)
 
 
-def compile_modify_user(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_modify_user(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a ``usermod`` command from *modify_user* params."""
     parts: list[str] = ["usermod"]
 
@@ -221,9 +260,7 @@ def compile_modify_user(
 # ---------------------------------------------------------------------------
 
 
-def _journalctl_parts(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> list[str]:
+def _journalctl_parts(params: dict[str, Any], ctx: EnvironmentContext) -> list[str]:
     """Build common journalctl flag parts from params."""
     parts: list[str] = ["journalctl"]
 
@@ -242,13 +279,27 @@ def _journalctl_parts(
     return parts
 
 
-def compile_view_logs(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile a ``journalctl`` command from *view_logs* params."""
+def compile_view_logs(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a log viewing command (journalctl or macOS log show)."""
+    if ctx.distro_family == "macos":
+        parts: list[str] = ["log", "show"]
+        unit: str | None = params.get("unit")
+        if unit is not None:
+            parts.extend(["--predicate", f"'subsystem == \"{unit}\"'"])
+        since: str | None = params.get("since")
+        if since is not None:
+            parts.extend(["--start", _q(since, ctx)])
+        until: str | None = params.get("until")
+        if until is not None:
+            parts.extend(["--end", _q(until, ctx)])
+        lines: int | None = params.get("lines")
+        if lines is not None:
+            parts.extend(["--last", f"{lines}m"])
+        return " ".join(parts)
+
     parts = _journalctl_parts(params, ctx)
 
-    lines: int | None = params.get("lines")
+    lines = params.get("lines")
     if lines is not None:
         parts.extend(["-n", str(lines)])
 
@@ -259,25 +310,38 @@ def compile_view_logs(
     return " ".join(parts)
 
 
-def compile_follow_logs(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile a ``journalctl -f`` command from *follow_logs* params."""
-    parts: list[str] = ["journalctl", "-f"]
+def compile_follow_logs(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a log follow command (journalctl -f or macOS log stream)."""
+    if ctx.distro_family == "macos":
+        parts: list[str] = ["log", "stream"]
+        unit: str | None = params.get("unit")
+        if unit is not None:
+            parts.extend(["--predicate", f"'subsystem == \"{unit}\"'"])
+        return " ".join(parts)
 
-    unit: str | None = params.get("unit")
+    parts = ["journalctl", "-f"]
+
+    unit = params.get("unit")
     if unit is not None:
         parts.extend(["-u", _q(unit, ctx)])
 
     return " ".join(parts)
 
 
-def compile_filter_logs(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile a ``journalctl | grep`` command from *filter_logs* params."""
-    parts = _journalctl_parts(params, ctx)
+def compile_filter_logs(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a log filter command (journalctl | grep or log show | grep)."""
     pattern = params["pattern"]
+    if ctx.distro_family == "macos":
+        parts: list[str] = ["log", "show"]
+        unit: str | None = params.get("unit")
+        if unit is not None:
+            parts.extend(["--predicate", f"'subsystem == \"{unit}\"'"])
+        since: str | None = params.get("since")
+        if since is not None:
+            parts.extend(["--start", _q(since, ctx)])
+        return " ".join(parts) + f" | grep {_q(pattern, ctx)}"
+
+    parts = _journalctl_parts(params, ctx)
     return " ".join(parts) + f" | grep {_q(pattern, ctx)}"
 
 
@@ -286,9 +350,7 @@ def compile_filter_logs(
 # ---------------------------------------------------------------------------
 
 
-def compile_schedule_cron(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_schedule_cron(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a crontab append command from *schedule_cron* params."""
     schedule = params["schedule"]
     command = params["command"]
@@ -297,15 +359,10 @@ def compile_schedule_cron(
     user_flag = f" -u {_q(user, ctx)}" if user else ""
     entry = f"{schedule} {command}"
 
-    return (
-        f"(crontab{user_flag} -l 2>/dev/null; echo {_q(entry, ctx)})"
-        f" | crontab{user_flag} -"
-    )
+    return f"(crontab{user_flag} -l 2>/dev/null; echo {_q(entry, ctx)}) | crontab{user_flag} -"
 
 
-def compile_list_cron(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_list_cron(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a crontab list command from *list_cron* params."""
     user: str | None = params.get("user")
 
@@ -314,20 +371,14 @@ def compile_list_cron(
     return "crontab -l"
 
 
-def compile_remove_cron(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_remove_cron(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a crontab removal command from *remove_cron* params."""
     pattern = params["job_id_or_pattern"]
     user: str | None = params.get("user")
 
     user_flag = f" -u {_q(user, ctx)}" if user else ""
 
-    return (
-        f"crontab{user_flag} -l"
-        f" | grep -v {_q(pattern, ctx)}"
-        f" | crontab{user_flag} -"
-    )
+    return f"crontab{user_flag} -l | grep -v {_q(pattern, ctx)} | crontab{user_flag} -"
 
 
 # ---------------------------------------------------------------------------
@@ -335,20 +386,21 @@ def compile_remove_cron(
 # ---------------------------------------------------------------------------
 
 
-def compile_network_info(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile an ``ip addr show`` command from *network_info* params."""
+def compile_network_info(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a network info command (ip addr show or ifconfig on macOS)."""
     interface: str | None = params.get("interface")
+
+    if ctx.distro_family == "macos":
+        if interface is not None:
+            return f"ifconfig {_q(interface, ctx)}"
+        return "ifconfig"
 
     if interface is not None:
         return f"ip addr show {_q(interface, ctx)}"
     return "ip addr show"
 
 
-def compile_test_connectivity(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_test_connectivity(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a ``ping`` command from *test_connectivity* params."""
     host = params["host"]
     count: int | None = params.get("count")
@@ -360,15 +412,17 @@ def compile_test_connectivity(
         parts.extend(["-c", str(count)])
 
     if timeout is not None:
-        parts.extend(["-W", str(timeout)])
+        # macOS uses -t for timeout, Linux uses -W
+        if ctx.distro_family == "macos":
+            parts.extend(["-t", str(timeout)])
+        else:
+            parts.extend(["-W", str(timeout)])
 
     parts.append(_q(host, ctx))
     return " ".join(parts)
 
 
-def compile_download_file(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_download_file(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a ``curl`` download command from *download_file* params."""
     url = params["url"]
     output_path: str | None = params.get("output_path")
@@ -388,9 +442,7 @@ def compile_download_file(
     return " ".join(parts)
 
 
-def compile_transfer_file(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_transfer_file(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile an ``scp`` command from *transfer_file* params."""
     parts: list[str] = ["scp"]
 
@@ -406,9 +458,7 @@ def compile_transfer_file(
     return " ".join(parts)
 
 
-def compile_ssh_connect(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_ssh_connect(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile an ``ssh`` command from *ssh_connect* params."""
     host = params["host"]
     user: str | None = params.get("user")
@@ -431,11 +481,14 @@ def compile_ssh_connect(
     return " ".join(parts)
 
 
-def compile_port_check(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
-    """Compile an ``ss`` command from *port_check* params."""
+def compile_port_check(params: dict[str, Any], ctx: EnvironmentContext) -> str:
+    """Compile a port check command (ss or lsof on macOS)."""
     port: int | None = params.get("port")
+
+    if ctx.distro_family == "macos":
+        if port is not None:
+            return f"lsof -iTCP:{port} -sTCP:LISTEN"
+        return "lsof -iTCP -sTCP:LISTEN"
 
     base = "ss -tlnp"
 
@@ -449,9 +502,7 @@ def compile_port_check(
 # ---------------------------------------------------------------------------
 
 
-def compile_process_list(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_process_list(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a ``ps`` command from *process_list* params."""
     user: str | None = params.get("user")
     sort_by: str | None = params.get("sort_by")
@@ -462,11 +513,17 @@ def compile_process_list(
     else:
         parts = ["ps", "aux"]
 
-    if sort_by is not None:
+    if sort_by is not None and ctx.distro_family != "macos":
         field = _PS_SORT_MAP.get(sort_by, sort_by)
         parts.append(f"--sort=-{field}")
 
     cmd = " ".join(parts)
+
+    # macOS ps doesn't support --sort; pipe through sort instead
+    if sort_by is not None and ctx.distro_family == "macos":
+        sort_col = {"cpu": "3", "memory": "4", "pid": "2", "name": "11"}
+        col = sort_col.get(sort_by, "3")
+        cmd += f" | sort -rnk {col}"
 
     if filter_str is not None:
         cmd += f" | grep {_q(filter_str, ctx)}"
@@ -474,9 +531,7 @@ def compile_process_list(
     return cmd
 
 
-def compile_kill_process(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_kill_process(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a ``kill`` command from *kill_process* params."""
     target = params["target"]
     signal: str | None = params.get("signal")
@@ -493,11 +548,18 @@ def compile_kill_process(
     return " ".join(parts)
 
 
-def compile_system_info(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_system_info(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a system info command from *system_info* params."""
     info_type: str = params.get("info_type", "all")
+
+    if ctx.distro_family == "macos":
+        if info_type == "memory":
+            return "vm_stat"
+        if info_type == "cpu":
+            return "sysctl -n machdep.cpu.brand_string"
+        if info_type == "uptime":
+            return "uptime"
+        return "vm_stat && sysctl -n machdep.cpu.brand_string && uptime"
 
     if info_type == "memory":
         return "free -h"
@@ -514,9 +576,7 @@ def compile_system_info(
 # ---------------------------------------------------------------------------
 
 
-def compile_mount_device(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_mount_device(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile a ``mount`` command from *mount_device* params."""
     parts: list[str] = ["mount"]
 
@@ -533,9 +593,7 @@ def compile_mount_device(
     return " ".join(parts)
 
 
-def compile_unmount_device(
-    params: dict[str, Any], ctx: EnvironmentContext
-) -> str:
+def compile_unmount_device(params: dict[str, Any], ctx: EnvironmentContext) -> str:
     """Compile an ``umount`` command from *unmount_device* params."""
     parts: list[str] = ["umount"]
 

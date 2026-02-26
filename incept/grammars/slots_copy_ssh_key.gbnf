@@ -1,0 +1,14 @@
+# slots_copy_ssh_key.gbnf — constrain slot-filling output for copy_ssh_key intent
+root ::= slot-host optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-host ::= "host=" hostname
+
+optional-slot ::= slot-user | slot-identity-file
+
+slot-user          ::= "user=" identifier
+slot-identity-file ::= "identity_file=" path-value
+
+hostname   ::= [a-zA-Z0-9] [a-zA-Z0-9._:-]*
+identifier ::= [a-zA-Z_] [a-zA-Z0-9_.-]*
+path-value ::= "/" [a-zA-Z0-9_./-]* | "."

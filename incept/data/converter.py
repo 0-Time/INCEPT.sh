@@ -92,7 +92,8 @@ def generate_dpo_pairs(
 
     # Find examples with near_miss or distractor tags
     near_miss_examples = [
-        ex for ex in examples
+        ex
+        for ex in examples
         if any("distractor" in t or "near_miss" in t for t in ex.get("tags", []))
     ]
 

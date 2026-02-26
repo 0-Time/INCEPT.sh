@@ -1,0 +1,9 @@
+# slots_set_env_var.gbnf — constrain slot-filling output for set_env_var intent
+root ::= required-slots
+required-slots ::= slot-name "\n" slot-value
+
+slot-name  ::= "name=" env-name
+slot-value ::= "value=" quoted-string
+
+env-name      ::= [a-zA-Z_] [a-zA-Z0-9_]*
+quoted-string ::= "\"" [^\"]* "\""

@@ -2,7 +2,7 @@
 
 Verifies that each compiler translates a params dict + EnvironmentContext
 into the expected shell command string.  Distro-aware functions are tested
-against both Debian and RHEL contexts.
+against Debian, RHEL, Arch, and SUSE contexts.
 """
 
 from __future__ import annotations
@@ -46,6 +46,7 @@ from incept.core.context import EnvironmentContext
 # Fixtures
 # ---------------------------------------------------------------------------
 
+
 @pytest.fixture()
 def ctx() -> EnvironmentContext:
     """Default Debian/bash context."""
@@ -56,6 +57,18 @@ def ctx() -> EnvironmentContext:
 def rhel_ctx() -> EnvironmentContext:
     """RHEL context for distro-aware tests."""
     return EnvironmentContext(distro_family="rhel")
+
+
+@pytest.fixture()
+def arch_ctx() -> EnvironmentContext:
+    """Arch Linux context for distro-aware tests."""
+    return EnvironmentContext(distro_family="arch", distro_id="arch")
+
+
+@pytest.fixture()
+def suse_ctx() -> EnvironmentContext:
+    """SUSE context for distro-aware tests."""
+    return EnvironmentContext(distro_family="suse", distro_id="opensuse-leap")
 
 
 # ===================================================================
@@ -75,29 +88,21 @@ class TestCompileInstallPackage:
         assert "nginx" in result
 
     def test_assume_yes_debian(self, ctx: EnvironmentContext) -> None:
-        result = compile_install_package(
-            {"package": "curl", "assume_yes": True}, ctx
-        )
+        result = compile_install_package({"package": "curl", "assume_yes": True}, ctx)
         assert "-y" in result
         assert result.startswith("apt-get")
 
     def test_assume_yes_rhel(self, rhel_ctx: EnvironmentContext) -> None:
-        result = compile_install_package(
-            {"package": "curl", "assume_yes": True}, rhel_ctx
-        )
+        result = compile_install_package({"package": "curl", "assume_yes": True}, rhel_ctx)
         assert "-y" in result
         assert result.startswith("dnf")
 
     def test_version_debian(self, ctx: EnvironmentContext) -> None:
-        result = compile_install_package(
-            {"package": "python3", "version": "3.11.2-1"}, ctx
-        )
+        result = compile_install_package({"package": "python3", "version": "3.11.2-1"}, ctx)
         assert "python3=3.11.2-1" in result
 
     def test_version_rhel(self, rhel_ctx: EnvironmentContext) -> None:
-        result = compile_install_package(
-            {"package": "python3", "version": "3.11.2"}, rhel_ctx
-        )
+        result = compile_install_package({"package": "python3", "version": "3.11.2"}, rhel_ctx)
         assert "python3-3.11.2" in result
 
     def test_no_assume_yes(self, ctx: EnvironmentContext) -> None:
@@ -117,17 +122,13 @@ class TestCompileRemovePackage:
         assert "httpd" in result
 
     def test_purge_debian(self, ctx: EnvironmentContext) -> None:
-        result = compile_remove_package(
-            {"package": "nginx", "purge_config": True}, ctx
-        )
+        result = compile_remove_package({"package": "nginx", "purge_config": True}, ctx)
         assert "purge" in result
         assert "remove" not in result
 
     def test_purge_ignored_rhel(self, rhel_ctx: EnvironmentContext) -> None:
         # RHEL uses dnf remove regardless of purge_config
-        result = compile_remove_package(
-            {"package": "nginx", "purge_config": True}, rhel_ctx
-        )
+        result = compile_remove_package({"package": "nginx", "purge_config": True}, rhel_ctx)
         assert result.startswith("dnf remove")
 
 
@@ -194,9 +195,7 @@ class TestServiceManagement:
             (compile_service_status, "status"),
         ],
     )
-    def test_service_with_dashes(
-        self, compile_fn, action, ctx: EnvironmentContext
-    ) -> None:
+    def test_service_with_dashes(self, compile_fn, action, ctx: EnvironmentContext) -> None:
         result = compile_fn({"service_name": "my-custom-app"}, ctx)
         assert "my-custom-app" in result
         assert f"systemctl {action}" in result
@@ -224,9 +223,7 @@ class TestCompileCreateUser:
         assert "/opt/app" in result
 
     def test_with_groups(self, ctx: EnvironmentContext) -> None:
-        result = compile_create_user(
-            {"username": "webadmin", "groups": ["sudo", "www-data"]}, ctx
-        )
+        result = compile_create_user({"username": "webadmin", "groups": ["sudo", "www-data"]}, ctx)
         assert "-G" in result
         assert "sudo,www-data" in result
 
@@ -272,23 +269,17 @@ class TestCompileModifyUser:
         assert "alice" in result
 
     def test_add_groups(self, ctx: EnvironmentContext) -> None:
-        result = compile_modify_user(
-            {"username": "bob", "add_groups": ["docker", "sudo"]}, ctx
-        )
+        result = compile_modify_user({"username": "bob", "add_groups": ["docker", "sudo"]}, ctx)
         assert "-aG" in result
         assert "docker,sudo" in result
 
     def test_change_shell(self, ctx: EnvironmentContext) -> None:
-        result = compile_modify_user(
-            {"username": "carol", "shell": "/bin/fish"}, ctx
-        )
+        result = compile_modify_user({"username": "carol", "shell": "/bin/fish"}, ctx)
         assert "-s" in result
         assert "/bin/fish" in result
 
     def test_change_home(self, ctx: EnvironmentContext) -> None:
-        result = compile_modify_user(
-            {"username": "dave", "home_dir": "/home/newdave"}, ctx
-        )
+        result = compile_modify_user({"username": "dave", "home_dir": "/home/newdave"}, ctx)
         assert "-d" in result
         assert "/home/newdave" in result
 
@@ -323,9 +314,7 @@ class TestCompileViewLogs:
         assert "nginx" in result
 
     def test_with_since_and_until(self, ctx: EnvironmentContext) -> None:
-        result = compile_view_logs(
-            {"since": "2024-01-01", "until": "2024-01-31"}, ctx
-        )
+        result = compile_view_logs({"since": "2024-01-01", "until": "2024-01-31"}, ctx)
         assert "--since" in result
         assert "2024-01-01" in result
         assert "--until" in result
@@ -388,9 +377,7 @@ class TestCompileFilterLogs:
         assert "timeout" in result
 
     def test_with_since(self, ctx: EnvironmentContext) -> None:
-        result = compile_filter_logs(
-            {"pattern": "fatal", "since": "1 hour ago"}, ctx
-        )
+        result = compile_filter_logs({"pattern": "fatal", "since": "1 hour ago"}, ctx)
         assert "--since" in result
         assert "| grep" in result
         assert "fatal" in result
@@ -418,9 +405,7 @@ class TestCompileScheduleCron:
         assert "deploy" in result
 
     def test_appends_to_existing(self, ctx: EnvironmentContext) -> None:
-        result = compile_schedule_cron(
-            {"schedule": "0 0 * * *", "command": "cleanup"}, ctx
-        )
+        result = compile_schedule_cron({"schedule": "0 0 * * *", "command": "cleanup"}, ctx)
         # Pattern: (crontab -l 2>/dev/null; echo '...') | crontab -
         assert "crontab" in result
         assert "-l" in result
@@ -448,9 +433,7 @@ class TestCompileRemoveCron:
         assert "backup" in result
 
     def test_with_user(self, ctx: EnvironmentContext) -> None:
-        result = compile_remove_cron(
-            {"job_id_or_pattern": "cleanup", "user": "admin"}, ctx
-        )
+        result = compile_remove_cron({"job_id_or_pattern": "cleanup", "user": "admin"}, ctx)
         assert "-u" in result
         assert "admin" in result
         assert "grep -v" in result
@@ -490,25 +473,19 @@ class TestCompileTestConnectivity:
         assert "4" in result
 
     def test_with_timeout(self, ctx: EnvironmentContext) -> None:
-        result = compile_test_connectivity(
-            {"host": "10.0.0.1", "timeout": 5}, ctx
-        )
+        result = compile_test_connectivity({"host": "10.0.0.1", "timeout": 5}, ctx)
         assert "-W" in result
         assert "5" in result
 
     def test_with_count_and_timeout(self, ctx: EnvironmentContext) -> None:
-        result = compile_test_connectivity(
-            {"host": "example.com", "count": 3, "timeout": 2}, ctx
-        )
+        result = compile_test_connectivity({"host": "example.com", "count": 3, "timeout": 2}, ctx)
         assert "-c 3" in result
         assert "-W 2" in result
 
 
 class TestCompileDownloadFile:
     def test_basic(self, ctx: EnvironmentContext) -> None:
-        result = compile_download_file(
-            {"url": "http://example.com/file.tar.gz"}, ctx
-        )
+        result = compile_download_file({"url": "http://example.com/file.tar.gz"}, ctx)
         assert result.startswith("curl")
         assert "-L" in result  # follow_redirects defaults to True
         assert "-O" in result  # no output_path -> -O
@@ -570,9 +547,7 @@ class TestCompileSshConnect:
         assert "2222" in result
 
     def test_with_key(self, ctx: EnvironmentContext) -> None:
-        result = compile_ssh_connect(
-            {"host": "prod", "key_file": "~/.ssh/deploy_key"}, ctx
-        )
+        result = compile_ssh_connect({"host": "prod", "key_file": "~/.ssh/deploy_key"}, ctx)
         assert "-i" in result
         assert "~/.ssh/deploy_key" in result
 
@@ -669,9 +644,7 @@ class TestCompileKillProcess:
 
     def test_force_overrides_signal(self, ctx: EnvironmentContext) -> None:
         # When force=True, signal is ignored in favor of -9
-        result = compile_kill_process(
-            {"target": "111", "signal": "TERM", "force": True}, ctx
-        )
+        result = compile_kill_process({"target": "111", "signal": "TERM", "force": True}, ctx)
         assert "-9" in result
         assert "-TERM" not in result
 
@@ -690,9 +663,7 @@ class TestCompileSystemInfo:
             ("uptime", "uptime"),
         ],
     )
-    def test_specific_types(
-        self, info_type: str, expected: str, ctx: EnvironmentContext
-    ) -> None:
+    def test_specific_types(self, info_type: str, expected: str, ctx: EnvironmentContext) -> None:
         result = compile_system_info({"info_type": info_type}, ctx)
         assert result == expected
 
@@ -721,9 +692,7 @@ class TestCompileSystemInfo:
 
 class TestCompileMountDevice:
     def test_basic(self, ctx: EnvironmentContext) -> None:
-        result = compile_mount_device(
-            {"device": "/dev/sda1", "mount_point": "/mnt/data"}, ctx
-        )
+        result = compile_mount_device({"device": "/dev/sda1", "mount_point": "/mnt/data"}, ctx)
         assert result.startswith("mount")
         assert "/dev/sda1" in result
         assert "/mnt/data" in result
@@ -775,9 +744,7 @@ class TestCompileUnmountDevice:
         assert "-l" in result
 
     def test_force_and_lazy(self, ctx: EnvironmentContext) -> None:
-        result = compile_unmount_device(
-            {"mount_point": "/mnt/x", "force": True, "lazy": True}, ctx
-        )
+        result = compile_unmount_device({"mount_point": "/mnt/x", "force": True, "lazy": True}, ctx)
         assert "-f" in result
         assert "-l" in result
 
@@ -785,3 +752,131 @@ class TestCompileUnmountDevice:
         result = compile_unmount_device({"mount_point": "/mnt/clean"}, ctx)
         assert "-f" not in result
         assert "-l" not in result
+
+
+# ===================================================================
+# Arch Linux (pacman) Package Management
+# ===================================================================
+
+
+class TestCompileInstallPackageArch:
+    def test_basic_arch(self, arch_ctx: EnvironmentContext) -> None:
+        result = compile_install_package({"package": "nginx"}, arch_ctx)
+        assert result.startswith("pacman -S")
+        assert "nginx" in result
+
+    def test_assume_yes_arch(self, arch_ctx: EnvironmentContext) -> None:
+        result = compile_install_package(
+            {"package": "curl", "assume_yes": True}, arch_ctx
+        )
+        assert "--noconfirm" in result
+        assert "pacman" in result
+
+    def test_no_assume_yes_arch(self, arch_ctx: EnvironmentContext) -> None:
+        result = compile_install_package({"package": "vim"}, arch_ctx)
+        assert "--noconfirm" not in result
+
+    def test_version_ignored_arch(self, arch_ctx: EnvironmentContext) -> None:
+        # pacman doesn't support installing specific versions inline
+        result = compile_install_package(
+            {"package": "python", "version": "3.11"}, arch_ctx
+        )
+        assert "pacman -S" in result
+        assert "python" in result
+
+
+class TestCompileRemovePackageArch:
+    def test_basic_arch(self, arch_ctx: EnvironmentContext) -> None:
+        result = compile_remove_package({"package": "apache"}, arch_ctx)
+        assert result.startswith("pacman -R")
+        assert "apache" in result
+
+    def test_purge_arch(self, arch_ctx: EnvironmentContext) -> None:
+        result = compile_remove_package(
+            {"package": "nginx", "purge_config": True}, arch_ctx
+        )
+        assert "pacman -Rns" in result
+        assert "nginx" in result
+
+    def test_no_purge_arch(self, arch_ctx: EnvironmentContext) -> None:
+        result = compile_remove_package({"package": "vim"}, arch_ctx)
+        assert "-Rns" not in result
+        assert "pacman -R " in result or "pacman -Rs " in result
+
+
+class TestCompileUpdatePackagesArch:
+    def test_basic_arch(self, arch_ctx: EnvironmentContext) -> None:
+        result = compile_update_packages({}, arch_ctx)
+        assert "pacman -Sy" in result
+
+    def test_upgrade_all_arch(self, arch_ctx: EnvironmentContext) -> None:
+        result = compile_update_packages({"upgrade_all": True}, arch_ctx)
+        assert "pacman -Syu" in result
+
+
+class TestCompileSearchPackageArch:
+    def test_basic_arch(self, arch_ctx: EnvironmentContext) -> None:
+        result = compile_search_package({"query": "python"}, arch_ctx)
+        assert "pacman -Ss" in result
+        assert "python" in result
+
+
+# ===================================================================
+# SUSE (zypper) Package Management
+# ===================================================================
+
+
+class TestCompileInstallPackageSuse:
+    def test_basic_suse(self, suse_ctx: EnvironmentContext) -> None:
+        result = compile_install_package({"package": "nginx"}, suse_ctx)
+        assert result.startswith("zypper install")
+        assert "nginx" in result
+
+    def test_assume_yes_suse(self, suse_ctx: EnvironmentContext) -> None:
+        result = compile_install_package(
+            {"package": "curl", "assume_yes": True}, suse_ctx
+        )
+        assert "-y" in result
+        assert "zypper" in result
+
+    def test_no_assume_yes_suse(self, suse_ctx: EnvironmentContext) -> None:
+        result = compile_install_package({"package": "vim"}, suse_ctx)
+        assert "-y" not in result
+
+    def test_version_suse(self, suse_ctx: EnvironmentContext) -> None:
+        result = compile_install_package(
+            {"package": "python3", "version": "3.11"}, suse_ctx
+        )
+        assert "python3=3.11" in result or "python3-3.11" in result
+
+
+class TestCompileRemovePackageSuse:
+    def test_basic_suse(self, suse_ctx: EnvironmentContext) -> None:
+        result = compile_remove_package({"package": "httpd"}, suse_ctx)
+        assert result.startswith("zypper remove")
+        assert "httpd" in result
+
+    def test_purge_suse(self, suse_ctx: EnvironmentContext) -> None:
+        result = compile_remove_package(
+            {"package": "nginx", "purge_config": True}, suse_ctx
+        )
+        assert "zypper remove" in result
+        assert "--clean-deps" in result
+
+
+class TestCompileUpdatePackagesSuse:
+    def test_basic_suse(self, suse_ctx: EnvironmentContext) -> None:
+        result = compile_update_packages({}, suse_ctx)
+        assert "zypper refresh" in result
+
+    def test_upgrade_all_suse(self, suse_ctx: EnvironmentContext) -> None:
+        result = compile_update_packages({"upgrade_all": True}, suse_ctx)
+        assert "zypper refresh" in result
+        assert "zypper update" in result
+
+
+class TestCompileSearchPackageSuse:
+    def test_basic_suse(self, suse_ctx: EnvironmentContext) -> None:
+        result = compile_search_package({"query": "python"}, suse_ctx)
+        assert "zypper search" in result
+        assert "python" in result

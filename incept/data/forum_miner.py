@@ -14,15 +14,51 @@ from typing import Any
 from pydantic import BaseModel, Field
 
 # Tags that indicate Linux CLI-related questions
-_RELEVANT_TAGS = frozenset({
-    "bash", "shell", "command-line", "linux", "ubuntu", "debian", "centos",
-    "rhel", "fedora", "terminal", "cli", "scripting", "shell-script",
-    "permissions", "files", "grep", "find", "sed", "awk", "cron",
-    "systemd", "apt", "yum", "dnf", "ssh", "networking", "process",
-    "package-management", "filesystems", "mount", "disk-usage",
-    "text-processing", "archiving", "tar", "compression", "users",
-    "services", "logs", "syslog", "firewall", "iptables",
-})
+_RELEVANT_TAGS = frozenset(
+    {
+        "bash",
+        "shell",
+        "command-line",
+        "linux",
+        "ubuntu",
+        "debian",
+        "centos",
+        "rhel",
+        "fedora",
+        "terminal",
+        "cli",
+        "scripting",
+        "shell-script",
+        "permissions",
+        "files",
+        "grep",
+        "find",
+        "sed",
+        "awk",
+        "cron",
+        "systemd",
+        "apt",
+        "yum",
+        "dnf",
+        "ssh",
+        "networking",
+        "process",
+        "package-management",
+        "filesystems",
+        "mount",
+        "disk-usage",
+        "text-processing",
+        "archiving",
+        "tar",
+        "compression",
+        "users",
+        "services",
+        "logs",
+        "syslog",
+        "firewall",
+        "iptables",
+    }
+)
 
 # Patterns for extracting commands from answer bodies
 _CODE_BLOCK_PATTERN = re.compile(r"<code>(.*?)</code>", re.DOTALL)
@@ -99,12 +135,14 @@ class ForumMiner:
                 parent_id = int(elem.get("ParentId", "0"))
                 body = elem.get("Body", "")
                 if _CLI_INDICATORS.search(body):
-                    self._answers.append({
-                        "question_id": parent_id,
-                        "body": body,
-                        "score": int(elem.get("Score", "0")),
-                        "id": post_id,
-                    })
+                    self._answers.append(
+                        {
+                            "question_id": parent_id,
+                            "body": body,
+                            "score": int(elem.get("Score", "0")),
+                            "id": post_id,
+                        }
+                    )
 
             elem.clear()
 
@@ -193,25 +231,25 @@ class ForumMiner:
 
         return examples
 
-    def to_training_format(
-        self, examples: list[ForumExample]
-    ) -> list[dict[str, Any]]:
+    def to_training_format(self, examples: list[ForumExample]) -> list[dict[str, Any]]:
         """Convert ForumExamples to INCEPT training JSONL format.
 
         Note: These need manual/automated intent labeling before use.
         """
         records: list[dict[str, Any]] = []
         for i, ex in enumerate(examples):
-            records.append({
-                "id": f"FM-{i:05d}",
-                "source": "forum",
-                "license": "CC-BY-SA-4.0",
-                "nl_request": ex.question_title,
-                "context_line": "debian bash non-root safe",  # Default; needs refinement
-                "expected_intent": "",  # Needs labeling
-                "expected_slots": {},
-                "expected_command": ex.extracted_command or "",
-                "tags": ["forum", "stack_exchange"] + ex.tags[:5],
-                "attribution": ex.attribution,
-            })
+            records.append(
+                {
+                    "id": f"FM-{i:05d}",
+                    "source": "forum",
+                    "license": "CC-BY-SA-4.0",
+                    "nl_request": ex.question_title,
+                    "context_line": "debian bash non-root safe",  # Default; needs refinement
+                    "expected_intent": "",  # Needs labeling
+                    "expected_slots": {},
+                    "expected_command": ex.extracted_command or "",
+                    "tags": ["forum", "stack_exchange"] + ex.tags[:5],
+                    "attribution": ex.attribution,
+                }
+            )
         return records

@@ -26,7 +26,7 @@ class TestGrammarFilePresence:
 
     def test_total_grammar_count(self) -> None:
         gbnf_files = list(GRAMMAR_DIR.glob("*.gbnf"))
-        assert len(gbnf_files) == 53  # 1 intent + 52 slot grammars
+        assert len(gbnf_files) == 79  # 1 intent + 78 slot grammars
 
 
 class TestGrammarStructure:
@@ -115,8 +115,17 @@ class TestGrammarValidStrings:
         for line in lines:
             assert "=" in line, f"Malformed slot line: {line}"
             key, value = line.split("=", 1)
-            assert key in ["path", "name_pattern", "type", "size_gt", "size_lt",
-                           "mtime_days_gt", "mtime_days_lt", "user", "permissions"]
+            assert key in [
+                "path",
+                "name_pattern",
+                "type",
+                "size_gt",
+                "size_lt",
+                "mtime_days_gt",
+                "mtime_days_lt",
+                "user",
+                "permissions",
+            ]
 
     def test_install_package_valid_output(self) -> None:
         sample = "package=nginx\nassume_yes=true"

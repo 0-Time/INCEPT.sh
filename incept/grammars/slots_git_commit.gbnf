@@ -1,0 +1,12 @@
+# slots_git_commit.gbnf — constrain slot-filling output for git_commit intent
+root ::= slot-message optional-slots
+optional-slots ::= ( "\n" optional-slot )*
+
+slot-message ::= "message=" quoted-string
+
+optional-slot ::= slot-all
+
+slot-all ::= "all=" bool-value
+
+bool-value    ::= "true" | "false"
+quoted-string ::= "\"" [^\"]* "\""

@@ -1,0 +1,9 @@
+# slots_list_env_vars.gbnf — constrain slot-filling output for list_env_vars intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-filter
+
+slot-filter ::= "filter=" quoted-string
+
+quoted-string ::= "\"" [^\"]* "\""

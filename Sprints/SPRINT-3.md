@@ -41,7 +41,7 @@
 
 ---
 
-### Story 3.2 — Paraphrase Generation (via Claude Code)
+### Story 3.2 — Paraphrase Generation (via LLM)
 **Points:** 5
 **Priority:** P0 — Critical
 
@@ -50,20 +50,20 @@
 **So that** the model generalizes to varied phrasings it hasn't seen in templates.
 
 **Acceptance Criteria:**
-- [ ] **Method:** Use **Claude (via Claude Code)** to generate 5-10 paraphrases per seed example — this is a one-time build step, not a runtime dependency
-- [ ] Claude generates paraphrases in batch, output saved as JSONL files locally
-- [ ] Once generated, the paraphrase data is **committed to the repo** — Claude is never needed again
+- [ ] **Method:** Use an LLM to generate 5-10 paraphrases per seed example — this is a one-time build step, not a runtime dependency
+- [ ] LLM generates paraphrases in batch, output saved as JSONL files locally
+- [ ] Once generated, the paraphrase data is **committed to the repo** — the LLM is never needed again
 - [ ] Paraphrase prompts enforce: same intent, same slot values, different phrasing
 - [ ] Include colloquial, formal, terse, and verbose variants
 - [ ] Target: **4,000+ additional examples**
 - [ ] Human review: 15% stratified sample verified (600+ examples reviewed)
 - [ ] Rejection rate tracked and reported
-- [ ] **Clarification:** Claude is used only at build time for data generation. The deployed system uses only Qwen2.5-0.5B. No Claude dependency at runtime.
+- [ ] **Clarification:** The LLM is used only at build time for data generation. The deployed system uses only Qwen2.5-0.5B. No external LLM dependency at runtime.
 
 **Tasks:**
-- [ ] Design paraphrase generation prompt for Claude
+- [ ] Design paraphrase generation prompt for LLM
 - [ ] Select seed examples (diverse across intents and complexity)
-- [ ] Run paraphrase generation batches via Claude Code (save output as JSONL)
+- [ ] Run paraphrase generation batches (save output as JSONL)
 - [ ] Commit generated paraphrases to repo
 - [ ] Build QA tool for human review (simple CLI or notebook)
 - [ ] Conduct human review of 15% sample

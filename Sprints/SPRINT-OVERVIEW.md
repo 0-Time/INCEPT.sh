@@ -4,7 +4,7 @@
 
 - **Methodology:** Scrum
 - **Sprint Duration:** 2 weeks
-- **Total Sprints:** 7 (14 weeks)
+- **Total Sprints:** 8 (16 weeks)
 - **Team Assumption:** 1-2 developers (adjust velocity accordingly)
 - **Story Points:** Fibonacci scale (1, 2, 3, 5, 8, 13)
 - **Definition of Done:** Code written, tests pass, reviewed, documented, security reviewed
@@ -23,7 +23,8 @@
 | **Sprint 4** | 7-8 | Phase 3 | Model Training (SFT) | Fine-tuned Qwen2.5-0.5B, LoRA adapters, baseline metrics |
 | **Sprint 5** | 9-10 | Phase 3+4 | Model Hardening & Integration | DPO, adversarial training, quantization, model-in-pipeline |
 | **Sprint 6** | 11-12 | Phase 4 | Interactive Terminal + Production | **Interactive REPL (primary UI)**, API server, load testing, Docker, smoke test |
-| **Sprint 7** | 13-14 | Phase 5 | Security, Expansion & Release | Security audit, Arch/SUSE support, CLI client, shell plugin, open-source prep |
+| **Sprint 7** | 13-14 | Phase 5 | Security, Expansion & Release | Security audit, Arch/SUSE support, CLI client, open-source prep |
+| **Sprint 8** | 15-16 | Phase 5+ | macOS + Explain + Hardening + Plugin | macOS distro family, explain mode, security hardening, shell plugin |
 
 ---
 
@@ -38,6 +39,7 @@
 | 5 | — | — | — | |
 | 6 | — | — | — | |
 | 7 | — | — | — | |
+| 8 | 34 | — | — | macOS (8) + Explain (8) + Hardening (8) + Plugin (5) + 5 deferred |
 
 ---
 
@@ -69,7 +71,8 @@
 | **E3: Model Training** | SFT, DPO, adversarial hardening, quantization, evaluation | 4-5 |
 | **E4: System Integration** | Model integration, error recovery, sessions, API server | 5-6 |
 | **E5: Deployment** | Docker, llamafile, telemetry, documentation | 6 |
-| **E6: Expansion** | New distros, new intents, CLI client, shell plugin | 7 |
+| **E6: Expansion** | New distros, new intents, CLI client, shell plugin | 7-8 |
+| **E7: Post-MVP** | macOS support, explain mode, security hardening, shell plugin | 8 |
 
 ---
 
@@ -97,4 +100,5 @@
 | `SPRINT-5.md` | Model Hardening & Integration |
 | `SPRINT-6.md` | Production Readiness |
 | `SPRINT-7.md` | Expansion & Release |
+| `SPRINT-8.md` | macOS + Explain + Hardening + Shell Plugin |
 | `BACKLOG.md` | Full product backlog |

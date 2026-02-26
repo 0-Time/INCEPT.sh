@@ -1,0 +1,6 @@
+# slots_docker_stop.gbnf — constrain slot-filling output for docker_stop intent
+root ::= slot-container
+
+slot-container ::= "container=" identifier
+
+identifier ::= [a-zA-Z0-9] [a-zA-Z0-9_.-]*

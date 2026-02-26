@@ -10,6 +10,34 @@ from incept.schemas.intents import IntentLabel
 from incept.schemas.ir import AnyIR, ClarificationIR, ConfidenceScore, PipelineIR, SingleIR
 from incept.schemas.params.archive_ops import CompressArchiveParams, ExtractArchiveParams
 from incept.schemas.params.disk_ops import MountDeviceParams, UnmountDeviceParams
+from incept.schemas.params.expanded_ops import (
+    CheckFilesystemParams,
+    CopySshKeyParams,
+    CreateTimerParams,
+    DnsLookupParams,
+    DnsResolveParams,
+    DockerBuildParams,
+    DockerExecParams,
+    DockerLogsParams,
+    DockerPsParams,
+    DockerRunParams,
+    DockerStopParams,
+    FirewallAllowParams,
+    FirewallDenyParams,
+    FirewallListParams,
+    GenerateSshKeyParams,
+    GitBranchParams,
+    GitCommitParams,
+    GitDiffParams,
+    GitLogParams,
+    GitPullParams,
+    GitPushParams,
+    GitStatusParams,
+    ListEnvVarsParams,
+    ListPartitionsParams,
+    ListTimersParams,
+    SetEnvVarParams,
+)
 from incept.schemas.params.file_ops import (
     ChangeOwnershipParams,
     ChangePermissionsParams,
@@ -124,6 +152,40 @@ INTENT_PARAM_REGISTRY: dict[IntentLabel, type[BaseModel]] = {
     # Disk/Mount (2)
     IntentLabel.mount_device: MountDeviceParams,
     IntentLabel.unmount_device: UnmountDeviceParams,
+    # Docker (6)
+    IntentLabel.docker_run: DockerRunParams,
+    IntentLabel.docker_ps: DockerPsParams,
+    IntentLabel.docker_stop: DockerStopParams,
+    IntentLabel.docker_logs: DockerLogsParams,
+    IntentLabel.docker_build: DockerBuildParams,
+    IntentLabel.docker_exec: DockerExecParams,
+    # Git (7)
+    IntentLabel.git_status: GitStatusParams,
+    IntentLabel.git_commit: GitCommitParams,
+    IntentLabel.git_push: GitPushParams,
+    IntentLabel.git_pull: GitPullParams,
+    IntentLabel.git_log: GitLogParams,
+    IntentLabel.git_diff: GitDiffParams,
+    IntentLabel.git_branch: GitBranchParams,
+    # SSH Keys (2)
+    IntentLabel.generate_ssh_key: GenerateSshKeyParams,
+    IntentLabel.copy_ssh_key: CopySshKeyParams,
+    # Disk Info (2)
+    IntentLabel.list_partitions: ListPartitionsParams,
+    IntentLabel.check_filesystem: CheckFilesystemParams,
+    # Firewall (3)
+    IntentLabel.firewall_allow: FirewallAllowParams,
+    IntentLabel.firewall_deny: FirewallDenyParams,
+    IntentLabel.firewall_list: FirewallListParams,
+    # DNS (2)
+    IntentLabel.dns_lookup: DnsLookupParams,
+    IntentLabel.dns_resolve: DnsResolveParams,
+    # Environment (2)
+    IntentLabel.set_env_var: SetEnvVarParams,
+    IntentLabel.list_env_vars: ListEnvVarsParams,
+    # Systemd Timers (2)
+    IntentLabel.create_timer: CreateTimerParams,
+    IntentLabel.list_timers: ListTimersParams,
     # Special (3)
     IntentLabel.CLARIFY: ClarifyParams,
     IntentLabel.OUT_OF_SCOPE: OutOfScopeParams,

@@ -1,0 +1,13 @@
+# slots_generate_ssh_key.gbnf — constrain slot-filling output for generate_ssh_key intent
+root ::= slot-list
+slot-list ::= slot ("\n" slot)*
+
+slot ::= slot-key-type | slot-comment | slot-file
+
+slot-key-type ::= "key_type=" key-type-value
+slot-comment  ::= "comment=" quoted-string
+slot-file     ::= "file=" path-value
+
+key-type-value ::= "rsa" | "ed25519" | "ecdsa"
+path-value     ::= "/" [a-zA-Z0-9_./-]* | "."
+quoted-string  ::= "\"" [^\"]* "\""
