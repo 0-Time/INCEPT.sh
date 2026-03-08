@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
+from rich.console import Console
 from rich.text import Text
-
 
 _PENGUIN_RAW = [
     r"    .--.",
@@ -36,7 +36,7 @@ _SH_RAW = [
 ]
 
 
-def render_banner(console, version: str, model_status: str, context: str) -> None:
+def render_banner(console: Console, version: str, model_status: str, context: str) -> None:
     """Render the full welcome banner to a Rich console."""
     console.print()
 

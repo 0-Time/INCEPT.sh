@@ -18,7 +18,8 @@ class TestInceptREPL:
 
     def test_welcome_banner_on_start(self) -> None:
         # Banner rendering uses rich console; verify REPL has banner method or render works
-        assert hasattr(self.repl, "print_banner") or hasattr(self.repl, "render_banner") or True  # banner via rich
+        # Banner rendered via Rich console — just verify REPL instantiated
+        assert self.repl is not None
 
     def test_prompt_text_normal(self) -> None:
         prompt = self.repl.get_prompt()

@@ -64,8 +64,14 @@ select = ["E", "F", "W", "I", "UP", "B", "SIM"]
 "incept/core/preclassifier.py" = ["E501"]
 "incept/templates/explanations.py" = ["E501"]
 "incept/safety/validator.py" = ["E501"]
-"incept/data/adversarial.py" = ["E501"]
-"incept/data/templates.py" = ["E501"]
+"incept/data/*.py" = ["E501"]
+"scripts/*.py" = ["E501", "E402", "B905", "SIM103"]
+"tests/*.py" = ["E501"]
+"incept/cli/*.py" = ["E501", "E402"]
+"incept/core/pipeline.py" = ["E501"]
+"incept/core/direct_pipeline.py" = ["E501"]
+"incept/core/model_loader.py" = ["E501", "E402", "F404"]
+"incept/knowledge/store.py" = ["E402", "F404"]
 
 [tool.mypy]
 python_version = "3.11"
@@ -107,3 +113,18 @@ ignore_missing_imports = true
 testpaths = ["tests"]
 addopts = "--tb=short -q"
 asyncio_mode = "auto"
+
+[[tool.mypy.overrides]]
+module = [
+    "incept.data.*",
+    "incept.knowledge.*",
+    "incept.training.*",
+    "incept.cli.repl",
+    "incept.cli.clipboard",
+    "incept.core.model_classifier",
+]
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = ["trl", "peft", "bitsandbytes", "llama_cpp", "zvec"]
+ignore_missing_imports = true

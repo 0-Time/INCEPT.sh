@@ -94,7 +94,7 @@ class SlashCommandRegistry:
             f"  [bold]Explain:[/bold]  {resp.explanation}",
             f"  [bold]Risk:[/bold]     {resp.risk_level}",
         ]
-        return "\n".join(l for l in lines if l)
+        return "\n".join(ln for ln in lines if ln)
 
     def _cmd_plugin(self, args: str) -> str:
         return (

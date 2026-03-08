@@ -16,7 +16,6 @@ Special intents map to refusal tokens instead of commands:
 
 from __future__ import annotations
 
-import json
 import logging
 from typing import Any
 

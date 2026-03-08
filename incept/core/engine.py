@@ -142,7 +142,7 @@ def _build_chatml_prompt(
     context_line: str,
     query: str,
     history: list[dict[str, str]] | None = None,
-    examples: list | None = None,
+    examples: list[object] | None = None,
     *,
     think: bool = False,
 ) -> str:
@@ -171,7 +171,10 @@ def _build_chatml_prompt(
         system_parts.append("")
         system_parts.append("Similar examples:")
         for ex in examples:
-            system_parts.append(f'- "{ex.query}" → {ex.command}')
+            if hasattr(ex, "query") and hasattr(ex, "command"):
+                system_parts.append(f'- "{ex.query}" → {ex.command}')
+            else:
+                system_parts.append(f"- {ex}")
 
     parts.append(f"<|im_start|>system\n{chr(10).join(system_parts)}<|im_end|>")
 
@@ -312,41 +315,39 @@ _VALID_CMD_STARTERS = frozenset([
 def _postprocess_output(query: str, raw_output: str) -> str:
     """Post-process model output for production quality."""
     output = raw_output.strip()
-    
+
     # 1. Take first line only (discard multi-line garbage)
     if "\n" in output:
         output = output.split("\n")[0].strip()
-    
+
     # 2. Check for prompt injection
     query_lower = query.lower()
     for trigger in _INJECTION_TRIGGERS:
         if trigger in query_lower:
             return "UNSAFE_REQUEST"
-    
+
     # 3. If output is empty or too short
     if not output or len(output) < 2:
         return "# Could not generate command"
-    
+
     # 4. If output looks like English prose (starts with capital, no command-like structure)
     first_word = output.split()[0].lower() if output.split() else ""
     # Strip sudo prefix for checking
     check_word = first_word
     if check_word == "sudo" and len(output.split()) > 1:
         check_word = output.split()[1].lower()
-    
-    if first_word and first_word[0].isupper() and first_word not in ("UNSAFE_REQUEST",):
-        # Looks like English — check if first word is a valid command
-        if check_word not in _VALID_CMD_STARTERS:
-            return "# Could not generate command"
-    
+
+    if (first_word and first_word[0].isupper()
+            and first_word not in ("UNSAFE_REQUEST",)
+            and check_word not in _VALID_CMD_STARTERS):
+        return "# Could not generate command"
+
     # 5. Check first word is a valid command (case-insensitive)
-    if check_word and check_word not in _VALID_CMD_STARTERS:
-        # Might be a path like /usr/bin/something — that's OK
-        if not output.startswith(("/", "./", "~", "$", "(", "{", "!")):
-            # Could be a variable assignment like FOO=bar or a pipeline
-            if "=" not in first_word and "|" not in output[:20]:
-                pass  # Don't block — might be a valid but uncommon command
-    
+    if (check_word and check_word not in _VALID_CMD_STARTERS
+            and not output.startswith(("/", "./", "~", "$", "(", "{", "!"))
+            and "=" not in first_word and "|" not in output[:20]):
+        pass  # Don't block — might be a valid but uncommon command
+
     return output
 
 
@@ -440,7 +441,7 @@ class InceptEngine:
 
         # 1. Build prompt (with RAG examples if available)
         prompt = _build_chatml_prompt(
-            self._context_line, query, history, examples=rag_examples, think=self._think,
+            self._context_line, query, history, examples=rag_examples, think=self._think,  # type: ignore[arg-type]
         )
 
         # 2. Run inference

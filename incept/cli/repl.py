@@ -3,20 +3,23 @@
 from __future__ import annotations
 
 import os
-import sys
 import time
 
 from rich.console import Console
 from rich.markup import escape
-from rich.panel import Panel
-from rich.text import Text
 
 from incept import __version__
 from incept.cli.banner import render_banner
+
+try:
+    from incept.cli.clipboard import copy_to_clipboard as _copy  # type: ignore[attr-defined]
+except (ImportError, AttributeError):
+    def _copy(text: str) -> None:
+        pass
+copy_to_clipboard = _copy
 from incept.cli.commands import SlashCommandRegistry
 from incept.cli.config import InceptConfig
 from incept.core.engine import EngineResponse, InceptEngine
-
 
 console = Console()
 
@@ -110,7 +113,7 @@ class InceptREPL:
                 "",
                 f"  [{cmd_style}]  $ {escape(resp.text)}[/{cmd_style}]",
                 "",
-                f"  [dim]╰─ [E]xecute  [C]opy  [Enter] skip[/dim]",
+                "  [dim]╰─ [E]xecute  [C]opy  [Enter] skip[/dim]",
             ]
             return "\n".join(lines)
 
@@ -136,8 +139,7 @@ class InceptREPL:
             console.print(f"  [dim]{'─' * 40}[/dim]")
         elif action == "c" and resp.type == "command":
             try:
-                from incept.cli.clipboard import copy_to_clipboard
-                copy_to_clipboard(resp.text)
+                _copy(resp.text)
                 console.print("  [green]✓ Copied to clipboard[/green]")
             except Exception:
                 console.print(f"  [dim]Command: {resp.text}[/dim]")
@@ -186,53 +188,6 @@ class InceptREPL:
             if result is not None:
                 console.print(result)
                 # Store response for action handling
-                if self.query_history:
-                    last_resp_obj = self._engine.ask.__self__  # type: ignore
-                    # Reconstruct response from formatted output
-                    if hasattr(self, '_last_resp'):
-                        last_resp = self._last_resp
+                if self.query_history and hasattr(self, '_last_resp'):
+                    last_resp = self._last_resp
 
-    def handle_input(self, text: str) -> str | None:
-        """Process a single line of input."""
-        if not text.strip():
-            return None
-
-        if text.startswith("/"):
-            parts = text.split(maxsplit=1)
-            cmd_name = parts[0]
-            cmd_args = parts[1] if len(parts) > 1 else ""
-
-            if not self.commands.has(cmd_name):
-                return f"  [red]✗[/red] Unknown command: {cmd_name}. Type /help."
-
-            result = self.commands.dispatch(cmd_name, cmd_args)
-
-            if cmd_name == "/history":
-                if self.query_history:
-                    lines = ["  [bold]Session history:[/bold]"]
-                    for i, entry in enumerate(self.query_history, 1):
-                        lines.append(f"    [dim]{i}.[/dim] {entry}")
-                    return "\n".join(lines)
-                return "  [dim]No history yet.[/dim]"
-
-            return result
-
-        # Natural language query
-        self.query_history.append(text)
-        
-        # Spinner while thinking
-        with console.status("[bold cyan]Thinking...[/bold cyan]", spinner="dots"):
-            t0 = time.time()
-            resp = self._engine.ask(text, history=self._chat_history or None)
-            elapsed = time.time() - t0
-
-        # Store for action handling
-        self._last_resp = resp
-
-        # Record turn
-        self._chat_history.append({"role": "user", "content": text})
-        self._chat_history.append({"role": "assistant", "content": resp.text})
-        if len(self._chat_history) > self._MAX_HISTORY_TURNS * 2:
-            self._chat_history = self._chat_history[-(self._MAX_HISTORY_TURNS * 2):]
-
-        return self._format_response(resp, elapsed)

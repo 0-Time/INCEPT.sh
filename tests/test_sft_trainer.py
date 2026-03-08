@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+from importlib import reload
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from incept.training.config import TrainingConfig
 
-import pytest
 _trl_available = True
 try:
     import trl  # noqa: F401
@@ -89,39 +91,36 @@ class TestBuildTrainingArgs:
     def test_cuda_enables_fp16(self) -> None:
         mock_sft_config = MagicMock()
         with patch("incept.training.sft_trainer.SFTConfig", mock_sft_config, create=True):
-            from importlib import reload
 
             import incept.training.sft_trainer as mod
 
             # Patch SFTConfig at module level after reload
-            with patch.object(mod, "_build_training_args", wraps=mod._build_training_args):
-                with patch("trl.SFTConfig", mock_sft_config):
-                    config = _make_config()
-                    mod._build_training_args(config, "cuda")
-                    call_kwargs = mock_sft_config.call_args[1]
-                    assert call_kwargs["fp16"] is True
-                    assert call_kwargs["bf16"] is False
+            with (patch.object(mod, "_build_training_args", wraps=mod._build_training_args),
+                  patch("trl.SFTConfig", mock_sft_config)):
+                config = _make_config()
+                mod._build_training_args(config, "cuda")
+                call_kwargs = mock_sft_config.call_args[1]
+                assert call_kwargs["fp16"] is True
+                assert call_kwargs["bf16"] is False
 
     def test_cpu_disables_fp16(self) -> None:
         mock_sft_config = MagicMock()
         with patch("incept.training.sft_trainer.SFTConfig", mock_sft_config, create=True):
-            from importlib import reload
 
             import incept.training.sft_trainer as mod
 
-            with patch.object(mod, "_build_training_args", wraps=mod._build_training_args):
-                with patch("trl.SFTConfig", mock_sft_config):
-                    config = _make_config()
-                    mod._build_training_args(config, "cpu")
-                    call_kwargs = mock_sft_config.call_args[1]
-                    assert call_kwargs["fp16"] is False
+            with (patch.object(mod, "_build_training_args", wraps=mod._build_training_args),
+                  patch("trl.SFTConfig", mock_sft_config)):
+                config = _make_config()
+                mod._build_training_args(config, "cpu")
+                call_kwargs = mock_sft_config.call_args[1]
+                assert call_kwargs["fp16"] is False
 
 
 class TestBuildLoraConfig:
     def test_builds_lora_config(self) -> None:
         mock_peft = MagicMock()
         with patch.dict("sys.modules", {"peft": mock_peft}):
-            from importlib import reload
 
             import incept.training.sft_trainer as mod
 
@@ -142,7 +141,6 @@ class TestRunSft:
         mock_trl.SFTTrainer.return_value = mock_trainer_instance
 
         with patch.dict("sys.modules", {"trl": mock_trl}):
-            from importlib import reload
 
             import incept.training.sft_trainer as mod
 

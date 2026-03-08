@@ -1,10 +1,10 @@
 """Comprehensive Linux command templates for v2 training data generation.
 
 Every template is a dict with:
-  - nl:    list of natural language phrasings (use {placeholders})
+  - nl: list[object] of natural language phrasings (use {placeholders})
   - cmd:   command string (use matching {placeholders})
            OR dict of {distro_family: command} for distro-specific commands
-  - slots: dict of {placeholder: list_of_values}
+  - slots: dict[str, object] of {placeholder: list_of_values}
            OR dict of {distro_family: {placeholder: list_of_values}}
 
 The generator reads these, expands all (nl_variant, slot_values, context)
@@ -211,7 +211,7 @@ CONTEXTS = [
 # ║                           COMMAND TEMPLATES                                 ║
 # ╚══════════════════════════════════════════════════════════════════════════════╝
 
-# Each template: {nl: [...], cmd: str|dict, slots: dict}
+# Each template: {nl: [...], cmd: str|dict, slots: dict[str, object]}
 # When cmd is a dict, keys are distro families: debian, rhel, arch, suse, macos
 
 TEMPLATES: list[dict] = []

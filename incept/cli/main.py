@@ -26,6 +26,7 @@ def _run_repl(*, think: bool = False) -> None:
 def _oneshot(query: str, *, execute: bool = False, minimal: bool = False, think: bool = False) -> None:
     """Handle a one-shot query."""
     from rich.markup import escape
+
     from incept.core.engine import InceptEngine
 
     engine = InceptEngine(think=think)
@@ -111,6 +112,7 @@ def main(
 def serve(host: str, port: int) -> None:
     """Start the API server."""
     import uvicorn
+
     from incept.server.app import create_app
     from incept.server.config import ServerConfig
 

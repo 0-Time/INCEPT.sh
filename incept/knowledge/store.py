@@ -14,6 +14,7 @@ all methods return empty results and the engine works as before.
 """
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import logging
 from pathlib import Path
@@ -115,15 +116,13 @@ class KnowledgeStore:
         # Optionally open corrections collection
         corrections_path = self._db_dir / "corrections.zvec"
         if corrections_path.exists():
-            try:
-                self._corrections = zvec.open(
+            with contextlib.suppress(Exception):
+                self._corrections = zvec.open(  # type: ignore[assignment]
                     path=str(corrections_path),
                     option=zvec.CollectionOption(
                         read_only=False, enable_mmap=True
                     ),
                 )
-            except Exception:
-                pass
 
     @property
     def ready(self) -> bool:

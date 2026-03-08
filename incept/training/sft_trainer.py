@@ -66,7 +66,7 @@ def _build_model_and_tokenizer(config: TrainingConfig, device: str) -> tuple[Any
     if config.use_quantization and device == "cuda" and _can_use_bnb():
         from transformers import BitsAndBytesConfig
 
-        bnb_config = BitsAndBytesConfig(
+        bnb_config = BitsAndBytesConfig(  # type: ignore[no-untyped-call]
             load_in_4bit=config.quantization.load_in_4bit,
             bnb_4bit_compute_dtype=config.quantization.bnb_4bit_compute_dtype,
             bnb_4bit_quant_type=config.quantization.bnb_4bit_quant_type,
@@ -97,7 +97,7 @@ def _build_lora_config(config: TrainingConfig) -> Any:
 
 def _build_training_args(config: TrainingConfig, device: str) -> Any:
     """Build SFTConfig (trl >=0.29) training arguments."""
-    from trl import SFTConfig
+    from trl import SFTConfig  # type: ignore[attr-defined]
 
     fp16 = device == "cuda"
     bf16 = False

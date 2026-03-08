@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import atexit
+import contextlib
 import json
 import logging
 import os
 import shutil
-import signal
 import subprocess
 import sys
 import time
@@ -180,10 +180,8 @@ def _stop_llama_server() -> None:
             _LLAMA_SERVER_PROC.terminate()
             _LLAMA_SERVER_PROC.wait(timeout=5)
         except (ProcessLookupError, subprocess.TimeoutExpired):
-            try:
+            with contextlib.suppress(ProcessLookupError):
                 _LLAMA_SERVER_PROC.kill()
-            except ProcessLookupError:
-                pass
         _LLAMA_SERVER_PROC = None
 
 
