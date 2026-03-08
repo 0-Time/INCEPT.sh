@@ -12,13 +12,15 @@ dependencies = [
     "pydantic>=2.0",
     "bashlex>=0.18",
     "pyyaml>=6.0",
-    "llama-cpp-python>=0.2",
 ]
 
 [project.scripts]
 incept = "incept.cli.main:main"
 
 [project.optional-dependencies]
+inference = [
+    "llama-cpp-python>=0.2",
+]
 server = [
     "fastapi>=0.111",
     "uvicorn[standard]>=0.29",
