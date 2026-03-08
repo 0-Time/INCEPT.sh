@@ -25,7 +25,16 @@ def create_app(config: ServerConfig | None = None) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         # Startup
-        app.state.app_state = AppState(max_sessions=config.max_sessions)
+        state = AppState(max_sessions=config.max_sessions)
+        app.state.app_state = state
+
+        # Warm up the GGUF model singleton
+        from incept.core.model_loader import get_model
+
+        model = get_model(config.model_path)
+        state.model = model
+        state.model_ready = model is not None
+
         yield
         # Shutdown (cleanup)
 

@@ -30,14 +30,16 @@ class TestCommandEndpoint:
         resp = await client.post("/v1/command", json={"nl": "find all log files"})
         assert resp.status_code == 200
         data = resp.json()
-        assert "status" in data
+        # v2 engine returns EngineResponse with type/text/confidence/risk
+        assert "type" in data
+        assert "text" in data
 
     @pytest.mark.asyncio
     async def test_blocked_command_returns_blocked(self, client: AsyncClient) -> None:
         resp = await client.post("/v1/command", json={"nl": "delete everything on the system"})
         data = resp.json()
-        # Could be blocked or error depending on preclassifier
-        assert data["status"] in ("blocked", "error", "no_match", "success")
+        # Without a model, engine returns refusal; with model could be command/blocked/etc.
+        assert data["type"] in ("command", "refusal", "clarification", "info", "blocked")
 
     @pytest.mark.asyncio
     async def test_missing_body_returns_422(self, client: AsyncClient) -> None:

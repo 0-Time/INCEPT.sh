@@ -5,6 +5,42 @@ All notable changes to INCEPT will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-03-03 (Qwen3.5-0.8B Model Upgrade)
+
+### Added
+- **Qwen3.5-0.8B base model** — upgraded from Qwen2.5-0.5B-Instruct to Qwen/Qwen3.5-0.8B.
+  Gated DeltaNet hybrid architecture (3:1 linear attention to full softmax), 28 layers,
+  GQA attention, 262K native context window.
+- **Thinking mode support** — Qwen3 `<think>...</think>` token stripping in engine output
+  via `_THINK_RE` regex. Thinking blocks are silently removed before returning the command.
+- **`/no_think` directive** — appended to user message in ChatML prompt to disable
+  reasoning overhead for command generation (faster inference).
+- **Nucleus + top-k sampling** — `run_constrained_inference()` gains `top_p` (default 0.8)
+  and `top_k` (default 20) parameters. Only applied when `temperature > 0`.
+- **SFT v2 training pipeline** — `scripts/train_v2.py` end-to-end: LoRA SFT on
+  Qwen3.5-0.8B (r=32, all 7 projection layers) → merge → GGUF Q4_K_M export.
+
+### Changed
+- Default base model in `incept/training/config.py`: `Qwen/Qwen2.5-0.5B-Instruct` →
+  `Qwen/Qwen3.5-0.8B`.
+- Default base model in `scripts/train_v2.py` and `scripts/auto_train_pipeline.py`: same.
+- All 5 YAML training configs updated to `base_model: Qwen/Qwen3.5-0.8B`.
+- Default inference temperature: 0.0 → 0.7 (Qwen3 requires non-greedy decoding to avoid
+  repetition loops).
+- Default `n_ctx` in `load_gguf_model()`: 1024 → 2048.
+- Default `max_tokens` in engine `ask()`: 384 → 512.
+- Fine-tuned GGUF model: `models/incept-command-v2-q4_k_m.gguf` (503 MB, Q4_K_M).
+
+### Known Issues
+- **`llama-cpp-python` 0.3.16 does not support `qwen35` architecture** — the Python
+  bindings bundle an older llama.cpp that predates Qwen3.5. The brew-installed `llama-cli`
+  (build 8180+) works correctly. Python inference will work once `llama-cpp-python`
+  releases a version with updated llama.cpp backend. Track upstream:
+  https://github.com/abetlen/llama-cpp-python
+- **GGUF conversion requires config.json patch** — llama.cpp 8180 expects
+  `Qwen3_5ForConditionalGeneration` but HuggingFace outputs `Qwen3_5ForCausalLM`.
+  Workaround: patch `config.json` architectures field before running `convert_hf_to_gguf.py`.
+
 ## [0.4.0] - 2026-02-27 (Sprint 8: macOS + Explain Mode + Hardening + Shell Plugin)
 
 ### Added
@@ -212,6 +248,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Project scaffold:** `pyproject.toml` with hatchling build, optional dependency
   groups (`dev`, `server`, `cli`, `ml`, `eval`), Makefile with standard targets.
 
+[0.5.0]: https://github.com/incept-project/INCEPT/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/incept-project/INCEPT/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/incept-project/INCEPT/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/incept-project/INCEPT/compare/v0.1.0...v0.2.0

@@ -27,25 +27,13 @@ class TestExplainSlashCommand:
 
 
 class TestExplainCliFlag:
-    """--explain CLI flag triggers explain pipeline."""
+    """v2 removed the --explain CLI flag (model handles explanations natively).
 
-    def test_explain_flag_basic(self) -> None:
+    These tests verify the flag is no longer accepted.
+    """
+
+    def test_explain_flag_removed(self) -> None:
         runner = CliRunner()
         result = runner.invoke(main, ["--explain", "apt-get install nginx"])
-        assert result.exit_code == 0
-        assert "install" in result.output.lower()
-
-    def test_explain_flag_includes_risk(self) -> None:
-        runner = CliRunner()
-        result = runner.invoke(main, ["--explain", "apt-get install nginx"])
-        assert result.exit_code == 0
-        # Output should mention risk level
-        lower = result.output.lower()
-        assert "risk" in lower or "safe" in lower
-
-    def test_explain_flag_unknown_command(self) -> None:
-        runner = CliRunner()
-        result = runner.invoke(main, ["--explain", "frobnicator --quux"])
-        assert result.exit_code == 0
-        lower = result.output.lower()
-        assert "unrecognized" in lower or "unknown" in lower
+        # --explain is no longer a valid option
+        assert result.exit_code != 0

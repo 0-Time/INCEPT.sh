@@ -1,0 +1,908 @@
+{
+  "total": 100,
+  "correct": 93,
+  "accuracy": 93.0,
+  "elapsed_seconds": 147.0,
+  "results": [
+    {
+      "q": 1,
+      "question": "Display the current working directory",
+      "expected": "pwd",
+      "output": "pwd",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 2,
+      "question": "List files in the current directory",
+      "expected": "ls",
+      "output": "ls",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 3,
+      "question": "List all files, including hidden ones",
+      "expected": "ls -a",
+      "output": "ls -a",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 4,
+      "question": "List files with detailed information like permissions, size, owner",
+      "expected": "ls -l",
+      "output": "ls -l /var/log",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 5,
+      "question": "Change directory to /etc",
+      "expected": "cd /etc",
+      "output": "cd /etc",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 6,
+      "question": "Move up one directory level",
+      "expected": "cd ..",
+      "output": "cd ..",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 7,
+      "question": "Return to your home directory",
+      "expected": "cd ~",
+      "output": "cd ~",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 8,
+      "question": "Go to the previous directory you were in",
+      "expected": "cd -",
+      "output": "cd -",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 9,
+      "question": "Create a new directory named test",
+      "expected": "mkdir test",
+      "output": "mkdir /home/dave/test",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 10,
+      "question": "Create a directory and its parents, for example a/b/c",
+      "expected": "mkdir -p a/b/c",
+      "output": "mkdir /opt/a /opt/b /opt/c",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 11,
+      "question": "Remove an empty directory",
+      "expected": "rmdir",
+      "output": "rmdir emptydir",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 12,
+      "question": "Delete a file named a.txt",
+      "expected": "rm a.txt",
+      "output": "rm a.txt",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 13,
+      "question": "Delete a directory and everything inside it",
+      "expected": "rm -r",
+      "output": "rm -rf ~/bin",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 14,
+      "question": "Rename old.txt to new.txt",
+      "expected": "mv old.txt new.txt",
+      "output": "mv old.txt new.txt",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 15,
+      "question": "Move a.txt into the /tmp folder",
+      "expected": "mv a.txt /tmp",
+      "output": "mv a.txt /tmp/",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 16,
+      "question": "Copy a.txt to b.txt",
+      "expected": "cp a.txt b.txt",
+      "output": "cp a.txt b.txt",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 17,
+      "question": "Copy an entire directory to a new location",
+      "expected": "cp -r",
+      "output": "cp -r /home/user/project /mnt/backup/project",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 18,
+      "question": "Create an empty file named script.sh",
+      "expected": "touch script.sh",
+      "output": "touch script.sh",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 19,
+      "question": "Find where the python executable is located",
+      "expected": "which python",
+      "output": "locate python",
+      "type": "command",
+      "confidence": "low",
+      "passed": true
+    },
+    {
+      "q": 20,
+      "question": "Show the type of a file a.txt",
+      "expected": "file a.txt",
+      "output": "stat a.txt",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 21,
+      "question": "Display the entire content of a.txt",
+      "expected": "cat a.txt",
+      "output": "cat a.txt",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 22,
+      "question": "Concatenate two files a.txt and b.txt into c.txt",
+      "expected": "cat a.txt b.txt > c.txt",
+      "output": "cat a.txt b.txt > c.txt",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 23,
+      "question": "View a file with the ability to scroll up and down",
+      "expected": "less",
+      "output": "vim -c 'set scrollup=200' /var/log/syslog",
+      "type": "command",
+      "confidence": "medium",
+      "passed": false
+    },
+    {
+      "q": 24,
+      "question": "Display the first 10 lines of a file",
+      "expected": "head",
+      "output": "head -n 10 requirements.txt",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 25,
+      "question": "Display the last 10 lines of a file",
+      "expected": "tail",
+      "output": "dmesg | tail -n 10",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 26,
+      "question": "Monitor a log file in real-time as it updates",
+      "expected": "tail -f",
+      "output": "watch -n 1 'tail -f /var/log/syslog'",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 27,
+      "question": "Count the number of lines words and characters in a file",
+      "expected": "wc",
+      "output": "wc -l /home/documents/report.txt",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 28,
+      "question": "Count only the lines in a file",
+      "expected": "wc -l",
+      "output": "awk 'END {print NR}' file.txt",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 29,
+      "question": "Sort the lines of a file alphabetically",
+      "expected": "sort",
+      "output": "sort file.txt",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 30,
+      "question": "Remove duplicate lines from a sorted file",
+      "expected": "uniq",
+      "output": "sed '/^$/N; /\\n.*\\n/!P; D' file.txt",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 31,
+      "question": "Extract the first column from a CSV file that is comma delimited",
+      "expected": "cut -d",
+      "output": "awk -F, '{print $1}' data.csv",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 32,
+      "question": "Search for the word error in syslog",
+      "expected": "grep",
+      "output": "grep 'error' /var/log/syslog",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 33,
+      "question": "Search for a word ignoring case sensitivity",
+      "expected": "grep -i",
+      "output": "grep -i 'fatal' /var/log",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 34,
+      "question": "Search for a string in all files in a directory recursively",
+      "expected": "grep -r",
+      "output": "grep -r 'pattern' /path/to/dir",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 35,
+      "question": "Show line numbers while searching with grep",
+      "expected": "grep -n",
+      "output": "grep -n 'error' access.log",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 36,
+      "question": "Replace all instances of apple with orange in a file using sed",
+      "expected": "sed",
+      "output": "sed -i 's/apple/orange/g' /home/user/project/*.txt",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 37,
+      "question": "Open a file for editing in the terminal",
+      "expected": "nano",
+      "output": "nano /var/log/syslog",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 38,
+      "question": "Display the hex dump of a binary file",
+      "expected": "hexdump",
+      "output": "hexdump -C /usr/bin/ls | head -20",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 39,
+      "question": "Display only the printable strings in a binary file",
+      "expected": "strings",
+      "output": "strings -n 1 /usr/bin/ls",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 40,
+      "question": "Compare two files for differences",
+      "expected": "diff",
+      "output": "diff file1.txt file2.txt",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 41,
+      "question": "Change file permissions to read write execute for everyone",
+      "expected": "chmod 777",
+      "output": "chmod 755 access.log",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 42,
+      "question": "Make a script executable",
+      "expected": "chmod +x",
+      "output": "chmod +x script.sh",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 43,
+      "question": "Give the owner full permissions and others no permissions",
+      "expected": "chmod 700",
+      "output": "chmod 700 secure.sh",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 44,
+      "question": "Change the owner of a file to root",
+      "expected": "chown root",
+      "output": "sudo chown root /var/www/html/index.html",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 45,
+      "question": "Change the group of a file",
+      "expected": "chgrp",
+      "output": "chgrp group_name file",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 46,
+      "question": "Change both owner and group of a file at once",
+      "expected": "chown",
+      "output": "sudo chown -R www-data:www-data /var/www/html",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 47,
+      "question": "Recursively change permissions for a folder",
+      "expected": "chmod -R",
+      "output": "chmod -R 755 /var/www/html",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 48,
+      "question": "Check your current user identity",
+      "expected": "whoami",
+      "output": "user",
+      "type": "command",
+      "confidence": "low",
+      "passed": false
+    },
+    {
+      "q": 49,
+      "question": "Show your current user ID and group IDs",
+      "expected": "id",
+      "output": "id",
+      "type": "command",
+      "confidence": "low",
+      "passed": true
+    },
+    {
+      "q": 50,
+      "question": "Switch to another user account",
+      "expected": "su",
+      "output": "Switch to qa",
+      "type": "command",
+      "confidence": "low",
+      "passed": false
+    },
+    {
+      "q": 51,
+      "question": "Execute a command with administrative root privileges",
+      "expected": "sudo",
+      "output": "sudo /usr/local/bin/backup.sh",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 52,
+      "question": "List the members of a specific group",
+      "expected": "getent group",
+      "output": "sudo groupdel -g 1000",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 53,
+      "question": "Set the default permissions for newly created files",
+      "expected": "umask",
+      "output": "chmod 644 *.txt",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 54,
+      "question": "Make a file immutable so even root cannot delete it",
+      "expected": "chattr +i",
+      "output": "sudo chattr +i /var/log/messages",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 55,
+      "question": "View special attributes of a file",
+      "expected": "lsattr",
+      "output": "lsattr /etc/ssl/certs/ca-bundle.crt",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 56,
+      "question": "Show how long the system has been running",
+      "expected": "uptime",
+      "output": "cat /proc/uptime",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 57,
+      "question": "Display the current date and time",
+      "expected": "date",
+      "output": "date",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 58,
+      "question": "Show the Linux kernel version",
+      "expected": "uname -r",
+      "output": "sudo lshw -class kernel | grep -i version",
+      "type": "command",
+      "confidence": "medium",
+      "passed": false
+    },
+    {
+      "q": 59,
+      "question": "List all hardware information",
+      "expected": "lshw",
+      "output": "sudo lshw",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 60,
+      "question": "Show CPU architecture and details",
+      "expected": "lscpu",
+      "output": "cat /proc/cpuinfo | grep -E \"model|architecture|features\"",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 61,
+      "question": "List all connected USB devices",
+      "expected": "lsusb",
+      "output": "sudo lsusb",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 62,
+      "question": "List all PCI devices",
+      "expected": "lspci",
+      "output": "lspci",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 63,
+      "question": "Check the amount of free and used RAM",
+      "expected": "free",
+      "output": "free -h",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 64,
+      "question": "Show disk space usage in human readable format",
+      "expected": "df -h",
+      "output": "df -h",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 65,
+      "question": "Show the size of a specific directory",
+      "expected": "du -sh",
+      "output": "ls -lh /var/log | tail -n 5",
+      "type": "command",
+      "confidence": "medium",
+      "passed": false
+    },
+    {
+      "q": 66,
+      "question": "List all running processes",
+      "expected": "ps aux",
+      "output": "sudo ps aux",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 67,
+      "question": "Show a real-time interactive list of processes",
+      "expected": "top",
+      "output": "watch -n 1 ps aux",
+      "type": "command",
+      "confidence": "medium",
+      "passed": false
+    },
+    {
+      "q": 68,
+      "question": "Kill a process using its PID 1234",
+      "expected": "kill 1234",
+      "output": "kill -9 1234",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 69,
+      "question": "Force kill a stubborn process with PID 1234",
+      "expected": "kill -9",
+      "output": "kill -9 1234",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 70,
+      "question": "Kill a process by its name for example firefox",
+      "expected": "pkill firefox",
+      "output": "killall firefox",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 71,
+      "question": "Show all open files and the processes using them",
+      "expected": "lsof",
+      "output": "lsof -p",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 72,
+      "question": "List all loaded kernel modules",
+      "expected": "lsmod",
+      "output": "sudo lsmod",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 73,
+      "question": "Shutdown the system immediately",
+      "expected": "shutdown",
+      "output": "sudo systemctl poweroff",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 74,
+      "question": "Reboot the system",
+      "expected": "reboot",
+      "output": "sudo reboot",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 75,
+      "question": "View the system message buffer and kernel logs",
+      "expected": "dmesg",
+      "output": "sudo journalctl -f",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 76,
+      "question": "Show all network interfaces and IP addresses",
+      "expected": "ip a",
+      "output": "ip addr show",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 77,
+      "question": "Check connectivity to google.com",
+      "expected": "ping google.com",
+      "output": "mtr google.com",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 78,
+      "question": "Trace the path packets take to a host",
+      "expected": "traceroute",
+      "output": "traceroute google.com",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 79,
+      "question": "Download a file from the internet",
+      "expected": "wget",
+      "output": "wget -x http://example.com/file.zip",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 80,
+      "question": "Display active network connections and ports",
+      "expected": "ss",
+      "output": "lsof -i",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 81,
+      "question": "Show the routing table",
+      "expected": "ip route",
+      "output": "ip route show",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 82,
+      "question": "Perform a DNS lookup for a domain",
+      "expected": "dig",
+      "output": "nslookup example.com",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 83,
+      "question": "Scan for open ports on a server",
+      "expected": "nmap",
+      "output": "sudo nmap -sV 192.168.1.100",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 84,
+      "question": "Securely copy a file to a remote server",
+      "expected": "scp",
+      "output": "ssh-copy-id -i ~/.ssh/id_ed25519 user@hostname",
+      "type": "command",
+      "confidence": "high",
+      "passed": false
+    },
+    {
+      "q": 85,
+      "question": "Log into a remote server securely using SSH",
+      "expected": "ssh",
+      "output": "ssh user@hostname",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 86,
+      "question": "Show the hostname of the machine",
+      "expected": "hostname",
+      "output": "hostname",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 87,
+      "question": "Find the public IP of your network",
+      "expected": "curl",
+      "output": "curl -s ifconfig.me",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 88,
+      "question": "Transfer files using an interactive tool",
+      "expected": "sftp",
+      "output": "rsync -avz source_dir/ destination_dir/",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 89,
+      "question": "Show the history of all commands typed",
+      "expected": "history",
+      "output": "history",
+      "type": "command",
+      "confidence": "low",
+      "passed": true
+    },
+    {
+      "q": 90,
+      "question": "Clear the terminal screen",
+      "expected": "clear",
+      "output": "clear",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 91,
+      "question": "Create an alias for a long command",
+      "expected": "alias",
+      "output": "alias longcmd='ls -la'",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 92,
+      "question": "Search for files by name across the whole system",
+      "expected": "find",
+      "output": "locate docker-compose.yml",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 93,
+      "question": "Search for files larger than 100MB",
+      "expected": "find",
+      "output": "find /opt -type f -size +100M",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 94,
+      "question": "Create a tar archive of a folder",
+      "expected": "tar",
+      "output": "tar -czf archive.tar /path/to/folder",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 95,
+      "question": "Extract a tar.gz compressed file",
+      "expected": "tar",
+      "output": "tar -xJf archive.tar.gz",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 96,
+      "question": "Compress a file using zip",
+      "expected": "zip",
+      "output": "zip -r archive.zip file",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 97,
+      "question": "Unzip a zip file",
+      "expected": "unzip",
+      "output": "unzip archive.zip",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 98,
+      "question": "Run a command in the background",
+      "expected": "&",
+      "output": "echo 'curl -s https://example.com' | &",
+      "type": "command",
+      "confidence": "medium",
+      "passed": true
+    },
+    {
+      "q": 99,
+      "question": "Bring a background job to the foreground",
+      "expected": "fg",
+      "output": "fg %1",
+      "type": "command",
+      "confidence": "high",
+      "passed": true
+    },
+    {
+      "q": 100,
+      "question": "See the list of current background jobs",
+      "expected": "jobs",
+      "output": "jobs",
+      "type": "command",
+      "confidence": "low",
+      "passed": true
+    }
+  ]
+}

@@ -19,6 +19,7 @@ class InceptConfig(BaseModel):
     prompt: str = "incept> "
     model_path: str | None = None
     history_file: str = "~/.incept_history"
+    think: bool = False
 
 
 def load_config(path: str | None = None) -> InceptConfig:

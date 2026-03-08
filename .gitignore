@@ -44,3 +44,20 @@ htmlcov/
 
 # Sprint docs (internal)
 Sprints/
+
+# Large files
+models/*.gguf
+outputs/
+.venv/
+__pycache__/
+*.pyc
+data/v2/train.jsonl
+data/v2/train_v3.jsonl
+data/v2/train_backup.jsonl
+data/generated/
+*.egg-info/
+data/v2/train_fixed.jsonl
+data/training/unified_train.jsonl
+data/training/command_train.jsonl
+data/training/command_val.jsonl
+data/training/command_test.jsonl

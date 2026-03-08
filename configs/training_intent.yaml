@@ -1,5 +1,5 @@
 task: intent
-base_model: Qwen/Qwen2.5-0.5B-Instruct
+base_model: Qwen/Qwen3.5-0.8B
 max_seq_length: 512
 
 lora:

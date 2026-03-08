@@ -107,7 +107,7 @@ def convert_to_gguf(
 def load_gguf_model(
     gguf_path: str | Path,
     grammar_path: str | Path | None = None,
-    n_ctx: int = 512,
+    n_ctx: int = 2048,
     n_gpu_layers: int = 0,
 ) -> Any:
     """Load a GGUF model via llama-cpp-python.
@@ -145,7 +145,9 @@ def run_constrained_inference(
     prompt: str,
     grammar: Any | None = None,
     max_tokens: int = 128,
-    temperature: float = 0.0,
+    temperature: float = 0.7,
+    top_p: float = 0.8,
+    top_k: int = 20,
 ) -> dict[str, Any]:
     """Run a single constrained inference pass.
 
@@ -155,16 +157,27 @@ def run_constrained_inference(
         grammar: Optional LlamaGrammar for constrained decoding.
         max_tokens: Maximum tokens to generate.
         temperature: Sampling temperature (0.0 = greedy).
+        top_p: Nucleus sampling threshold.
+        top_k: Top-k sampling threshold.
 
     Returns:
         Dict with 'text', 'tokens', 'logprobs' keys.
     """
+    # Reset KV cache for stateless per-query inference (required for
+    # Qwen3.5 DeltaNet/SSM hybrid architecture — partial cache clear
+    # via seq_rm is unreliable, so do a full reset between queries).
+    if hasattr(model, "reset"):
+        model.reset()
+
     kwargs: dict[str, Any] = {
         "prompt": prompt,
         "max_tokens": max_tokens,
         "temperature": temperature,
         "logprobs": True,
     }
+    if temperature > 0:
+        kwargs["top_p"] = top_p
+        kwargs["top_k"] = top_k
     if grammar is not None:
         kwargs["grammar"] = grammar
 

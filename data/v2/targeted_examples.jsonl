@@ -1,0 +1,193 @@
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "show my identity"}, {"role": "assistant", "content": "id"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "bring background job 1 to foreground"}, {"role": "assistant", "content": "fg %1"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "am I root"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "standard file permissions 644"}, {"role": "assistant", "content": "chmod 644 file.txt"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "list background jobs"}, {"role": "assistant", "content": "jobs"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "show kernel modules"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "deduplicate lines in log.txt"}, {"role": "assistant", "content": "sort log.txt | uniq"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "show first 100 lines of data.csv"}, {"role": "assistant", "content": "head -n 100 data.csv"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "run make in background"}, {"role": "assistant", "content": "make &"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "find the path of node"}, {"role": "assistant", "content": "which node"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "list loaded kernel modules"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "display current logged in user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "find where python is installed"}, {"role": "assistant", "content": "which python"}]}
+{"messages": [{"role": "system", "content": "opensuse 15.5 bash non-root"}, {"role": "user", "content": "my user information"}, {"role": "assistant", "content": "id"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "deduplicate entries in results.txt"}, {"role": "assistant", "content": "sort results.txt | uniq"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "copy from remote to local"}, {"role": "assistant", "content": "scp user@server:/path/file.txt ."}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "copy config.yml to config.bak"}, {"role": "assistant", "content": "cp config.yml config.bak"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "give everyone read write execute on file.txt"}, {"role": "assistant", "content": "chmod 777 file.txt"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "remove job from shell job table"}, {"role": "assistant", "content": "disown %1"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "locate the bash executable"}, {"role": "assistant", "content": "which bash"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "read only for everyone"}, {"role": "assistant", "content": "chmod 444 file.txt"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "extract fields 1 and 3 from csv"}, {"role": "assistant", "content": "cut -d',' -f1,3 data.csv"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "watch log file in real time"}, {"role": "assistant", "content": "tail -f /var/log/syslog"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "make file executable"}, {"role": "assistant", "content": "chmod +x file"}]}
+{"messages": [{"role": "system", "content": "opensuse 15.5 bash non-root"}, {"role": "user", "content": "interactive process viewer"}, {"role": "assistant", "content": "htop"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "monitor system processes in real time"}, {"role": "assistant", "content": "top"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "list usb devices"}, {"role": "assistant", "content": "lsusb"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "verify current user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "list all active kernel modules"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "show current jobs"}, {"role": "assistant", "content": "jobs"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "make a copy of script.sh"}, {"role": "assistant", "content": "cp script.sh script_backup.sh"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "extract first field delimited by tab"}, {"role": "assistant", "content": "cut -f1 data.tsv"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "identify file format"}, {"role": "assistant", "content": "file document.pdf"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "identify current user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "lock down file to owner"}, {"role": "assistant", "content": "chmod 700 file.txt"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "real-time process monitor"}, {"role": "assistant", "content": "top"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "copy all txt files to backup folder"}, {"role": "assistant", "content": "cp *.txt backup/"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "find duplicate lines in data.csv"}, {"role": "assistant", "content": "sort data.csv | uniq -d"}]}
+{"messages": [{"role": "system", "content": "opensuse 15.5 bash non-root"}, {"role": "user", "content": "start long running process in background"}, {"role": "assistant", "content": "./process.sh &"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "count the number of lines in /var/log/syslog"}, {"role": "assistant", "content": "wc -l /var/log/syslog"}]}
+{"messages": [{"role": "system", "content": "opensuse 15.5 bash non-root"}, {"role": "user", "content": "cpu info"}, {"role": "assistant", "content": "lscpu"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "list all background processes"}, {"role": "assistant", "content": "jobs"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "copy entire project directory"}, {"role": "assistant", "content": "cp -r project/ project_backup/"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "make database.db undeletable"}, {"role": "assistant", "content": "chattr +i database.db"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "current user identity"}, {"role": "assistant", "content": "id"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "count occurrences of each unique line"}, {"role": "assistant", "content": "sort file.txt | uniq -c"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "check background jobs"}, {"role": "assistant", "content": "jobs"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "check my username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "show first 20 lines of file.txt"}, {"role": "assistant", "content": "head -n 20 file.txt"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "first column of colon-separated file"}, {"role": "assistant", "content": "cut -d: -f1 file.txt"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "owner full, group read execute, others none"}, {"role": "assistant", "content": "chmod 750 dir/"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "full hardware inventory"}, {"role": "assistant", "content": "sudo lshw"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "who am i"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "live process list"}, {"role": "assistant", "content": "top"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "remove immutable flag from file.txt"}, {"role": "assistant", "content": "chattr -i file.txt"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "sort lines alphabetically in file.txt"}, {"role": "assistant", "content": "sort file.txt"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "display cpu architecture details"}, {"role": "assistant", "content": "lscpu"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "set immutable attribute on config"}, {"role": "assistant", "content": "chattr +i config"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "show cpu information"}, {"role": "assistant", "content": "lscpu"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "set file permissions to 777"}, {"role": "assistant", "content": "chmod 777 file.txt"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "hardware summary"}, {"role": "assistant", "content": "lshw -short"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "check file type of data.bin"}, {"role": "assistant", "content": "file data.bin"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "line count of README.md"}, {"role": "assistant", "content": "wc -l README.md"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "show the current umask value"}, {"role": "assistant", "content": "umask"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "copy a.txt to b.txt"}, {"role": "assistant", "content": "cp a.txt b.txt"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "set default file permissions to 022"}, {"role": "assistant", "content": "umask 022"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "show connected usb devices"}, {"role": "assistant", "content": "lsusb"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "owner read write, group and others read only"}, {"role": "assistant", "content": "chmod 644 file.txt"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "get shells from /etc/passwd"}, {"role": "assistant", "content": "cut -d: -f7 /etc/passwd"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "what type of file is image.dat"}, {"role": "assistant", "content": "file image.dat"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "reverse sort items.txt"}, {"role": "assistant", "content": "sort -r items.txt"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "list all hardware"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "print current user name"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "secure copy local file to remote"}, {"role": "assistant", "content": "scp data.csv user@host:/tmp/"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "extract second column of tab-separated file"}, {"role": "assistant", "content": "cut -f2 data.tsv"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "make script.sh executable"}, {"role": "assistant", "content": "chmod +x script.sh"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "which user is active"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "recursive copy of src to dst"}, {"role": "assistant", "content": "cp -r src/ dst/"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "count lines in file.txt"}, {"role": "assistant", "content": "wc -l file.txt"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "move background process to foreground"}, {"role": "assistant", "content": "fg %1"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "display system hardware details"}, {"role": "assistant", "content": "lshw -short"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "what is my user id"}, {"role": "assistant", "content": "id"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "secure file transfer to remote host"}, {"role": "assistant", "content": "scp report.pdf user@192.168.1.10:/home/user/"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "unique lines from access.log"}, {"role": "assistant", "content": "sort access.log | uniq"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "add execute permission to deploy.sh"}, {"role": "assistant", "content": "chmod +x deploy.sh"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "resume stopped job in background"}, {"role": "assistant", "content": "bg %1"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "put stopped job back in background"}, {"role": "assistant", "content": "bg %1"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "set permissions to owner read write execute only"}, {"role": "assistant", "content": "chmod 700 file.txt"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "show my user and group info"}, {"role": "assistant", "content": "id"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "sort data.csv"}, {"role": "assistant", "content": "sort data.csv"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "disown background job 1"}, {"role": "assistant", "content": "disown %1"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "what is my current umask"}, {"role": "assistant", "content": "umask"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "execute backup.sh in background"}, {"role": "assistant", "content": "./backup.sh &"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "run npm build in background"}, {"role": "assistant", "content": "npm run build &"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "start python server in background"}, {"role": "assistant", "content": "python3 -m http.server &"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "make file.txt immutable"}, {"role": "assistant", "content": "chattr +i file.txt"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "detach process from terminal"}, {"role": "assistant", "content": "disown"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "get line count for report.txt"}, {"role": "assistant", "content": "wc -l report.txt"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "chmod read write execute for everyone"}, {"role": "assistant", "content": "chmod 777 file.txt"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "start the server in the background"}, {"role": "assistant", "content": "./start_server.sh &"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "get the home directories from passwd"}, {"role": "assistant", "content": "cut -d: -f6 /etc/passwd"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "remove duplicates from names.txt"}, {"role": "assistant", "content": "sort names.txt | uniq"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "recursive permissions change to 755"}, {"role": "assistant", "content": "chmod -R 755 dir/"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "display running jobs"}, {"role": "assistant", "content": "jobs"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "tell me my username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "set umask to 077"}, {"role": "assistant", "content": "umask 077"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "determine file type"}, {"role": "assistant", "content": "file unknown.dat"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "resume job in foreground"}, {"role": "assistant", "content": "fg %1"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "get second field from comma-separated file"}, {"role": "assistant", "content": "cut -d',' -f2 data.csv"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "sort file numerically"}, {"role": "assistant", "content": "sort -n numbers.txt"}]}
+{"messages": [{"role": "system", "content": "opensuse 15.5 bash non-root"}, {"role": "user", "content": "run wget download in background"}, {"role": "assistant", "content": "wget https://example.com/file.zip &"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "what account am I using"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "copy the file data.csv to /tmp"}, {"role": "assistant", "content": "cp data.csv /tmp/"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "show my uid and gid"}, {"role": "assistant", "content": "id"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "show who I am"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "count lines in /etc/passwd"}, {"role": "assistant", "content": "wc -l /etc/passwd"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "sort names.txt in reverse order"}, {"role": "assistant", "content": "sort -r names.txt"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "set directory permissions to 755"}, {"role": "assistant", "content": "chmod 755 dir/"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "list all usb peripherals"}, {"role": "assistant", "content": "lsusb"}]}
+{"messages": [{"role": "system", "content": "opensuse 15.5 bash non-root"}, {"role": "user", "content": "check my identity"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "how many lines does access.log have"}, {"role": "assistant", "content": "wc -l access.log"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "display loaded drivers"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "foreground job 2"}, {"role": "assistant", "content": "fg %2"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "count words in essay.txt"}, {"role": "assistant", "content": "wc -w essay.txt"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "first line of /etc/hostname"}, {"role": "assistant", "content": "head -n 1 /etc/hostname"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "owner only full permissions"}, {"role": "assistant", "content": "chmod 700 file.txt"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "copy /etc/hosts to current directory"}, {"role": "assistant", "content": "cp /etc/hosts ."}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "copy file to remote server"}, {"role": "assistant", "content": "scp file.txt user@server:/path/"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "bring the last background job to foreground"}, {"role": "assistant", "content": "fg"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "show only unique lines in output.txt"}, {"role": "assistant", "content": "sort output.txt | uniq"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "copy file preserving permissions"}, {"role": "assistant", "content": "cp -p config.conf config.conf.bak"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "which python3 am I using"}, {"role": "assistant", "content": "which python3"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "continue job 1 in background"}, {"role": "assistant", "content": "bg %1"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "what user am I"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "full permissions for all users"}, {"role": "assistant", "content": "chmod 777 file.txt"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "get usernames from /etc/passwd"}, {"role": "assistant", "content": "cut -d: -f1 /etc/passwd"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "display my login name"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "give only the owner all permissions"}, {"role": "assistant", "content": "chmod 700 file.txt"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "prevent deletion of important.conf"}, {"role": "assistant", "content": "chattr +i important.conf"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "who am I logged in as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "switch job 1 to foreground"}, {"role": "assistant", "content": "fg %1"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "detach job from shell"}, {"role": "assistant", "content": "disown"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "display usb device tree"}, {"role": "assistant", "content": "lsusb -t"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "count the lines of main.py"}, {"role": "assistant", "content": "wc -l main.py"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "restrict file to owner only"}, {"role": "assistant", "content": "chmod 700 file.txt"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "detach running process"}, {"role": "assistant", "content": "disown"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "sort /etc/passwd"}, {"role": "assistant", "content": "sort /etc/passwd"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "sort words.txt alphabetically"}, {"role": "assistant", "content": "sort words.txt"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "how many lines in data.csv"}, {"role": "assistant", "content": "wc -l data.csv"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "continuously monitor error.log"}, {"role": "assistant", "content": "tail -f error.log"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "bottom 10 lines of output.txt"}, {"role": "assistant", "content": "tail -n 10 output.txt"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "what jobs are running"}, {"role": "assistant", "content": "jobs"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "prevent job from being killed on logout"}, {"role": "assistant", "content": "disown %1"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "number of lines in config.yml"}, {"role": "assistant", "content": "wc -l config.yml"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "show hardware information"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "alphabetically sort entries.txt"}, {"role": "assistant", "content": "sort entries.txt"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "first 3 lines of README"}, {"role": "assistant", "content": "head -n 3 README.md"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "print my username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "extract first column from CSV file"}, {"role": "assistant", "content": "cut -d',' -f1 data.csv"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "run script.sh in the background"}, {"role": "assistant", "content": "./script.sh &"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "foreground the most recent job"}, {"role": "assistant", "content": "fg"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "transfer file to server via ssh"}, {"role": "assistant", "content": "scp backup.tar.gz admin@server:~/"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "show interactive process list"}, {"role": "assistant", "content": "top"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "where is gcc"}, {"role": "assistant", "content": "which gcc"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "show processor details"}, {"role": "assistant", "content": "lscpu"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "display last 5 lines of log.txt"}, {"role": "assistant", "content": "tail -n 5 log.txt"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "continue background execution of job 1"}, {"role": "assistant", "content": "bg %1"}]}
+{"messages": [{"role": "system", "content": "opensuse 15.5 bash non-root"}, {"role": "user", "content": "last 50 lines of access.log"}, {"role": "assistant", "content": "tail -n 50 access.log"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "show file type of archive"}, {"role": "assistant", "content": "file archive.tar.gz"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "what user am I logged in as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "background job 2"}, {"role": "assistant", "content": "bg %2"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "check umask"}, {"role": "assistant", "content": "umask"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "duplicate report.pdf"}, {"role": "assistant", "content": "cp report.pdf report_copy.pdf"}]}
+{"messages": [{"role": "system", "content": "opensuse 15.5 bash non-root"}, {"role": "user", "content": "show running background jobs"}, {"role": "assistant", "content": "jobs"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "background the compilation"}, {"role": "assistant", "content": "make all &"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "what is my login"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "make file accessible to all"}, {"role": "assistant", "content": "chmod 777 file.txt"}]}
+{"messages": [{"role": "system", "content": "opensuse 15.5 bash non-root"}, {"role": "user", "content": "extract third column from csv"}, {"role": "assistant", "content": "cut -d',' -f3 file.csv"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "resume suspended process in background"}, {"role": "assistant", "content": "bg"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "sort the contents of users.txt"}, {"role": "assistant", "content": "sort users.txt"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "launch process in background"}, {"role": "assistant", "content": "python3 train.py &"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "get unique lines from data.txt"}, {"role": "assistant", "content": "sort data.txt | uniq"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "remove duplicate lines from sorted file"}, {"role": "assistant", "content": "sort file.txt | uniq"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "list active jobs"}, {"role": "assistant", "content": "jobs"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "set execute bit on run.sh"}, {"role": "assistant", "content": "chmod +x run.sh"}]}
+{"messages": [{"role": "system", "content": "fedora 39 zsh non-root"}, {"role": "user", "content": "sort lines of output.log"}, {"role": "assistant", "content": "sort output.log"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "show current username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "how many cpu cores do I have"}, {"role": "assistant", "content": "lscpu"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "what modules are loaded"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "strip duplicates from list.txt"}, {"role": "assistant", "content": "sort list.txt | uniq"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "count lines in output.log"}, {"role": "assistant", "content": "wc -l output.log"}]}
+{"messages": [{"role": "system", "content": "fedora 39 bash non-root"}, {"role": "user", "content": "bring job to foreground"}, {"role": "assistant", "content": "fg"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "what usb devices are connected"}, {"role": "assistant", "content": "lsusb"}]}

@@ -14,7 +14,7 @@ class AppState:
 
     def __init__(self, max_sessions: int = 1000) -> None:
         self.model: Any = None
-        self.model_ready: bool = True  # True when no model needed
+        self.model_ready: bool = False
         self.lock: asyncio.Lock = asyncio.Lock()
         self.start_time: float = time.time()
         self.request_count: int = 0

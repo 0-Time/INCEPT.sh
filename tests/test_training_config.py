@@ -73,7 +73,7 @@ class TestTrainingConfig:
     def test_minimal_config(self) -> None:
         cfg = self._minimal()
         assert cfg.task == TaskType.INTENT
-        assert cfg.base_model == "Qwen/Qwen2.5-0.5B-Instruct"
+        assert cfg.base_model == "Qwen/Qwen3.5-0.8B"
         assert cfg.max_seq_length == 512
         assert cfg.learning_rate == 2e-4
         assert cfg.num_epochs == 5
@@ -149,7 +149,7 @@ class TestLoadConfig:
     def test_roundtrip_all_fields(self) -> None:
         """Verify YAML configs populate all expected fields."""
         cfg = load_config(CONFIGS_DIR / "training_intent.yaml")
-        assert cfg.base_model == "Qwen/Qwen2.5-0.5B-Instruct"
+        assert cfg.base_model == "Qwen/Qwen3.5-0.8B"
         assert cfg.max_seq_length == 512
         assert cfg.use_quantization is True
         assert cfg.quantization.load_in_4bit is True
@@ -196,12 +196,12 @@ class TestDPOConfig:
             num_epochs=3,
             max_length=1024,
             max_prompt_length=512,
-            reference_model="Qwen/Qwen2.5-0.5B-Instruct",
+            reference_model="Qwen/Qwen3.5-0.8B",
         )
         assert cfg.beta == 0.2
         assert cfg.learning_rate == 1e-4
         assert cfg.num_epochs == 3
-        assert cfg.reference_model == "Qwen/Qwen2.5-0.5B-Instruct"
+        assert cfg.reference_model == "Qwen/Qwen3.5-0.8B"
 
     def test_beta_bounds(self) -> None:
         with pytest.raises(ValueError):

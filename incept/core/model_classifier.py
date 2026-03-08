@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import math
 from pathlib import Path
 from typing import Any
@@ -38,12 +39,26 @@ def resolve_slot_grammar(intent: str) -> Path | None:
 
 
 def parse_slot_output(raw: str) -> dict[str, str]:
-    """Parse key=value slot output from the model.
+    """Parse slot output from the model.
 
-    Expected format: one key=value pair per line.
+    Supports two formats:
+    - JSON: ``{"key": "value", ...}``  (training data format)
+    - key=value: one pair per line      (legacy grammar format)
     """
+    text = raw.strip().rstrip("</s>").strip()
+
+    # Try JSON first (matches training data format)
+    if text.startswith("{"):
+        try:
+            parsed = json.loads(text)
+            if isinstance(parsed, dict):
+                return {k: str(v) for k, v in parsed.items()}
+        except (json.JSONDecodeError, ValueError):
+            pass
+
+    # Fallback to key=value format
     slots: dict[str, str] = {}
-    for line in raw.strip().splitlines():
+    for line in text.splitlines():
         line = line.strip()
         if not line or "=" not in line:
             continue
@@ -80,17 +95,61 @@ class ModelClassifierResult(BaseModel):
     used_model: bool = True
 
 
+# ========================== Context formatting ==========================
+
+
+def _format_context_for_model(context: str) -> str:
+    """Convert JSON context to the compact training-data format.
+
+    Training data uses: ``{distro_family} {shell} {root|non-root} {safe}``
+    e.g. ``debian bash non-root safe``
+
+    If *context* is already in that format (no ``{``), return as-is.
+    """
+    context = context.strip()
+    if not context.startswith("{"):
+        return context
+
+    try:
+        data = json.loads(context)
+    except (json.JSONDecodeError, ValueError):
+        return context
+
+    distro = data.get("distro_family") or data.get("distro_id") or "debian"
+    shell = data.get("shell", "bash")
+    is_root = data.get("is_root", False)
+    safe = data.get("safe_mode", True)
+
+    root_str = "root" if is_root else "non-root"
+    safe_str = "safe" if safe else "unsafe"
+
+    return f"{distro} {shell} {root_str} {safe_str}"
+
+
 # ========================== Prompt building ==========================
 
 
 def _build_intent_prompt(nl_request: str, context: str) -> str:
-    """Format the intent classification prompt."""
-    return f"[CONTEXT] {context} [REQUEST] {nl_request} [INTENT]"
+    """Format the intent classification prompt (matches SFT training data)."""
+    ctx = _format_context_for_model(context)
+    return (
+        "<s>[INST] Given the context and request, classify the intent.\n"
+        f"[CONTEXT] {ctx}\n"
+        f"[REQUEST] {nl_request}\n"
+        "[INTENT] [/INST]"
+    )
 
 
 def _build_slot_prompt(intent: str, nl_request: str, context: str) -> str:
-    """Format the slot filling prompt."""
-    return f"[CONTEXT] {context} [REQUEST] {nl_request} [INTENT] {intent} [SLOTS]"
+    """Format the slot filling prompt (matches SFT training data)."""
+    ctx = _format_context_for_model(context)
+    return (
+        "<s>[INST] Given the context, request, and intent, extract parameter slots.\n"
+        f"[CONTEXT] {ctx}\n"
+        f"[REQUEST] {nl_request}\n"
+        f"[INTENT] {intent}\n"
+        "[SLOTS] [/INST]"
+    )
 
 
 # ========================== Classification functions ==========================
@@ -152,18 +211,12 @@ def fill_slots(
     Returns:
         SlotResult with parsed slots and logprobs.
     """
-    slot_grammar_path = resolve_slot_grammar(intent)
-    grammar = None
-
-    if slot_grammar_path:
-        with open(slot_grammar_path) as f:
-            grammar_text = f.read()
-        from llama_cpp import LlamaGrammar
-
-        grammar = LlamaGrammar.from_string(grammar_text)
-
+    # Slot filling runs without GBNF grammar constraints — the fine-tuned
+    # model learns to output JSON from training data, while the legacy GBNF
+    # grammars enforce key=value format.  Grammar-free decoding avoids the
+    # format mismatch and lets the model produce the JSON it was trained on.
     prompt = _build_slot_prompt(intent, nl_request, context)
-    result = run_constrained_inference(model, prompt, grammar=grammar, max_tokens=256)
+    result = run_constrained_inference(model, prompt, grammar=None, max_tokens=256)
 
     text = result["text"].strip()
     logprobs = result["logprobs"]

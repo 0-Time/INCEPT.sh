@@ -1,37 +1,50 @@
-"""Interactive REPL for INCEPT."""
+"""Interactive REPL for INCEPT/Sh."""
 
 from __future__ import annotations
 
 import os
+import sys
+import time
 
+from rich.console import Console
+from rich.markup import escape
+from rich.panel import Panel
+from rich.text import Text
+
+from incept import __version__
+from incept.cli.banner import render_banner
 from incept.cli.commands import SlashCommandRegistry
 from incept.cli.config import InceptConfig
-from incept.cli.display import DisplayManager
-from incept.core.pipeline import run_pipeline
+from incept.core.engine import EngineResponse, InceptEngine
+
+
+console = Console()
 
 
 class InceptREPL:
-    """Interactive Read-Eval-Print Loop for INCEPT."""
+    """Interactive Read-Eval-Print Loop for INCEPT/Sh."""
+
+    _MAX_HISTORY_TURNS = 6
 
     def __init__(self, config: InceptConfig) -> None:
         self.config = config
-        self.display = DisplayManager(color=config.color)
         self.commands = SlashCommandRegistry()
-        self.history: list[str] = []
+        self.query_history: list[str] = []
+        self._chat_history: list[dict[str, str]] = []
+        self._engine = InceptEngine(think=config.think)
 
-    def get_welcome_banner(self) -> str:
-        """Return the welcome banner."""
-        return self.display.welcome_banner()
+    def _print_banner(self) -> None:
+        """Print the welcome banner."""
+        ctx = self._engine.context_line
+        status = "[bold green]● ready[/bold green]" if self._engine.model_loaded else "[bold red]● no model[/bold red]"
+        render_banner(console, __version__, status, ctx)
 
     def get_prompt(self) -> str:
         """Return the current prompt string."""
-        return self.config.prompt
+        return ""  # We use rich prompt instead
 
     def handle_input(self, text: str) -> str | None:
-        """Process a single line of input.
-
-        Returns output text, "__exit__" to quit, or None for no output.
-        """
+        """Process a single line of input."""
         if not text.strip():
             return None
 
@@ -42,81 +55,184 @@ class InceptREPL:
             cmd_args = parts[1] if len(parts) > 1 else ""
 
             if not self.commands.has(cmd_name):
-                return f"Unknown command: {cmd_name}. Type /help for available commands."
+                return f"[red]✗[/red] Unknown command: {cmd_name}. Type /help for available commands."
 
             result = self.commands.dispatch(cmd_name, cmd_args)
 
-            # Special handling for /history
             if cmd_name == "/history":
-                if self.history:
-                    lines = ["Session history:"]
-                    for i, entry in enumerate(self.history, 1):
-                        lines.append(f"  {i}. {entry}")
+                if self.query_history:
+                    lines = ["[bold]Session history:[/bold]"]
+                    for i, entry in enumerate(self.query_history, 1):
+                        lines.append(f"  [dim]{i}.[/dim] {entry}")
                     return "\n".join(lines)
-                return "Session history: (no entries yet)"
+                return "[dim]Session history: (no entries yet)[/dim]"
 
             return result
 
         # Natural language request
-        self.history.append(text)
-        pipeline_result = run_pipeline(
-            nl_request=text,
-            verbosity=self.config.verbosity,
-        )
-        return self._format_pipeline_result(pipeline_result)
+        self.query_history.append(text)
 
-    def _format_pipeline_result(self, result: object) -> str:
-        """Format pipeline result for display."""
-        from incept.core.pipeline import PipelineResponse
-        from incept.safety.validator import RiskLevel
+        # Show thinking indicator
+        t0 = time.time()
+        resp = self._engine.ask(text, history=self._chat_history or None)
+        elapsed = time.time() - t0
 
-        if not isinstance(result, PipelineResponse):
-            return str(result)
+        # Record turn
+        self._chat_history.append({"role": "user", "content": text})
+        self._chat_history.append({"role": "assistant", "content": resp.text})
+        if len(self._chat_history) > self._MAX_HISTORY_TURNS * 2:
+            self._chat_history = self._chat_history[-(self._MAX_HISTORY_TURNS * 2):]
 
-        if not result.responses:
-            return "No matching command found. Try rephrasing your request."
+        return self._format_response(resp, elapsed)
 
-        lines: list[str] = []
-        for resp in result.responses:
-            if resp.command:
-                risk = RiskLevel(resp.command.risk_level)
-                lines.append(self.display.format_command(resp.command.command, risk))
-                if resp.command.explanation:
-                    lines.append(f"  {resp.command.explanation}")
-            elif resp.clarification:
-                lines.append(
-                    self.display.format_clarification(
-                        resp.clarification.question,
-                        resp.clarification.options,
-                    )
-                )
-            elif resp.error:
-                lines.append(f"Error: {resp.error.error}")
-                if hasattr(resp.error, "reason"):
-                    lines.append(f"  Reason: {resp.error.reason}")
-        return "\n".join(lines)
+    @staticmethod
+    def _format_response(resp: EngineResponse, elapsed: float = 0) -> str:
+        """Format an engine response for terminal display."""
+        time_str = f"[dim]{elapsed:.1f}s[/dim]" if elapsed > 0 else ""
+
+        if resp.type == "command":
+            risk = resp.risk or "safe"
+            if risk == "safe":
+                risk_badge = "[bold green]✓ SAFE[/bold green]"
+                cmd_style = "bold green"
+            elif risk == "caution":
+                risk_badge = "[bold yellow]⚠ CAUTION[/bold yellow]"
+                cmd_style = "bold yellow"
+            elif risk == "dangerous":
+                risk_badge = "[bold red]✗ DANGEROUS[/bold red]"
+                cmd_style = "bold red"
+            else:
+                risk_badge = "[bold red]🛑 BLOCKED[/bold red]"
+                cmd_style = "bold red"
+
+            lines = [
+                f"  {risk_badge}  {time_str}",
+                "",
+                f"  [{cmd_style}]  $ {escape(resp.text)}[/{cmd_style}]",
+                "",
+                f"  [dim]╰─ [E]xecute  [C]opy  [Enter] skip[/dim]",
+            ]
+            return "\n".join(lines)
+
+        if resp.type == "blocked":
+            return f"  [bold red]🛑 BLOCKED[/bold red]  {resp.text}"
+        if resp.type == "clarification":
+            return f"  [bold yellow]? {resp.text}[/bold yellow]"
+
+        return f"  [dim]{resp.text}[/dim]"
+
+    def _handle_action(self, resp: EngineResponse, action: str) -> None:
+        """Handle post-response action (execute/copy)."""
+        action = action.strip().lower()
+        if action == "e" and resp.type == "command":
+            from incept.cli.actions import execute_command
+            console.print(f"  [dim]Running:[/dim] [bold]{resp.text}[/bold]")
+            console.print(f"  [dim]{'─' * 40}[/dim]")
+            result = execute_command(resp.text, confirmed=True)
+            if result.stdout:
+                console.print(f"  {result.stdout}", end="")
+            if result.stderr:
+                console.print(f"  [red]{result.stderr}[/red]", end="")
+            console.print(f"  [dim]{'─' * 40}[/dim]")
+        elif action == "c" and resp.type == "command":
+            try:
+                from incept.cli.clipboard import copy_to_clipboard
+                copy_to_clipboard(resp.text)
+                console.print("  [green]✓ Copied to clipboard[/green]")
+            except Exception:
+                console.print(f"  [dim]Command: {resp.text}[/dim]")
 
     def run(self) -> None:
-        """Run the interactive REPL loop using prompt_toolkit."""
+        """Run the interactive REPL loop."""
         from prompt_toolkit import PromptSession
+        from prompt_toolkit.formatted_text import HTML
         from prompt_toolkit.history import FileHistory
+        from prompt_toolkit.styles import Style
 
-        print(self.get_welcome_banner())
+        style = Style.from_dict({
+            "prompt": "#00d7ff bold",
+            "pound": "#5f87af",
+        })
+
+        self._print_banner()
 
         session: PromptSession[str] = PromptSession(
             history=FileHistory(os.path.expanduser(self.config.history_file)),
+            style=style,
         )
+
+        last_resp = None
 
         while True:
             try:
-                text = session.prompt(self.get_prompt())
+                text = session.prompt(
+                    HTML("<prompt>INCEPT/Sh</prompt> <pound>❯</pound> "),
+                )
             except (EOFError, KeyboardInterrupt):
-                print("\nGoodbye!")
+                console.print("\n  [dim cyan]🐧 Goodbye![/dim cyan]\n")
                 break
 
+            # Handle action on previous command
+            if last_resp and last_resp.type == "command" and text.strip().lower() in ("e", "c"):
+                self._handle_action(last_resp, text)
+                last_resp = None
+                continue
+
+            last_resp = None
             result = self.handle_input(text)
             if result == "__exit__":
-                print("Goodbye!")
+                console.print("\n  [dim cyan]🐧 Goodbye![/dim cyan]\n")
                 break
             if result is not None:
-                print(result)
+                console.print(result)
+                # Store response for action handling
+                if self.query_history:
+                    last_resp_obj = self._engine.ask.__self__  # type: ignore
+                    # Reconstruct response from formatted output
+                    if hasattr(self, '_last_resp'):
+                        last_resp = self._last_resp
+
+    def handle_input(self, text: str) -> str | None:
+        """Process a single line of input."""
+        if not text.strip():
+            return None
+
+        if text.startswith("/"):
+            parts = text.split(maxsplit=1)
+            cmd_name = parts[0]
+            cmd_args = parts[1] if len(parts) > 1 else ""
+
+            if not self.commands.has(cmd_name):
+                return f"  [red]✗[/red] Unknown command: {cmd_name}. Type /help."
+
+            result = self.commands.dispatch(cmd_name, cmd_args)
+
+            if cmd_name == "/history":
+                if self.query_history:
+                    lines = ["  [bold]Session history:[/bold]"]
+                    for i, entry in enumerate(self.query_history, 1):
+                        lines.append(f"    [dim]{i}.[/dim] {entry}")
+                    return "\n".join(lines)
+                return "  [dim]No history yet.[/dim]"
+
+            return result
+
+        # Natural language query
+        self.query_history.append(text)
+        
+        # Spinner while thinking
+        with console.status("[bold cyan]Thinking...[/bold cyan]", spinner="dots"):
+            t0 = time.time()
+            resp = self._engine.ask(text, history=self._chat_history or None)
+            elapsed = time.time() - t0
+
+        # Store for action handling
+        self._last_resp = resp
+
+        # Record turn
+        self._chat_history.append({"role": "user", "content": text})
+        self._chat_history.append({"role": "assistant", "content": resp.text})
+        if len(self._chat_history) > self._MAX_HISTORY_TURNS * 2:
+            self._chat_history = self._chat_history[-(self._MAX_HISTORY_TURNS * 2):]
+
+        return self._format_response(resp, elapsed)

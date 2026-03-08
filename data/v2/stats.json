@@ -1,0 +1,9 @@
+{
+  "total": 31172,
+  "train": 28056,
+  "val": 1558,
+  "test": 1558,
+  "old_cleaned": 20274,
+  "new_added": 10898,
+  "cross_dupes_removed": 372
+}

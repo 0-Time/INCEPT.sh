@@ -35,7 +35,7 @@ class TestMergeLoraAdapter:
 
             output = tmp_path / "merged"
             result = mod.merge_lora_adapter(
-                base_path="Qwen/Qwen2.5-0.5B",
+                base_path="Qwen/Qwen3.5-0.8B",
                 adapter_path=str(tmp_path / "adapter"),
                 output_path=str(output),
             )

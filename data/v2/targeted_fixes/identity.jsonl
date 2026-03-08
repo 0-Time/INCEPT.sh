@@ -1,0 +1,145 @@
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "Who am I logged in as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh non-root"}, {"role": "user", "content": "what user am I currently running as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest bash root"}, {"role": "user", "content": "show me my current username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh non-root"}, {"role": "user", "content": "which user account is active right now"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "tell me what user I am"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "print the current user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh non-root"}, {"role": "user", "content": "how do I check what user I'm logged in as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "what's my username on this system"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh root"}, {"role": "user", "content": "display the effective user name"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash non-root"}, {"role": "user", "content": "I need to know which user is running this shell"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh non-root"}, {"role": "user", "content": "who"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 zsh root"}, {"role": "user", "content": "output my current login name"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "what is the name of the user I am executing commands as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash root"}, {"role": "user", "content": "am I root or a regular user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh root"}, {"role": "user", "content": "get current user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "quickly check my user identity"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh root"}, {"role": "user", "content": "what account am I operating under"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "I forgot which user I switched to, how do I check"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "show current logged in user name"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "what user does the OS see me as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh non-root"}, {"role": "user", "content": "identify the current user in the terminal"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "print username to stdout"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash non-root"}, {"role": "user", "content": "what user am I after doing su"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh non-root"}, {"role": "user", "content": "command to find out my current user account"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh root"}, {"role": "user", "content": "verify my effective uid username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash root"}, {"role": "user", "content": "List all hardware information"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh non-root"}, {"role": "user", "content": "show me everything about this machine's hardware"}, {"role": "assistant", "content": "sudo lshw"}]}
+{"messages": [{"role": "system", "content": "arch latest bash root"}, {"role": "user", "content": "dump full hardware info"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh non-root"}, {"role": "user", "content": "I need a complete listing of all hardware components on this system"}, {"role": "assistant", "content": "sudo lshw"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "how do I see all my hardware details?"}, {"role": "assistant", "content": "sudo lshw"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash root"}, {"role": "user", "content": "print hardware inventory"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh non-root"}, {"role": "user", "content": "what hardware does this server have"}, {"role": "assistant", "content": "sudo lshw"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash root"}, {"role": "user", "content": "give me a full hardware report"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "enumerate all hardware on this machine"}, {"role": "assistant", "content": "sudo lshw"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash root"}, {"role": "user", "content": "hw info"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh non-root"}, {"role": "user", "content": "can you show all hardware components detected by the system"}, {"role": "assistant", "content": "sudo lshw"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh root"}, {"role": "user", "content": "display complete hardware inventory of this machine"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "rhel 9 zsh non-root"}, {"role": "user", "content": "I want to audit the hardware on this box"}, {"role": "assistant", "content": "sudo lshw"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash root"}, {"role": "user", "content": "list hardware"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh non-root"}, {"role": "user", "content": "what command shows all hardware info on linux"}, {"role": "assistant", "content": "sudo lshw"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "probe and list all hardware devices"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh non-root"}, {"role": "user", "content": "get me a detailed breakdown of all hardware"}, {"role": "assistant", "content": "sudo lshw"}]}
+{"messages": [{"role": "system", "content": "arch latest bash root"}, {"role": "user", "content": "show system hardware details"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "list every piece of hardware installed in this computer"}, {"role": "assistant", "content": "sudo lshw"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash root"}, {"role": "user", "content": "I need to see the full hardware profile of this system"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh root"}, {"role": "user", "content": "query all hardware"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh root"}, {"role": "user", "content": "report on all hardware components"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "as a sysadmin I need a complete hardware listing for documentation"}, {"role": "assistant", "content": "sudo lshw"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash root"}, {"role": "user", "content": "show me everything lshw can tell me about this system"}, {"role": "assistant", "content": "lshw"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh non-root"}, {"role": "user", "content": "display all hardware info including cpu memory and peripherals"}, {"role": "assistant", "content": "sudo lshw"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "Check your current user identity"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh root"}, {"role": "user", "content": "who am i logged in as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "what user is currently active"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh non-root"}, {"role": "user", "content": "show me the current username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash root"}, {"role": "user", "content": "print the name of the user running this shell"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "which user account am i using right now"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh root"}, {"role": "user", "content": "display the effective username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "how do i see what user i am"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh non-root"}, {"role": "user", "content": "tell me my username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh root"}, {"role": "user", "content": "get the current logged-in user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash non-root"}, {"role": "user", "content": "what is my login name"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 zsh non-root"}, {"role": "user", "content": "I want to verify which user account this process is running under"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh root"}, {"role": "user", "content": "am i root or a regular user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "output current user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh non-root"}, {"role": "user", "content": "what user context is this terminal running in"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash root"}, {"role": "user", "content": "print my uid name"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "hey what user am i"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh root"}, {"role": "user", "content": "identify the currently active user account"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "quick, what user is this"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "I forgot which account I'm logged into, how do I check"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh non-root"}, {"role": "user", "content": "show current user name in terminal"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "confirm my effective user identity"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh non-root"}, {"role": "user", "content": "user?"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh non-root"}, {"role": "user", "content": "what account is this shell session associated with"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash non-root"}, {"role": "user", "content": "check who i am in the system"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 zsh root"}, {"role": "user", "content": "need to verify my user identity before running a script"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh non-root"}, {"role": "user", "content": "how can a beginner check what user they are on linux"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash root"}, {"role": "user", "content": "return the username of the calling process"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh non-root"}, {"role": "user", "content": "what is the name of my user on this machine"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "print the username associated with my current session"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "Tell me who I am on this system"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh non-root"}, {"role": "user", "content": "what user am I logged in as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest bash root"}, {"role": "user", "content": "show my current username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh non-root"}, {"role": "user", "content": "which account am I running as right now"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash root"}, {"role": "user", "content": "print the effective username for this session"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "who am i"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh non-root"}, {"role": "user", "content": "I need to verify which user I'm currently operating as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "display my identity on this machine"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh non-root"}, {"role": "user", "content": "what's my username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh root"}, {"role": "user", "content": "output the name of the user executing this shell"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash non-root"}, {"role": "user", "content": "check what user i am"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 zsh non-root"}, {"role": "user", "content": "how do I find out my current linux username from the terminal"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh root"}, {"role": "user", "content": "am I root or a regular user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "tell me the name of the currently logged-in user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh root"}, {"role": "user", "content": "print effective user id name"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash root"}, {"role": "user", "content": "I forgot which user I switched to, how do I check"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "what is the currently active user account"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh root"}, {"role": "user", "content": "give me the name of the user running this process"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "quick way to see my own username in bash"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "show me which unix user account I'm using"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "What is my username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh non-root"}, {"role": "user", "content": "how do i check what user i'm logged in as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest bash root"}, {"role": "user", "content": "show me the current user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh non-root"}, {"role": "user", "content": "which account am I running commands under"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash root"}, {"role": "user", "content": "print my current user identity"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "what user am i"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh non-root"}, {"role": "user", "content": "I need to know what account I am currently operating as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "display the effective username of the current session"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh non-root"}, {"role": "user", "content": "who am i logged in as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash non-root"}, {"role": "user", "content": "tell me my linux username real quick"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh root"}, {"role": "user", "content": "output effective user name"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 zsh non-root"}, {"role": "user", "content": "I forgot which user I'm ssh'd in as, how do I check"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh root"}, {"role": "user", "content": "am i root or a regular user right now"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash root"}, {"role": "user", "content": "what is the name of the user executing this shell"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh root"}, {"role": "user", "content": "username?"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash root"}, {"role": "user", "content": "confirm my current user context"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh root"}, {"role": "user", "content": "what user is the terminal running as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "quickly check my current username from the command line"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "I want to verify my identity on this system"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "print the name of the user i am currently running as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "What user am I"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh non-root"}, {"role": "user", "content": "who am i logged in as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest bash root"}, {"role": "user", "content": "show me my current username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh non-root"}, {"role": "user", "content": "which user account is running this shell"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash root"}, {"role": "user", "content": "print the effective user name"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "what's my username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh non-root"}, {"role": "user", "content": "tell me what user i am"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "am i root or a regular user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh non-root"}, {"role": "user", "content": "check current user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash non-root"}, {"role": "user", "content": "i need to know which user i'm running as right now"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh root"}, {"role": "user", "content": "user?"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 zsh non-root"}, {"role": "user", "content": "display my current login name"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh root"}, {"role": "user", "content": "what is the name of the user executing this process"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash root"}, {"role": "user", "content": "output my effective username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh non-root"}, {"role": "user", "content": "how do I see what user I'm logged in as"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash root"}, {"role": "user", "content": "get my username from the command line"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh root"}, {"role": "user", "content": "what user is this terminal session running under"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "quickly tell me my user"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "I forgot what account I'm using, how do I check"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "print current user to stdout"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh root"}, {"role": "user", "content": "what uid name is associated with this shell"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "what's the active user on this machine"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash non-root"}, {"role": "user", "content": "show username"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh root"}, {"role": "user", "content": "identify the currently logged-in user account"}, {"role": "assistant", "content": "whoami"}]}
+{"messages": [{"role": "system", "content": "rhel 9 zsh root"}, {"role": "user", "content": "which account am I operating as in this session"}, {"role": "assistant", "content": "whoami"}]}

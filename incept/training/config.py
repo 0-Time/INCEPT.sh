@@ -15,6 +15,8 @@ class TaskType(StrEnum):
 
     INTENT = "intent"
     SLOT = "slot"
+    UNIFIED = "unified"
+    COMMAND = "command"
 
 
 class TrainingMode(StrEnum):
@@ -59,7 +61,7 @@ class TrainingConfig(BaseModel):
 
     task: TaskType
     mode: TrainingMode = TrainingMode.SFT
-    base_model: str = "Qwen/Qwen2.5-0.5B-Instruct"
+    base_model: str = "Qwen/Qwen3.5-0.8B"
     model_local_path: str | None = None
     max_seq_length: int = Field(default=512, ge=32, le=4096)
 

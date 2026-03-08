@@ -1,0 +1,75 @@
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash root"}, {"role": "user", "content": "View the system message buffer and kernel logs"}, {"role": "assistant", "content": "dmesg"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh non-root"}, {"role": "user", "content": "show me the kernel ring buffer"}, {"role": "assistant", "content": "sudo dmesg"}]}
+{"messages": [{"role": "system", "content": "arch latest bash root"}, {"role": "user", "content": "dump the dmesg output"}, {"role": "assistant", "content": "dmesg"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh non-root"}, {"role": "user", "content": "I need to read the kernel boot messages"}, {"role": "assistant", "content": "sudo dmesg"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash root"}, {"role": "user", "content": "display kernel log messages"}, {"role": "assistant", "content": "dmesg"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "how do I check what the kernel printed during boot"}, {"role": "assistant", "content": "sudo dmesg"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash root"}, {"role": "user", "content": "print the system message buffer"}, {"role": "assistant", "content": "dmesg"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "let me see hardware detection messages from the kernel"}, {"role": "assistant", "content": "sudo dmesg"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh root"}, {"role": "user", "content": "show kernel msgs"}, {"role": "assistant", "content": "dmesg"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh non-root"}, {"role": "user", "content": "I want to inspect the kernel ring buffer for device errors"}, {"role": "assistant", "content": "sudo dmesg"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash root"}, {"role": "user", "content": "read the dmesg log"}, {"role": "assistant", "content": "dmesg"}]}
+{"messages": [{"role": "system", "content": "rhel 9 zsh non-root"}, {"role": "user", "content": "can you show me what the kernel has logged since boot"}, {"role": "assistant", "content": "sudo dmesg"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh root"}, {"role": "user", "content": "view kernel diagnostics"}, {"role": "assistant", "content": "dmesg"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh non-root"}, {"role": "user", "content": "check system boot log from the kernel"}, {"role": "assistant", "content": "sudo dmesg"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "output the kernel message buffer to terminal"}, {"role": "assistant", "content": "dmesg"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "look at kernel messages with human readable timestamps"}, {"role": "assistant", "content": "sudo dmesg -T"}]}
+{"messages": [{"role": "system", "content": "arch latest bash root"}, {"role": "user", "content": "show dmesg with timestamps"}, {"role": "assistant", "content": "dmesg -T"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh root"}, {"role": "user", "content": "tail the kernel log in real time"}, {"role": "assistant", "content": "dmesg -w"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "follow kernel messages as they come in"}, {"role": "assistant", "content": "sudo dmesg -w"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "show only error level messages from the kernel log"}, {"role": "assistant", "content": "dmesg --level=err"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "filter kernel buffer for errors and warnings"}, {"role": "assistant", "content": "sudo dmesg --level=err,warn"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh root"}, {"role": "user", "content": "page through the kernel ring buffer"}, {"role": "assistant", "content": "dmesg | less"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh non-root"}, {"role": "user", "content": "get the last few lines of kernel messages"}, {"role": "assistant", "content": "sudo dmesg | tail"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh root"}, {"role": "user", "content": "show colored kernel output"}, {"role": "assistant", "content": "dmesg -L"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash non-root"}, {"role": "user", "content": "display the kernel log with human readable time and color"}, {"role": "assistant", "content": "sudo dmesg -TL"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash root"}, {"role": "user", "content": "Display active network connections and ports"}, {"role": "assistant", "content": "ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh non-root"}, {"role": "user", "content": "show me what ports are currently listening"}, {"role": "assistant", "content": "sudo ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "arch latest bash root"}, {"role": "user", "content": "list all open sockets and which processes own them"}, {"role": "assistant", "content": "ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh non-root"}, {"role": "user", "content": "what services are bound to which ports right now"}, {"role": "assistant", "content": "sudo ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash root"}, {"role": "user", "content": "I need to see all TCP and UDP ports in use on this machine"}, {"role": "assistant", "content": "ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "check which ports are open"}, {"role": "assistant", "content": "sudo ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh root"}, {"role": "user", "content": "give me a full breakdown of listening network sockets with process info"}, {"role": "assistant", "content": "ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "how do I see what's listening on the network"}, {"role": "assistant", "content": "sudo ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh root"}, {"role": "user", "content": "show network socket statistics including PID and program name"}, {"role": "assistant", "content": "ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash non-root"}, {"role": "user", "content": "which processes are accepting connections on this host"}, {"role": "assistant", "content": "sudo ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh root"}, {"role": "user", "content": "dump all listening tcp/udp sockets"}, {"role": "assistant", "content": "ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "rhel 9 zsh non-root"}, {"role": "user", "content": "I want to audit all open ports and the daemons behind them"}, {"role": "assistant", "content": "sudo ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh root"}, {"role": "user", "content": "ports"}, {"role": "assistant", "content": "ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "list every port this server is listening on along with the owning process"}, {"role": "assistant", "content": "sudo ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh root"}, {"role": "user", "content": "show active tcp and udp listeners without resolving hostnames"}, {"role": "assistant", "content": "ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "need to troubleshoot a port conflict, show me all bound ports"}, {"role": "assistant", "content": "sudo ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh root"}, {"role": "user", "content": "enumerate listening sockets with numeric addresses and process details"}, {"role": "assistant", "content": "ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "is anything listening on this box? show me the full list"}, {"role": "assistant", "content": "sudo ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash root"}, {"role": "user", "content": "display all listening sockets for both tcp and udp"}, {"role": "assistant", "content": "ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "what's running on the network stack of this machine"}, {"role": "assistant", "content": "sudo ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh root"}, {"role": "user", "content": "show socket table with process names and port numbers"}, {"role": "assistant", "content": "ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "quickly show me open ports and their pids"}, {"role": "assistant", "content": "sudo ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh non-root"}, {"role": "user", "content": "I want to verify my web server is actually listening on port 80 and 443 \u2014 show all listeners"}, {"role": "assistant", "content": "sudo ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash root"}, {"role": "user", "content": "network listening state overview"}, {"role": "assistant", "content": "ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh non-root"}, {"role": "user", "content": "print all tcp and udp sockets in listen state with numeric ports and the process that owns each"}, {"role": "assistant", "content": "sudo ss -tulnp"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash root"}, {"role": "user", "content": "List all loaded kernel modules"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh non-root"}, {"role": "user", "content": "show me what kernel modules are currently loaded"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "arch latest bash non-root"}, {"role": "user", "content": "how do I see which kernel modules are active right now?"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh root"}, {"role": "user", "content": "display loaded kernel modules"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash root"}, {"role": "user", "content": "what modules does the kernel have loaded"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash non-root"}, {"role": "user", "content": "print the list of currently loaded kernel modules"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh root"}, {"role": "user", "content": "I need to check which kernel modules are inserted"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash non-root"}, {"role": "user", "content": "can you show all the modules loaded into the kernel"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh root"}, {"role": "user", "content": "lsmod equivalent \u2014 list kernel modules"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh non-root"}, {"role": "user", "content": "give me a list of all active kernel modules"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash root"}, {"role": "user", "content": "which modules are currently in the kernel?"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "rhel 9 zsh non-root"}, {"role": "user", "content": "enumerate all kernel modules that are loaded"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 zsh root"}, {"role": "user", "content": "show kernel module list"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "centos 9 bash non-root"}, {"role": "user", "content": "how can I view all inserted kernel modules on this system"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "debian 12 zsh root"}, {"role": "user", "content": "list modules loaded in the kernel"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 bash non-root"}, {"role": "user", "content": "what command shows currently loaded modules in the Linux kernel"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "arch latest bash root"}, {"role": "user", "content": "dump the list of loaded kernel modules"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "fedora 41 zsh non-root"}, {"role": "user", "content": "I want to see all modules the kernel has loaded, how?"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "rhel 9 bash non-root"}, {"role": "user", "content": "show me the kernel module table"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "ubuntu 24.04 bash root"}, {"role": "user", "content": "list all currently active kernel modules on this machine"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "centos 9 zsh root"}, {"role": "user", "content": "what are the loaded modules in the running kernel"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "debian 12 bash root"}, {"role": "user", "content": "kernel modules \u2014 show all loaded ones"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "arch latest zsh root"}, {"role": "user", "content": "output all kernel modules currently loaded into memory"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "fedora 41 bash non-root"}, {"role": "user", "content": "check what kernel modules are running"}, {"role": "assistant", "content": "lsmod"}]}
+{"messages": [{"role": "system", "content": "ubuntu 22.04 zsh non-root"}, {"role": "user", "content": "list every module that has been loaded into the Linux kernel"}, {"role": "assistant", "content": "lsmod"}]}

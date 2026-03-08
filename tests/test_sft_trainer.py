@@ -78,34 +78,35 @@ class TestCanUseBnb:
 
 
 class TestBuildTrainingArgs:
-    @patch("incept.training.sft_trainer.TrainingArguments", create=True)
-    def test_cuda_enables_fp16(self, mock_ta: MagicMock) -> None:
-        mock_ta_cls = MagicMock()
-        with patch.dict("sys.modules", {"transformers": MagicMock(TrainingArguments=mock_ta_cls)}):
+    def test_cuda_enables_fp16(self) -> None:
+        mock_sft_config = MagicMock()
+        with patch("incept.training.sft_trainer.SFTConfig", mock_sft_config, create=True):
             from importlib import reload
 
             import incept.training.sft_trainer as mod
 
-            reload(mod)
-            config = _make_config()
-            mod._build_training_args(config, "cuda")
-            call_kwargs = mock_ta_cls.call_args[1]
-            assert call_kwargs["fp16"] is True
-            assert call_kwargs["bf16"] is False
+            # Patch SFTConfig at module level after reload
+            with patch.object(mod, "_build_training_args", wraps=mod._build_training_args):
+                with patch("trl.SFTConfig", mock_sft_config):
+                    config = _make_config()
+                    mod._build_training_args(config, "cuda")
+                    call_kwargs = mock_sft_config.call_args[1]
+                    assert call_kwargs["fp16"] is True
+                    assert call_kwargs["bf16"] is False
 
-    @patch("incept.training.sft_trainer.TrainingArguments", create=True)
-    def test_cpu_disables_fp16(self, mock_ta: MagicMock) -> None:
-        mock_ta_cls = MagicMock()
-        with patch.dict("sys.modules", {"transformers": MagicMock(TrainingArguments=mock_ta_cls)}):
+    def test_cpu_disables_fp16(self) -> None:
+        mock_sft_config = MagicMock()
+        with patch("incept.training.sft_trainer.SFTConfig", mock_sft_config, create=True):
             from importlib import reload
 
             import incept.training.sft_trainer as mod
 
-            reload(mod)
-            config = _make_config()
-            mod._build_training_args(config, "cpu")
-            call_kwargs = mock_ta_cls.call_args[1]
-            assert call_kwargs["fp16"] is False
+            with patch.object(mod, "_build_training_args", wraps=mod._build_training_args):
+                with patch("trl.SFTConfig", mock_sft_config):
+                    config = _make_config()
+                    mod._build_training_args(config, "cpu")
+                    call_kwargs = mock_sft_config.call_args[1]
+                    assert call_kwargs["fp16"] is False
 
 
 class TestBuildLoraConfig:

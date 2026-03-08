@@ -1,0 +1,10 @@
+{
+  "total_unique_pairs": 45534,
+  "train_count": 36427,
+  "val_count": 4553,
+  "test_count": 4554,
+  "assembled_compiled": 14058,
+  "augmented_compiled": 40478,
+  "duplicates_removed": 9002,
+  "total_failures": 12576
+}

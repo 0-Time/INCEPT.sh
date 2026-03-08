@@ -1,98 +1,108 @@
-"""CLI entry point using Click."""
+"""CLI entry point for INCEPT/Sh."""
 
 from __future__ import annotations
 
-from typing import Literal
+import sys
 
 import click
+from rich.console import Console
 
 from incept import __version__
 from incept.cli.config import load_config
-from incept.core.pipeline import run_pipeline
+
+console = Console()
 
 
-def _run_repl() -> None:
+def _run_repl(*, think: bool = False) -> None:
     """Start the interactive REPL."""
     from incept.cli.repl import InceptREPL
 
     config = load_config()
+    config.think = think
     repl = InceptREPL(config)
     repl.run()
 
 
+def _oneshot(query: str, *, execute: bool = False, minimal: bool = False, think: bool = False) -> None:
+    """Handle a one-shot query."""
+    from rich.markup import escape
+    from incept.core.engine import InceptEngine
+
+    engine = InceptEngine(think=think)
+    resp = engine.ask(query)
+
+    if resp.type == "command":
+        if minimal:
+            # Raw command only — for piping
+            click.echo(resp.text)
+        else:
+            risk = resp.risk or "safe"
+            if risk == "safe":
+                console.print(f"  [bold green]$ {escape(resp.text)}[/bold green]")
+            elif risk == "caution":
+                console.print(f"  [bold yellow]⚠ $ {escape(resp.text)}[/bold yellow]")
+            else:
+                console.print(f"  [bold red]✗ $ {escape(resp.text)}[/bold red]")
+    elif resp.type == "blocked":
+        console.print(f"  [bold red]🛑 {resp.text}[/bold red]")
+        sys.exit(1)
+    elif resp.type == "clarification":
+        console.print(f"  [bold yellow]? {resp.text}[/bold yellow]")
+    else:
+        console.print(f"  {resp.text}")
+
+    if execute and resp.type == "command":
+        from incept.cli.actions import execute_command
+        console.print(f"  [dim]{'─' * 40}[/dim]")
+        result = execute_command(resp.text, confirmed=True)
+        if result.stdout:
+            click.echo(result.stdout, nl=False)
+        if result.stderr:
+            click.echo(result.stderr, nl=False, err=True)
+
+
 @click.group(invoke_without_command=True)
-@click.argument("query", required=False)
+@click.argument("query", required=False, nargs=-1)
+@click.option("-c", "--command", "cmd_query", type=str, default=None, help="One-shot query (e.g. incept -c 'find large files')")
 @click.option("--exec", "execute", is_flag=True, help="Execute the generated command")
-@click.option("--minimal", is_flag=True, help="Output only the command string")
-@click.option("--explain", "explain", is_flag=True, help="Explain a shell command")
-@click.version_option(__version__)
+@click.option("-m", "--minimal", is_flag=True, help="Output only the raw command (for piping)")
+@click.option("--think", is_flag=True, default=False, help="Enable model reasoning")
+@click.option("--no-think", "no_think", is_flag=True, default=False, help="Disable reasoning (default)")
+@click.version_option(__version__, prog_name="INCEPT/Sh")
 @click.pass_context
 def main(
     ctx: click.Context,
-    query: str | None,
+    query: tuple[str, ...],
+    cmd_query: str | None,
     execute: bool,
     minimal: bool,
-    explain: bool,
+    think: bool,
+    no_think: bool,
 ) -> None:
-    """INCEPT - Offline NL-to-Linux-command compiler.
+    """🐧 INCEPT/Sh — Offline NL → Linux Command Engine.
 
-    Run without arguments for interactive mode.
-    Pass a query for one-shot mode.
-    Use --explain to explain a shell command instead of generating one.
+    \b
+    Examples:
+      incept                              # interactive mode
+      incept "find large files"           # one-shot query
+      incept -c "grep hello in all files" # one-shot with -c flag
+      incept -c "disk usage" --exec       # generate + execute
+      incept -c "list ports" -m           # raw command only (for piping)
+      incept -c "list ports" -m | bash    # generate and pipe to bash
     """
     if ctx.invoked_subcommand is not None:
         return
 
-    if query is None:
-        _run_repl()
+    enable_think = think and not no_think
+
+    # Determine query from -c or positional args
+    final_query = cmd_query or (" ".join(query) if query else None)
+
+    if final_query is None:
+        _run_repl(think=enable_think)
         return
 
-    # Explain mode
-    if explain:
-        from incept.explain.pipeline import run_explain_pipeline
-
-        explain_resp = run_explain_pipeline(query)
-        click.echo(f"Command: {explain_resp.command}")
-        if explain_resp.intent:
-            click.echo(f"Intent:  {explain_resp.intent}")
-        click.echo(f"Explain: {explain_resp.explanation}")
-        click.echo(f"Risk:    {explain_resp.risk_level}")
-        return
-
-    # One-shot mode
-    verbosity: Literal["minimal", "normal", "detailed"] = "minimal" if minimal else "normal"
-    result = run_pipeline(nl_request=query, verbosity=verbosity)
-
-    if result.responses:
-        for resp in result.responses:
-            if resp.command:
-                if minimal:
-                    click.echo(resp.command.command)
-                else:
-                    click.echo(f"Command: {resp.command.command}")
-                    if resp.command.explanation:
-                        click.echo(f"  {resp.command.explanation}")
-            elif resp.clarification:
-                click.echo(f"? {resp.clarification.question}")
-            elif resp.error:
-                err = resp.error
-                if isinstance(err, dict):
-                    click.echo(f"Error: {err.get('error', 'Unknown')}")
-                else:
-                    click.echo(f"Error: {err.error}")
-    else:
-        click.echo("No matching command found.")
-
-    if execute and result.responses:
-        for resp in result.responses:
-            if resp.command:
-                from incept.cli.actions import execute_command
-
-                action_result = execute_command(resp.command.command, confirmed=True)
-                if action_result.stdout:
-                    click.echo(action_result.stdout, nl=False)
-                if action_result.stderr:
-                    click.echo(action_result.stderr, nl=False, err=True)
+    _oneshot(final_query, execute=execute, minimal=minimal, think=enable_think)
 
 
 @main.command()
@@ -101,7 +111,6 @@ def main(
 def serve(host: str, port: int) -> None:
     """Start the API server."""
     import uvicorn
-
     from incept.server.app import create_app
     from incept.server.config import ServerConfig
 
@@ -120,7 +129,6 @@ def plugin() -> None:
 def install(shell_type: str | None) -> None:
     """Install the shell plugin (Ctrl+I keybinding)."""
     from incept.cli.shell_plugin import detect_shell, install_plugin
-
     shell = shell_type or detect_shell()
     msg = install_plugin(shell)
     click.echo(msg)
@@ -131,7 +139,6 @@ def install(shell_type: str | None) -> None:
 def uninstall(shell_type: str | None) -> None:
     """Uninstall the shell plugin."""
     from incept.cli.shell_plugin import detect_shell, uninstall_plugin
-
     shell = shell_type or detect_shell()
     msg = uninstall_plugin(shell)
     click.echo(msg)

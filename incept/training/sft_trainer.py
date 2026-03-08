@@ -96,20 +96,20 @@ def _build_lora_config(config: TrainingConfig) -> Any:
 
 
 def _build_training_args(config: TrainingConfig, device: str) -> Any:
-    """Build HuggingFace TrainingArguments."""
-    from transformers import TrainingArguments
+    """Build SFTConfig (trl >=0.29) training arguments."""
+    from trl import SFTConfig
 
     fp16 = device == "cuda"
     bf16 = False
 
-    return TrainingArguments(
+    return SFTConfig(
         output_dir=config.output_dir,
         num_train_epochs=config.num_epochs,
         per_device_train_batch_size=config.per_device_batch_size,
         gradient_accumulation_steps=config.gradient_accumulation_steps,
         learning_rate=config.learning_rate,
         lr_scheduler_type=config.lr_scheduler,
-        warmup_ratio=config.warmup_ratio,
+        warmup_steps=max(1, int(config.warmup_ratio * 100)),
         weight_decay=config.weight_decay,
         logging_steps=config.logging_steps,
         save_strategy=config.save_strategy,
@@ -118,6 +118,7 @@ def _build_training_args(config: TrainingConfig, device: str) -> Any:
         seed=config.seed,
         report_to="tensorboard",
         remove_unused_columns=False,
+        dataset_text_field="text",
     )
 
 
@@ -159,9 +160,7 @@ def run_sft(config: TrainingConfig) -> Path:
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
         peft_config=lora_config,
-        tokenizer=tokenizer,
-        max_seq_length=config.max_seq_length,
-        dataset_text_field="text",
+        processing_class=tokenizer,
     )
 
     trainer.train()

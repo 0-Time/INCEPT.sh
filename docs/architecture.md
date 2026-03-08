@@ -316,7 +316,7 @@ flowchart TB
     end
 
     subgraph "Model Layer"
-        MODEL["GGUF Model<br>Qwen2.5-0.5B Q4_K_M"]
+        MODEL["GGUF Model<br>Qwen3.5-0.8B Q4_K_M"]
         GBNF["GBNF Grammars<br>Constrained Decoding"]
     end
 

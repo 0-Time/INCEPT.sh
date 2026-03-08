@@ -82,18 +82,14 @@ class TestPipelineWithModel:
 
             mock_mc.assert_not_called()
 
-    def test_model_not_called_when_disabled(self) -> None:
-        """Model classifier disabled → never called."""
-        mock_model = MagicMock()
-
-        with patch("incept.core.model_classifier.model_classify") as mock_mc:
-            run_pipeline(
+    def test_fallback_to_clarification_when_no_model(self) -> None:
+        """No model available → falls back to clarification for unmatched intents."""
+        with patch("incept.core.pipeline.get_model", return_value=None):
+            result = run_pipeline(
                 "locate the largest log entries under var",
-                use_model_classifier=False,
-                model=mock_model,
             )
 
-            mock_mc.assert_not_called()
+            assert result.status == "no_match"
 
 
 # ========================== Confidence scores ==========================

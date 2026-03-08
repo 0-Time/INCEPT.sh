@@ -40,8 +40,17 @@ class TestHealthEndpoint:
         assert data["version"] == "0.1.0"
 
     @pytest.mark.asyncio
-    async def test_health_ready_when_warm(self, client: AsyncClient) -> None:
-        # Default app starts without model = always "ready" (no model to warm)
+    async def test_health_not_ready_without_model(self, client: AsyncClient) -> None:
+        # Default app starts without model = not ready for NL→command
+        resp = await client.get("/v1/health/ready")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["ready"] is False
+
+    @pytest.mark.asyncio
+    async def test_health_ready_with_model(self, client: AsyncClient) -> None:
+        # Simulate model being loaded
+        client._transport.app.state.app_state.model_ready = True  # type: ignore[union-attr]
         resp = await client.get("/v1/health/ready")
         assert resp.status_code == 200
         data = resp.json()

@@ -172,6 +172,51 @@ touch ~/.incept_history
   ```
 - **System under heavy load**: Check CPU and memory usage. The Docker Compose config limits resources to 1 GB RAM and 2 CPUs by default.
 
+## Qwen3.5 Model Loading Fails
+
+### llama-cpp-python: "unknown model architecture: 'qwen35'"
+
+**Symptom**: `ValueError: Failed to load model from file` with verbose log showing
+`unknown model architecture: 'qwen35'`.
+
+**Cause**: `llama-cpp-python` 0.3.16 (latest as of March 2026) bundles an older
+llama.cpp that predates Qwen3.5 support.
+
+**Workarounds**:
+
+1. **Use llama-cli directly** — the brew-installed `llama-cli` (build 8180+) supports
+   Qwen3.5:
+   ```bash
+   brew install llama.cpp
+   llama-cli -m models/incept-command-v2-q4_k_m.gguf -p "your prompt" -n 128
+   ```
+
+2. **Use llama.cpp server mode** — start a local HTTP server and call it from Python:
+   ```bash
+   llama-server -m models/incept-command-v2-q4_k_m.gguf --port 8081
+   # Then use the OpenAI-compatible API at http://localhost:8081
+   ```
+
+3. **Wait for upstream update** — monitor
+   https://github.com/abetlen/llama-cpp-python for a release with Qwen3.5 support.
+
+### GGUF conversion: "Qwen3_5ForCausalLM is not supported"
+
+**Symptom**: `convert_hf_to_gguf.py` fails with architecture not supported error.
+
+**Cause**: HuggingFace model config uses `Qwen3_5ForCausalLM` but llama.cpp registers
+`Qwen3_5ForConditionalGeneration`.
+
+**Solution**: Patch the merged model's `config.json` before conversion:
+```bash
+# In outputs/merged-command-v2/config.json, change:
+#   "Qwen3_5ForCausalLM" → "Qwen3_5ForConditionalGeneration"
+sed -i '' 's/Qwen3_5ForCausalLM/Qwen3_5ForConditionalGeneration/g' \
+    outputs/merged-command-v2/config.json
+```
+
+Then re-run `convert_hf_to_gguf.py`. Requires llama.cpp build 8180+.
+
 ## Getting Help
 
 1. Check the API response body -- error messages include `reason` and `suggestion` fields.

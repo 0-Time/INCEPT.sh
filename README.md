@@ -14,7 +14,7 @@ INCEPT translates plain English requests like *"find all log files larger than 1
 
 - **78 intents** — file ops, text processing, packages, services, networking, Docker, Git, firewall, cron, disk, SSH, and more
 - **5 distro families** — Debian/Ubuntu, RHEL/Fedora, Arch, openSUSE, macOS (brew/launchctl)
-- **Fully offline** — runs on a quantized 0.5B-parameter model (Qwen2.5-0.5B Q4_K_M, ~250MB), no internet required
+- **Fully offline** — runs on a fine-tuned Qwen3.5-0.8B model (Q4_K_M, ~503MB), no internet required
 - **Explain mode** — paste a command, get a structured plain-English explanation with risk assessment
 - **Safety layer** — 22 banned patterns, 4 risk levels (safe/caution/dangerous/blocked), safe-mode toggle
 - **Shell plugin** — Ctrl+I keybinding for bash and zsh; type in English, get the command inline
@@ -75,9 +75,29 @@ incept> /context
 incept> /exit
 ```
 
-### NL → Command (requires trained model)
+### Model Setup
 
-The forward pipeline (natural language → shell command) requires the fine-tuned GGUF model for slot extraction. Once the model is trained and placed at the configured `INCEPT_MODEL_PATH`:
+INCEPT v2 uses a fine-tuned Qwen3.5-0.8B model (GGUF Q4_K_M, ~503MB) that generates
+shell commands directly from natural language in a single model call. Place the model file
+in one of these locations:
+
+```bash
+# Option 1: Drop the .gguf file in the models/ directory (auto-detected)
+mkdir -p models
+cp /path/to/incept-command-v2-q4_k_m.gguf models/
+
+# Option 2: Set the environment variable
+export INCEPT_MODEL_PATH=/path/to/your-model.gguf
+```
+
+The model loads lazily on first use and stays cached for the session. Without a model file,
+the preclassifier still identifies intents but cannot generate commands.
+
+> **Note:** Qwen3.5 requires `llama-cpp-python` with llama.cpp build 8180+. As of March
+> 2026, the PyPI release (0.3.16) does not yet support the `qwen35` architecture. The
+> brew-installed `llama-cli` works. See [Known Issues](#known-issues) below.
+
+### NL → Command
 
 ```bash
 # One-shot
@@ -87,7 +107,7 @@ incept "find all python files modified in the last 7 days"
 incept --minimal "find all python files modified in the last 7 days"
 ```
 
-Without the model, the preclassifier identifies intents but cannot extract parameters from natural language. The **explain mode**, **compilers**, **safety validator**, and **API server** all work without the model.
+The **explain mode**, **compilers**, **safety validator**, and **API server** all work without the model — only the forward NL → command pipeline requires it for slot filling.
 
 ### Shell Plugin (Ctrl+I)
 
@@ -278,6 +298,44 @@ make smoke
 - **Session limits** to prevent resource exhaustion
 
 See [SECURITY.md](SECURITY.md) for vulnerability reporting.
+
+## Model Training (v2)
+
+INCEPT v2 uses a direct NL → command approach: one fine-tuned model call replaces the
+multi-stage pipeline. The training pipeline is in `scripts/train_v2.py`.
+
+```bash
+# Full pipeline: SFT → merge LoRA → GGUF Q4_K_M
+python scripts/train_v2.py
+
+# Individual steps
+python scripts/train_v2.py --step train    # LoRA SFT on Qwen3.5-0.8B
+python scripts/train_v2.py --step merge    # Merge adapter into base
+python scripts/train_v2.py --step gguf     # Convert to GGUF Q4_K_M
+```
+
+| Parameter | Value |
+|-----------|-------|
+| Base model | Qwen/Qwen3.5-0.8B |
+| Architecture | Gated DeltaNet hybrid (3:1 linear:full attention) |
+| LoRA rank | 32 |
+| LoRA targets | q, k, v, o, gate, up, down projections |
+| Training data | ~35K ChatML examples |
+| Quantization | Q4_K_M (503 MB) |
+| Inference | temperature=0.7, top_p=0.8, top_k=20 |
+
+### GGUF Conversion Notes
+
+llama.cpp 8180+ is required for Qwen3.5 support. After merging LoRA, you may need to
+patch `config.json` to use `Qwen3_5ForConditionalGeneration` instead of
+`Qwen3_5ForCausalLM` before running `convert_hf_to_gguf.py`.
+
+## Known Issues
+
+- **`llama-cpp-python` Qwen3.5 support** — As of March 2026, `llama-cpp-python` 0.3.16
+  does not recognize the `qwen35` GGUF architecture. The brew-installed `llama-cli`
+  (build 8180+) works correctly. Python inference via `llama_cpp.Llama()` will work once
+  the upstream package bundles a newer llama.cpp backend.
 
 ## Documentation
 

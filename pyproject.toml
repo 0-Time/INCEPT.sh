@@ -12,6 +12,7 @@ dependencies = [
     "pydantic>=2.0",
     "bashlex>=0.18",
     "pyyaml>=6.0",
+    "llama-cpp-python>=0.2",
 ]
 
 [project.scripts]
@@ -44,13 +45,13 @@ ml = [
     "accelerate>=0.30",
     "tensorboard>=2.16",
     "safetensors>=0.4",
-    "llama-cpp-python>=0.2",
 ]
 eval = [
     "scikit-learn>=1.4",
     "tabulate>=0.9",
 ]
-all = ["incept[ml,eval,dev,server,cli]"]
+knowledge = ["zvec>=0.1"]
+all = ["incept[ml,eval,dev,server,cli,knowledge]"]
 
 [tool.ruff]
 target-version = "py311"
@@ -98,6 +99,7 @@ module = [
     "click.*",
     "locust.*",
     "httpx.*",
+    "zvec.*",
 ]
 ignore_missing_imports = true
 

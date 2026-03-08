@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from incept.cli.config import InceptConfig
 from incept.cli.repl import InceptREPL
+from incept.core.engine import EngineResponse
 
 
 class TestInceptREPL:
@@ -37,15 +38,17 @@ class TestInceptREPL:
         assert result is not None
         assert isinstance(result, str)
 
-    def test_nl_request_calls_pipeline(self) -> None:
-        with patch("incept.cli.repl.run_pipeline") as mock_pipeline:
-            mock_pipeline.return_value = MagicMock(
-                status="success",
-                responses=[],
-                model_dump=lambda: {"status": "success", "responses": []},
-            )
+    def test_nl_request_calls_engine(self) -> None:
+        mock_resp = EngineResponse(
+            text="No model loaded. Place a .gguf file in models/ or set INCEPT_MODEL_PATH.",
+            type="refusal",
+            confidence="high",
+            risk="safe",
+            original_query="find log files",
+        )
+        with patch.object(self.repl._engine, "ask", return_value=mock_resp) as mock_ask:
             self.repl.handle_input("find log files")
-            mock_pipeline.assert_called_once()
+            mock_ask.assert_called_once()
 
     def test_exit_command(self) -> None:
         result = self.repl.handle_input("/exit")
@@ -61,6 +64,36 @@ class TestInceptREPL:
         assert "unknown" in result.lower()
 
     def test_history_command(self) -> None:
+        # The engine will return a refusal (no model) — that's fine for history tracking
         self.repl.handle_input("find log files")
         result = self.repl.handle_input("/history")
         assert result is not None
+
+    def test_chat_history_tracks_turns(self) -> None:
+        mock_resp = EngineResponse(
+            text="find /var -name '*.log'",
+            type="command",
+            confidence="high",
+            risk="safe",
+            original_query="find log files",
+        )
+        with patch.object(self.repl._engine, "ask", return_value=mock_resp):
+            self.repl.handle_input("find log files")
+        assert len(self.repl._chat_history) == 2
+        assert self.repl._chat_history[0] == {"role": "user", "content": "find log files"}
+        assert self.repl._chat_history[1] == {"role": "assistant", "content": "find /var -name '*.log'"}
+
+    def test_format_command_response(self) -> None:
+        resp = EngineResponse(text="ls -la", type="command", risk="safe")
+        result = InceptREPL._format_response(resp)
+        assert "ls -la" in result
+
+    def test_format_dangerous_command(self) -> None:
+        resp = EngineResponse(text="sudo rm -r /tmp/old", type="command", risk="dangerous")
+        result = InceptREPL._format_response(resp)
+        assert "DANGEROUS" in result
+
+    def test_format_blocked_response(self) -> None:
+        resp = EngineResponse(text="Blocked: rm -rf /", type="blocked", risk="blocked")
+        result = InceptREPL._format_response(resp)
+        assert "BLOCKED" in result
