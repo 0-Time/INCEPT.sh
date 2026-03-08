@@ -7,6 +7,13 @@ from unittest.mock import MagicMock, patch
 
 from incept.training.config import TrainingConfig
 
+import pytest
+_trl_available = True
+try:
+    import trl  # noqa: F401
+except ImportError:
+    _trl_available = False
+
 
 def _make_config(**overrides: object) -> TrainingConfig:
     defaults: dict[str, object] = {
@@ -77,6 +84,7 @@ class TestCanUseBnb:
             assert _can_use_bnb() is False
 
 
+@pytest.mark.skipif(not _trl_available, reason='trl not installed')
 class TestBuildTrainingArgs:
     def test_cuda_enables_fp16(self) -> None:
         mock_sft_config = MagicMock()
