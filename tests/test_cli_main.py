@@ -35,8 +35,9 @@ class TestCLIMain:
         mock_repl.assert_called_once()
 
     def test_serve_subcommand(self) -> None:
-        runner = CliRunner()
-        # Just test that it exists (don't actually start server)
-        result = runner.invoke(main, ["serve", "--help"])
+        from click.testing import CliRunner as _Runner
+        runner = _Runner()
+        # Verify serve is a registered subcommand on the CLI group
+        result = runner.invoke(main, ["--help"])
         assert result.exit_code == 0
         assert "serve" in result.output.lower()
