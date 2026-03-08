@@ -10,7 +10,7 @@ from pydantic import BaseModel, Field
 class ServerConfig(BaseModel):
     """FastAPI server configuration."""
 
-    host: str = "0.0.0.0"
+    host: str = "127.0.0.1"
     port: int = 8080
     api_key: str | None = None
     rate_limit: int = 60  # requests per minute
@@ -33,7 +33,7 @@ class ServerConfig(BaseModel):
         safe_mode = safe_raw.lower() not in ("false", "0", "no")
 
         return cls(
-            host=os.environ.get("INCEPT_HOST", "0.0.0.0"),
+            host=os.environ.get("INCEPT_HOST", "127.0.0.1"),
             port=int(os.environ.get("INCEPT_PORT", "8080")),
             api_key=os.environ.get("INCEPT_API_KEY"),
             rate_limit=int(os.environ.get("INCEPT_RATE_LIMIT", "60")),

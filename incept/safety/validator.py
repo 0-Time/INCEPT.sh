@@ -73,6 +73,23 @@ _WRITE_INDICATORS = re.compile(
 # fmt: on
 
 
+def _path_in_command(sys_path: str, command: str) -> bool:
+    """Check if *sys_path* appears as a real path prefix in *command*.
+
+    Avoids false positives like '/home/user/etcetera' matching '/etc'.
+    """
+    idx = 0
+    while True:
+        idx = command.find(sys_path, idx)
+        if idx == -1:
+            return False
+        end = idx + len(sys_path)
+        # The character after the match must be /, whitespace, or end-of-string
+        if end >= len(command) or command[end] in (" ", "\t", "/", "'", '"'):
+            return True
+        idx = end
+
+
 class RiskLevel(StrEnum):
     """Risk classification for commands."""
 
@@ -141,7 +158,7 @@ def classify_risk(command: str, ctx: EnvironmentContext) -> RiskLevel:
     # Check for writes to system paths
     writes_system = False
     for sys_path in _SYSTEM_PATHS:
-        if sys_path in command and _WRITE_INDICATORS.search(command):
+        if _path_in_command(sys_path, command) and _WRITE_INDICATORS.search(command):
             writes_system = True
             break
 
@@ -176,7 +193,7 @@ def check_path_safety(command: str) -> list[str]:
     """
     warnings: list[str] = []
     for sys_path in _SYSTEM_PATHS:
-        if sys_path in command and _WRITE_INDICATORS.search(command):
+        if _path_in_command(sys_path, command) and _WRITE_INDICATORS.search(command):
             warnings.append(f"Command modifies system path: {sys_path}")
     return warnings
 
