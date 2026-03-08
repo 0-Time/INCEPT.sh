@@ -558,6 +558,7 @@ def _postprocess_output(query: str, raw_output: str) -> str:
         and original_first[0].isupper()
         and first_word not in ("unsafe_request",)
         and check_word not in _VALID_CMD_STARTERS
+        and "=" not in first_word  # allow env var assignments like VAR=value
     ):
         return "# Could not generate command"
 

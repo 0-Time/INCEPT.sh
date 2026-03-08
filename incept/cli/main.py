@@ -77,9 +77,11 @@ def _oneshot(
 )
 @click.option("--exec", "execute", is_flag=True, help="Execute the generated command")
 @click.option("-m", "--minimal", is_flag=True, help="Output only the raw command (for piping)")
-@click.option("--think", is_flag=True, default=False, help="Enable model reasoning")
 @click.option(
-    "--no-think", "no_think", is_flag=True, default=False, help="Disable reasoning (default)"
+    "--think",
+    is_flag=True,
+    default=False,
+    help="Enable model reasoning (chain-of-thought via <think> blocks)",
 )
 @click.version_option(__version__, prog_name="INCEPT/Sh")
 @click.pass_context
@@ -90,7 +92,6 @@ def main(
     execute: bool,
     minimal: bool,
     think: bool,
-    no_think: bool,
 ) -> None:
     """🐧 INCEPT/Sh — Offline NL → Linux Command Engine.
 
@@ -102,11 +103,12 @@ def main(
       incept -c "disk usage" --exec       # generate + execute
       incept -c "list ports" -m           # raw command only (for piping)
       incept -c "list ports" -m | bash    # generate and pipe to bash
+      incept --think                      # interactive mode with reasoning enabled
     """
     if ctx.invoked_subcommand is not None:
         return
 
-    enable_think = think and not no_think
+    enable_think = think
 
     # Determine query from -c or positional args
     final_query = cmd_query or (" ".join(query) if query else None)
@@ -119,7 +121,7 @@ def main(
 
 
 @main.command()
-@click.option("--host", default="0.0.0.0", help="Bind host")
+@click.option("--host", default="127.0.0.1", help="Bind host")
 @click.option("--port", default=8080, type=int, help="Bind port")
 def serve(host: str, port: int) -> None:
     """Start the API server."""

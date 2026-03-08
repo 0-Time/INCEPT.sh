@@ -21,6 +21,7 @@ class SlashCommandRegistry:
         self.register("/clear", self._cmd_clear, "Clear the screen")
         self.register("/exit", self._cmd_exit, "Exit INCEPT/Sh")
         self.register("/quit", self._cmd_quit, "Exit INCEPT/Sh")
+        self.register("/think", self._cmd_think, "Toggle model reasoning: /think on|off")
         self.register("/explain", self._cmd_explain, "Explain a command: /explain <cmd>")
         self.register("/plugin", self._cmd_plugin, "Shell plugin info")
 
@@ -76,6 +77,13 @@ class SlashCommandRegistry:
 
     def _cmd_clear(self, args: str) -> str:
         return "\033[2J\033[H"
+
+    def _cmd_think(self, args: str) -> str:
+        # Toggling is handled by the REPL; this is a stub for the registry
+        arg = args.strip().lower()
+        if arg in ("on", "off", ""):
+            return ""  # REPL intercepts this before dispatch
+        return "  Usage: /think on|off"
 
     def _cmd_exit(self, args: str) -> str:
         return "__exit__"

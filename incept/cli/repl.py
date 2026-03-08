@@ -69,6 +69,19 @@ class InceptREPL:
                     f"[red]✗[/red] Unknown command: {cmd_name}. Type /help for available commands."
                 )
 
+            # /think requires access to the engine — handle before dispatch
+            if cmd_name == "/think":
+                arg = cmd_args.strip().lower()
+                if arg == "on":
+                    self._engine._think = True
+                    return "  [green]✓ Reasoning: ON[/green]  [dim](model will think before answering)[/dim]"
+                elif arg == "off":
+                    self._engine._think = False
+                    return "  [dim]✓ Reasoning: OFF[/dim]  [dim](default — faster responses)[/dim]"
+                else:
+                    state = "[green]ON[/green]" if self._engine._think else "[dim]OFF[/dim]"
+                    return f"  Reasoning is currently {state}. Use [bold]/think on[/bold] or [bold]/think off[/bold]."
+
             result = self.commands.dispatch(cmd_name, cmd_args)
 
             if cmd_name == "/history":
