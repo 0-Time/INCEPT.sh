@@ -1,6 +1,6 @@
 PYTHON := $(shell if [ -f .venv/bin/python ]; then echo .venv/bin/python; else echo python; fi)
 
-.PHONY: test lint format typecheck eval all train-intent train-slot train-dpo export eval-report benchmark serve repl smoke docker-build docker-run load-test
+.PHONY: test lint format typecheck eval all train-intent train-slot train-dpo export eval-report benchmark serve repl smoke load-test
 
 all: lint typecheck test
 
@@ -50,10 +50,6 @@ repl:
 smoke:
 	bash scripts/smoke_test.sh
 
-docker-build:
-	docker build -t incept .
-
-docker-run:
 	docker run -p 8080:8080 incept
 
 load-test:
