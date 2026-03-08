@@ -176,7 +176,8 @@ ALTERNATE_MATCHES = {
     79: ["netstat", "ss", "lsof -i"],                    # Q80: network connections
     80: ["ip route", "ip r", "route", "netstat -r"],
     81: ["dig", "nslookup", "host"],
-    83: ["rsync", "sftp", "scp"],                        # Q84: secure copy
+    83: ["rsync", "sftp", "scp"],
+    82: ["nmap", "ss -tulpn", "netstat"],  # scan open ports                        # Q84: secure copy
     86: ["curl ifconfig.me", "curl", "wget"],
     87: ["sftp", "ftp", "rsync"],                        # Q88: interactive transfer
     91: ["locate", "mlocate", "find"],
