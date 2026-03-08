@@ -86,17 +86,18 @@ class TestCanUseBnb:
             assert _can_use_bnb() is False
 
 
-@pytest.mark.skipif(not _trl_available, reason='trl not installed')
+@pytest.mark.skipif(not _trl_available, reason="trl not installed")
 class TestBuildTrainingArgs:
     def test_cuda_enables_fp16(self) -> None:
         mock_sft_config = MagicMock()
         with patch("incept.training.sft_trainer.SFTConfig", mock_sft_config, create=True):
-
             import incept.training.sft_trainer as mod
 
             # Patch SFTConfig at module level after reload
-            with (patch.object(mod, "_build_training_args", wraps=mod._build_training_args),
-                  patch("trl.SFTConfig", mock_sft_config)):
+            with (
+                patch.object(mod, "_build_training_args", wraps=mod._build_training_args),
+                patch("trl.SFTConfig", mock_sft_config),
+            ):
                 config = _make_config()
                 mod._build_training_args(config, "cuda")
                 call_kwargs = mock_sft_config.call_args[1]
@@ -106,11 +107,12 @@ class TestBuildTrainingArgs:
     def test_cpu_disables_fp16(self) -> None:
         mock_sft_config = MagicMock()
         with patch("incept.training.sft_trainer.SFTConfig", mock_sft_config, create=True):
-
             import incept.training.sft_trainer as mod
 
-            with (patch.object(mod, "_build_training_args", wraps=mod._build_training_args),
-                  patch("trl.SFTConfig", mock_sft_config)):
+            with (
+                patch.object(mod, "_build_training_args", wraps=mod._build_training_args),
+                patch("trl.SFTConfig", mock_sft_config),
+            ):
                 config = _make_config()
                 mod._build_training_args(config, "cpu")
                 call_kwargs = mock_sft_config.call_args[1]
@@ -121,7 +123,6 @@ class TestBuildLoraConfig:
     def test_builds_lora_config(self) -> None:
         mock_peft = MagicMock()
         with patch.dict("sys.modules", {"peft": mock_peft}):
-
             import incept.training.sft_trainer as mod
 
             reload(mod)
@@ -141,7 +142,6 @@ class TestRunSft:
         mock_trl.SFTTrainer.return_value = mock_trainer_instance
 
         with patch.dict("sys.modules", {"trl": mock_trl}):
-
             import incept.training.sft_trainer as mod
 
             reload(mod)

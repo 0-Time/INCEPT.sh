@@ -11,15 +11,38 @@ from __future__ import annotations
 # ╚══════════════════════════════════════════════════════════════════════════════╝
 
 # Compression
-COMPRESSED_FILES = ["archive.tar.gz", "backup.tar.bz2", "data.xz", "logs.zst", "file.gz", "dump.bz2"]
+COMPRESSED_FILES = [
+    "archive.tar.gz",
+    "backup.tar.bz2",
+    "data.xz",
+    "logs.zst",
+    "file.gz",
+    "dump.bz2",
+]
 
 # Hardware / devices
 PCI_SLOTS = ["00:02.0", "01:00.0", "03:00.0"]
 USB_DEVICES = ["1-1", "2-1", "Bus 001"]
-KERNEL_MODULES = ["nvidia", "vboxdrv", "br_netfilter", "ip_tables", "overlay", "nfs", "ext4", "bluetooth"]
+KERNEL_MODULES = [
+    "nvidia",
+    "vboxdrv",
+    "br_netfilter",
+    "ip_tables",
+    "overlay",
+    "nfs",
+    "ext4",
+    "bluetooth",
+]
 
 # Sysctl params
-SYSCTL_PARAMS = ["net.ipv4.ip_forward", "vm.swappiness", "net.core.somaxconn", "fs.file-max", "kernel.pid_max", "net.ipv6.conf.all.forwarding"]
+SYSCTL_PARAMS = [
+    "net.ipv4.ip_forward",
+    "vm.swappiness",
+    "net.core.somaxconn",
+    "fs.file-max",
+    "kernel.pid_max",
+    "net.ipv6.conf.all.forwarding",
+]
 SYSCTL_VALUES = ["1", "0", "10", "60", "65535", "1024"]
 
 # Performance / PIDs
@@ -66,40 +89,104 @@ TMUX_SESSIONS = ["main", "work", "server", "coding", "debug"]
 
 # macOS specific
 MACOS_DOMAINS = ["com.apple.finder", "NSGlobalDomain", "com.apple.dock", "com.apple.screensaver"]
-MACOS_KEYS = ["AppleShowAllFiles", "NSNavPanelExpandedStateForSaveMode", "autohide", "askForPassword"]
+MACOS_KEYS = [
+    "AppleShowAllFiles",
+    "NSNavPanelExpandedStateForSaveMode",
+    "autohide",
+    "askForPassword",
+]
 MACOS_SERVICES = ["com.apple.ftp-proxy", "homebrew.mxcl.nginx", "homebrew.mxcl.postgresql"]
 
 # Reuse from base module
 FILES = [
-    "file.txt", "data.csv", "config.yaml", "app.log", "script.sh", "notes.md",
-    "report.pdf", "backup.sql", "output.json", "README.md", "index.html",
-    "server.log", "error.log", "access.log", "database.db", "Makefile",
-    "requirements.txt", "package.json", "docker-compose.yml", ".env",
+    "file.txt",
+    "data.csv",
+    "config.yaml",
+    "app.log",
+    "script.sh",
+    "notes.md",
+    "report.pdf",
+    "backup.sql",
+    "output.json",
+    "README.md",
+    "index.html",
+    "server.log",
+    "error.log",
+    "access.log",
+    "database.db",
+    "Makefile",
+    "requirements.txt",
+    "package.json",
+    "docker-compose.yml",
+    ".env",
 ]
 FILES_TEXT = [
-    "file.txt", "data.csv", "config.yaml", "app.log", "notes.md", "output.json",
-    "server.log", "error.log", "access.log", "README.md", "requirements.txt",
+    "file.txt",
+    "data.csv",
+    "config.yaml",
+    "app.log",
+    "notes.md",
+    "output.json",
+    "server.log",
+    "error.log",
+    "access.log",
+    "README.md",
+    "requirements.txt",
 ]
 PATHS = ["/home", "/var/log", "/etc", "/tmp", "/opt", "/usr/local", "/var", "/srv"]
 DIRS = [
-    "/var/log", "/etc/nginx", "/home/user", "/tmp/build", "/opt/app",
-    "/var/www/html", "/home/user/projects", "/srv/data",
+    "/var/log",
+    "/etc/nginx",
+    "/home/user",
+    "/tmp/build",
+    "/opt/app",
+    "/var/www/html",
+    "/home/user/projects",
+    "/srv/data",
 ]
 HOSTS = [
-    "192.168.1.1", "10.0.0.1", "google.com", "example.com",
-    "server.example.com", "8.8.8.8", "1.1.1.1", "github.com",
+    "192.168.1.1",
+    "10.0.0.1",
+    "google.com",
+    "example.com",
+    "server.example.com",
+    "8.8.8.8",
+    "1.1.1.1",
+    "github.com",
 ]
 PORTS = ["22", "80", "443", "3000", "3306", "5432", "6379", "8080", "8443", "9090"]
 USERS = ["admin", "deploy", "webuser", "john", "jane", "developer", "backup", "testuser"]
 GROUPS = ["docker", "sudo", "admin", "developers", "wheel", "www-data", "staff", "users"]
 SERVICES = [
-    "nginx", "apache2", "httpd", "sshd", "docker", "postgresql", "mysql",
-    "redis", "mongod", "elasticsearch", "fail2ban", "cron", "haproxy",
+    "nginx",
+    "apache2",
+    "httpd",
+    "sshd",
+    "docker",
+    "postgresql",
+    "mysql",
+    "redis",
+    "mongod",
+    "elasticsearch",
+    "fail2ban",
+    "cron",
+    "haproxy",
 ]
-SEARCH_PATTERNS = ["error", "ERROR", "warning", "failed", "timeout", "refused", "denied", "exception"]
+SEARCH_PATTERNS = [
+    "error",
+    "ERROR",
+    "warning",
+    "failed",
+    "timeout",
+    "refused",
+    "denied",
+    "exception",
+]
 URLS = [
-    "https://example.com/file.tar.gz", "https://example.com/data.zip",
-    "https://example.com/image.iso", "https://example.com/backup.sql.gz",
+    "https://example.com/file.tar.gz",
+    "https://example.com/data.zip",
+    "https://example.com/image.iso",
+    "https://example.com/backup.sql.gz",
 ]
 DELIMITERS = [":", ",", "\\t", ";", "|"]
 
@@ -122,8 +209,15 @@ TEMPLATES_EXTENDED += [
             "strip the directory from {path}",
         ],
         "cmd": "basename {path}",
-        "slots": {"path": ["/home/user/file.txt", "/var/log/syslog", "/etc/nginx/nginx.conf",
-                           "/opt/app/main.py", "/tmp/output.csv"]},
+        "slots": {
+            "path": [
+                "/home/user/file.txt",
+                "/var/log/syslog",
+                "/etc/nginx/nginx.conf",
+                "/opt/app/main.py",
+                "/tmp/output.csv",
+            ]
+        },
     },
     {
         "nl": [
@@ -133,8 +227,15 @@ TEMPLATES_EXTENDED += [
             "strip the filename from {path}",
         ],
         "cmd": "dirname {path}",
-        "slots": {"path": ["/home/user/file.txt", "/var/log/syslog", "/etc/nginx/nginx.conf",
-                           "/opt/app/main.py", "/tmp/output.csv"]},
+        "slots": {
+            "path": [
+                "/home/user/file.txt",
+                "/var/log/syslog",
+                "/etc/nginx/nginx.conf",
+                "/opt/app/main.py",
+                "/tmp/output.csv",
+            ]
+        },
     },
     {
         "nl": [
@@ -144,7 +245,9 @@ TEMPLATES_EXTENDED += [
             "show the absolute path of {path}",
         ],
         "cmd": "realpath {path}",
-        "slots": {"path": [".", "..", "~/Documents", "../src", "file.txt", "/var/log/../log/syslog"]},
+        "slots": {
+            "path": [".", "..", "~/Documents", "../src", "file.txt", "/var/log/../log/syslog"]
+        },
     },
     {
         "nl": [
@@ -154,8 +257,14 @@ TEMPLATES_EXTENDED += [
             "what does {link} point to",
         ],
         "cmd": "readlink -f {link}",
-        "slots": {"link": ["/usr/bin/python3", "/usr/bin/java", "/etc/alternatives/editor",
-                           "/usr/local/bin/node"]},
+        "slots": {
+            "link": [
+                "/usr/bin/python3",
+                "/usr/bin/java",
+                "/etc/alternatives/editor",
+                "/usr/local/bin/node",
+            ]
+        },
     },
     {
         "nl": [
@@ -326,7 +435,9 @@ TEMPLATES_EXTENDED += [
             "wipe {file} securely",
         ],
         "cmd": "shred -vfz -n 3 {file}",
-        "slots": {"file": ["secret.txt", "passwords.txt", "old_key.pem", "credentials.conf", "dump.sql"]},
+        "slots": {
+            "file": ["secret.txt", "passwords.txt", "old_key.pem", "credentials.conf", "dump.sql"]
+        },
     },
     {
         "nl": [
@@ -347,7 +458,12 @@ TEMPLATES_EXTENDED += [
         "cmd": "timeout {sec} {cmd}",
         "slots": {
             "sec": ["5", "10", "30", "60", "300"],
-            "cmd": ["ping google.com", "curl https://example.com", "sleep 999", "wget https://example.com/big.tar.gz"],
+            "cmd": [
+                "ping google.com",
+                "curl https://example.com",
+                "sleep 999",
+                "wget https://example.com/big.tar.gz",
+            ],
         },
     },
     {
@@ -485,7 +601,10 @@ TEMPLATES_EXTENDED += [
             "generate a patch file from {a} and {b}",
         ],
         "cmd": "diff -u {a} {b} > changes.patch",
-        "slots": {"a": ["old.conf", "original.py", "v1.txt"], "b": ["new.conf", "modified.py", "v2.txt"]},
+        "slots": {
+            "a": ["old.conf", "original.py", "v1.txt"],
+            "b": ["new.conf", "modified.py", "v2.txt"],
+        },
     },
     {
         "nl": [
@@ -889,8 +1008,15 @@ TEMPLATES_EXTENDED += [
             "which process has {file} open",
         ],
         "cmd": "fuser -v {file}",
-        "slots": {"file": ["/var/log/syslog", "/tmp/lock", "/var/run/docker.sock",
-                           "/etc/nginx/nginx.conf", "database.db"]},
+        "slots": {
+            "file": [
+                "/var/log/syslog",
+                "/tmp/lock",
+                "/var/run/docker.sock",
+                "/etc/nginx/nginx.conf",
+                "database.db",
+            ]
+        },
     },
     {
         "nl": [
@@ -937,7 +1063,14 @@ TEMPLATES_EXTENDED += [
             "benchmark {cmd}",
         ],
         "cmd": "time {cmd}",
-        "slots": {"cmd": ["ls -la /", "find / -name '*.log' 2>/dev/null", "sleep 1", "tar czf /dev/null /etc"]},
+        "slots": {
+            "cmd": [
+                "ls -la /",
+                "find / -name '*.log' 2>/dev/null",
+                "sleep 1",
+                "tar czf /dev/null /etc",
+            ]
+        },
     },
     {
         "nl": [
@@ -946,7 +1079,10 @@ TEMPLATES_EXTENDED += [
             "start {cmd} with nice value {nice}",
         ],
         "cmd": "nice -n {nice} {cmd}",
-        "slots": {"nice": ["10", "15", "19"], "cmd": ["tar czf backup.tar.gz /home", "find / -name '*.log'", "make -j4"]},
+        "slots": {
+            "nice": ["10", "15", "19"],
+            "cmd": ["tar czf backup.tar.gz /home", "find / -name '*.log'", "make -j4"],
+        },
     },
     {
         "nl": [
@@ -1647,10 +1783,18 @@ TEMPLATES_EXTENDED += [
             "suse": "rpm -qf {file}",
         },
         "slots": {
-            "debian": {"file": ["/usr/bin/curl", "/usr/bin/git", "/usr/sbin/nginx", "/usr/bin/python3"]},
-            "rhel": {"file": ["/usr/bin/curl", "/usr/bin/git", "/usr/sbin/nginx", "/usr/bin/python3"]},
-            "arch": {"file": ["/usr/bin/curl", "/usr/bin/git", "/usr/bin/nginx", "/usr/bin/python3"]},
-            "suse": {"file": ["/usr/bin/curl", "/usr/bin/git", "/usr/sbin/nginx", "/usr/bin/python3"]},
+            "debian": {
+                "file": ["/usr/bin/curl", "/usr/bin/git", "/usr/sbin/nginx", "/usr/bin/python3"]
+            },
+            "rhel": {
+                "file": ["/usr/bin/curl", "/usr/bin/git", "/usr/sbin/nginx", "/usr/bin/python3"]
+            },
+            "arch": {
+                "file": ["/usr/bin/curl", "/usr/bin/git", "/usr/bin/nginx", "/usr/bin/python3"]
+            },
+            "suse": {
+                "file": ["/usr/bin/curl", "/usr/bin/git", "/usr/sbin/nginx", "/usr/bin/python3"]
+            },
         },
     },
     {
@@ -2495,8 +2639,15 @@ TEMPLATES_EXTENDED += [
             "send message to system log",
         ],
         "cmd": "logger '{msg}'",
-        "slots": {"msg": ["Deployment started", "Backup complete", "Maintenance window open",
-                          "Service restarted", "Alert: disk space low"]},
+        "slots": {
+            "msg": [
+                "Deployment started",
+                "Backup complete",
+                "Maintenance window open",
+                "Service restarted",
+                "Alert: disk space low",
+            ]
+        },
     },
     {
         "nl": [
@@ -2686,8 +2837,11 @@ TEMPLATES_EXTENDED += [
         "cmd": "parallel {cmd} ::: {args}",
         "slots": {
             "cmd": ["gzip", "convert", "ping -c1"],
-            "args": ["file1.txt file2.txt file3.txt", "img1.png img2.png img3.png",
-                     "host1 host2 host3"],
+            "args": [
+                "file1.txt file2.txt file3.txt",
+                "img1.png img2.png img3.png",
+                "host1 host2 host3",
+            ],
         },
     },
     {
@@ -2788,7 +2942,7 @@ TEMPLATES_EXTENDED += [
         ],
         "cmd": "jq '[.[] | select({cond})]' {file}",
         "slots": {
-            "cond": [".age > 30", ".status == \"active\"", ".count > 0", ".name != null"],
+            "cond": [".age > 30", '.status == "active"', ".count > 0", ".name != null"],
             "file": ["data.json", "users.json", "items.json"],
         },
     },
@@ -2859,8 +3013,16 @@ TEMPLATES_EXTENDED += [
             "what libraries does {bin} link to",
         ],
         "cmd": "ldd {bin}",
-        "slots": {"bin": ["/usr/bin/ls", "/usr/bin/bash", "/usr/bin/python3",
-                          "/usr/bin/nginx", "/usr/bin/curl", "/usr/bin/git"]},
+        "slots": {
+            "bin": [
+                "/usr/bin/ls",
+                "/usr/bin/bash",
+                "/usr/bin/python3",
+                "/usr/bin/nginx",
+                "/usr/bin/curl",
+                "/usr/bin/git",
+            ]
+        },
     },
     {
         "nl": [
@@ -3219,8 +3381,16 @@ TEMPLATES_EXTENDED += [
             "launch {target}",
         ],
         "cmd": "open {target}",
-        "slots": {"target": [".", "~/Documents", "https://example.com", "/Applications/Safari.app",
-                              "file.pdf", "image.png"]},
+        "slots": {
+            "target": [
+                ".",
+                "~/Documents",
+                "https://example.com",
+                "/Applications/Safari.app",
+                "file.pdf",
+                "image.png",
+            ]
+        },
     },
     {
         "nl": [
@@ -3238,7 +3408,9 @@ TEMPLATES_EXTENDED += [
             "text to speech {text}",
         ],
         "cmd": "say '{text}'",
-        "slots": {"text": ["hello world", "build complete", "deployment finished", "error detected"]},
+        "slots": {
+            "text": ["hello world", "build complete", "deployment finished", "error detected"]
+        },
     },
     {
         "nl": [
@@ -3410,7 +3582,10 @@ TEMPLATES_EXTENDED += [
             "scale {file} to {size} pixels wide",
         ],
         "cmd": "sips --resampleWidth {size} {file}",
-        "slots": {"size": ["800", "1024", "1920", "640"], "file": ["photo.jpg", "image.png", "screenshot.png"]},
+        "slots": {
+            "size": ["800", "1024", "1920", "640"],
+            "file": ["photo.jpg", "image.png", "screenshot.png"],
+        },
     },
     {
         "nl": [
@@ -3419,7 +3594,10 @@ TEMPLATES_EXTENDED += [
             "change image format of {file} to {fmt}",
         ],
         "cmd": "sips -s format {fmt} {file} --out {file}.{fmt}",
-        "slots": {"fmt": ["png", "jpeg", "tiff", "bmp"], "file": ["image.png", "photo.jpg", "icon.tiff"]},
+        "slots": {
+            "fmt": ["png", "jpeg", "tiff", "bmp"],
+            "file": ["image.png", "photo.jpg", "icon.tiff"],
+        },
     },
     {
         "nl": [

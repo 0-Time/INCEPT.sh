@@ -110,7 +110,11 @@ def _extract_basic_slots(intent: IntentLabel, text: str) -> dict[str, Any]:
         if m:
             slots["package"] = m.group(1)
     elif intent == IntentLabel.search_package:
-        m = _re.search(r"\b(?:search|find|look\s+for)\s+(?:a\s+)?(?:package\s+)?(?:called\s+)?([\w.+-]+)", text, _re.IGNORECASE)
+        m = _re.search(
+            r"\b(?:search|find|look\s+for)\s+(?:a\s+)?(?:package\s+)?(?:called\s+)?([\w.+-]+)",
+            text,
+            _re.IGNORECASE,
+        )
         if m:
             slots["query"] = m.group(1)
     elif intent in (
@@ -120,9 +124,13 @@ def _extract_basic_slots(intent: IntentLabel, text: str) -> dict[str, Any]:
         IntentLabel.enable_service,
         IntentLabel.service_status,
     ):
-        verb = {"start_service": "start", "stop_service": "stop",
-                "restart_service": "restart", "enable_service": "enable",
-                "service_status": "(?:status|check)"}
+        verb = {
+            "start_service": "start",
+            "stop_service": "stop",
+            "restart_service": "restart",
+            "enable_service": "enable",
+            "service_status": "(?:status|check)",
+        }
         v = verb.get(intent.value, "start")
         m = _re.search(rf"\b{v}\s+(?:the\s+)?([\w.+-]+)(?:\s+service)?", text, _re.IGNORECASE)
         if m:
@@ -140,7 +148,17 @@ def _extract_basic_slots(intent: IntentLabel, text: str) -> dict[str, Any]:
             slots["name_pattern"] = m.group(1) if m.group(1).startswith("*") else f"*{m.group(1)}"
         else:
             m = _re.search(r"\b(\w+)\s+files?", text, _re.IGNORECASE)
-            if m and m.group(1).lower() not in ("all", "the", "some", "any", "find", "large", "old", "new", "empty"):
+            if m and m.group(1).lower() not in (
+                "all",
+                "the",
+                "some",
+                "any",
+                "find",
+                "large",
+                "old",
+                "new",
+                "empty",
+            ):
                 slots["name_pattern"] = f"*.{m.group(1)}"
     elif intent == IntentLabel.list_directory:
         m = _re.search(r"\bin\s+(/[\w/.-]+)", text)
@@ -151,17 +169,27 @@ def _extract_basic_slots(intent: IntentLabel, text: str) -> dict[str, Any]:
         if m:
             slots["path"] = m.group(1)
     elif intent == IntentLabel.view_file:
-        m = _re.search(r"(?:view|show|display|read|cat)\s+(?:the\s+)?(?:contents?\s+of\s+)?(/?[\w/.~-]+\.\w+)", text, _re.IGNORECASE)
+        m = _re.search(
+            r"(?:view|show|display|read|cat)\s+(?:the\s+)?(?:contents?\s+of\s+)?(/?[\w/.~-]+\.\w+)",
+            text,
+            _re.IGNORECASE,
+        )
         if m:
             slots["file"] = m.group(1)
     elif intent == IntentLabel.search_text:
         # grep "pattern" path
-        m = _re.search(r"\b(?:search|grep|find)\s+(?:for\s+)?['\"]?(\S+)['\"]?\s+(?:in\s+)?(/?[\w/.-]+)", text, _re.IGNORECASE)
+        m = _re.search(
+            r"\b(?:search|grep|find)\s+(?:for\s+)?['\"]?(\S+)['\"]?\s+(?:in\s+)?(/?[\w/.-]+)",
+            text,
+            _re.IGNORECASE,
+        )
         if m:
             slots["pattern"] = m.group(1)
             slots["path"] = m.group(2)
         else:
-            m = _re.search(r"\b(?:search|grep|find)\s+(?:for\s+)?['\"]?(\S+)['\"]?", text, _re.IGNORECASE)
+            m = _re.search(
+                r"\b(?:search|grep|find)\s+(?:for\s+)?['\"]?(\S+)['\"]?", text, _re.IGNORECASE
+            )
             if m:
                 slots["pattern"] = m.group(1)
 
@@ -174,7 +202,7 @@ _SLOT_KEY_ALIASES: dict[str, str] = {
     "service": "service_name",
     "svc": "service_name",
     "name_pattern": "name_pattern",
-    "name": "name_pattern",       # find_files: "name" → "name_pattern"
+    "name": "name_pattern",  # find_files: "name" → "name_pattern"
     "filename": "name_pattern",
     "file_name": "name_pattern",
     "target": "target",
@@ -182,7 +210,7 @@ _SLOT_KEY_ALIASES: dict[str, str] = {
     "container_id": "container",
     "pkg": "package",
     "job_id_or_pattern": "job_id_or_pattern",
-    "pattern": "pattern",          # keep as-is for non-find intents
+    "pattern": "pattern",  # keep as-is for non-find intents
     "field_spec": "field_spec",
     "input_file": "input_file",
     "source": "source",
@@ -431,7 +459,9 @@ def run_pipeline(
                 slot_result = fill_slots(llm, intent.value, sub_text, context_json)
                 params = _normalize_slot_keys(intent, slot_result.slots)
             except Exception:
-                logger.warning("Model slot filling failed for %s, using basic extraction", intent.value)
+                logger.warning(
+                    "Model slot filling failed for %s, using basic extraction", intent.value
+                )
                 params = _normalize_slot_keys(intent, _extract_basic_slots(intent, sub_text))
         else:
             # No model — use regex-based slot extraction as fallback

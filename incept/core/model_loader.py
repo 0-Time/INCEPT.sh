@@ -130,18 +130,20 @@ def _start_llama_server(model_path: str, port: int) -> subprocess.Popen[bytes]:
 
     llama_server = shutil.which("llama-server")
     if llama_server is None:
-        raise RuntimeError(
-            "llama-server not found on PATH. Install via: brew install llama.cpp"
-        )
+        raise RuntimeError("llama-server not found on PATH. Install via: brew install llama.cpp")
 
     logger.info("Starting llama-server on port %d (Qwen3.5 fallback)...", port)
     proc = subprocess.Popen(
         [
             llama_server,
-            "-m", model_path,
-            "--port", str(port),
-            "-ngl", "99",
-            "-c", "2048",
+            "-m",
+            model_path,
+            "--port",
+            str(port),
+            "-ngl",
+            "99",
+            "-c",
+            "2048",
             "--log-disable",
         ],
         stdout=subprocess.DEVNULL,
@@ -154,9 +156,7 @@ def _start_llama_server(model_path: str, port: int) -> subprocess.Popen[bytes]:
     deadline = time.time() + 60
     while time.time() < deadline:
         if proc.poll() is not None:
-            raise RuntimeError(
-                f"llama-server exited with code {proc.returncode} during startup"
-            )
+            raise RuntimeError(f"llama-server exited with code {proc.returncode} during startup")
         try:
             req = urllib.request.Request(f"http://127.0.0.1:{port}/health")
             with urllib.request.urlopen(req, timeout=2) as resp:
@@ -247,6 +247,7 @@ def get_model(model_path: str | None = None) -> Any | None:
         except (ValueError, RuntimeError):
             # Force GC so __del__ fires while stderr is still suppressed
             import gc
+
             gc.collect()
             llama_failed = True
     finally:
@@ -255,7 +256,9 @@ def get_model(model_path: str | None = None) -> Any | None:
             os.close(saved_fd)
 
     if llama_failed:
-        logger.info("Falling back to llama-server (llama-cpp-python does not support this model)...")
+        logger.info(
+            "Falling back to llama-server (llama-cpp-python does not support this model)..."
+        )
 
     # Fallback: use llama-server (supports newer architectures)
     try:
@@ -282,6 +285,7 @@ def is_command_model() -> bool:
     if _MODEL_PATH is None:
         return False
     from pathlib import Path as _Path
+
     return "command" in _Path(_MODEL_PATH).stem.lower()
 
 

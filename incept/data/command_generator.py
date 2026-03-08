@@ -37,20 +37,22 @@ _REFUSAL_MAP: dict[str, str] = {
 }
 
 # Intents that typically require sudo
-_SUDO_INTENTS: frozenset[str] = frozenset({
-    "install_package",
-    "remove_package",
-    "update_packages",
-    "start_service",
-    "stop_service",
-    "restart_service",
-    "enable_service",
-    "create_user",
-    "delete_user",
-    "modify_user",
-    "mount_device",
-    "unmount_device",
-})
+_SUDO_INTENTS: frozenset[str] = frozenset(
+    {
+        "install_package",
+        "remove_package",
+        "update_packages",
+        "start_service",
+        "stop_service",
+        "restart_service",
+        "enable_service",
+        "create_user",
+        "delete_user",
+        "modify_user",
+        "mount_device",
+        "unmount_device",
+    }
+)
 
 
 def _build_router() -> IntentRouter:

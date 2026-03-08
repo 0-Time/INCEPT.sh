@@ -83,7 +83,10 @@ class TestInceptREPL:
             self.repl.handle_input("find log files")
         assert len(self.repl._chat_history) == 2
         assert self.repl._chat_history[0] == {"role": "user", "content": "find log files"}
-        assert self.repl._chat_history[1] == {"role": "assistant", "content": "find /var -name '*.log'"}
+        assert self.repl._chat_history[1] == {
+            "role": "assistant",
+            "content": "find /var -name '*.log'",
+        }
 
     def test_format_command_response(self) -> None:
         resp = EngineResponse(text="ls -la", type="command", risk="safe")

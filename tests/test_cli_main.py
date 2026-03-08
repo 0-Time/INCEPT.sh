@@ -36,6 +36,7 @@ class TestCLIMain:
 
     def test_serve_subcommand(self) -> None:
         from click.testing import CliRunner as _Runner
+
         runner = _Runner()
         # Verify serve is a registered subcommand on the CLI group
         result = runner.invoke(main, ["--help"])

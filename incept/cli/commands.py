@@ -87,6 +87,7 @@ class SlashCommandRegistry:
         if not args.strip():
             return "  Usage: /explain <command>\n  Example: /explain awk '{print $1}' file.txt"
         from incept.explain.pipeline import run_explain_pipeline
+
         resp = run_explain_pipeline(args.strip())
         lines = [
             f"  [bold]Command:[/bold]  {resp.command}",

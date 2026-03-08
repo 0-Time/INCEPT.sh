@@ -14,8 +14,11 @@ from incept.cli.banner import render_banner
 try:
     from incept.cli.clipboard import copy_to_clipboard as _copy  # type: ignore[attr-defined]
 except (ImportError, AttributeError):
+
     def _copy(text: str) -> None:
         pass
+
+
 copy_to_clipboard = _copy
 from incept.cli.commands import SlashCommandRegistry
 from incept.cli.config import InceptConfig
@@ -39,7 +42,11 @@ class InceptREPL:
     def _print_banner(self) -> None:
         """Print the welcome banner."""
         ctx = self._engine.context_line
-        status = "[bold green]● ready[/bold green]" if self._engine.model_loaded else "[bold red]● no model[/bold red]"
+        status = (
+            "[bold green]● ready[/bold green]"
+            if self._engine.model_loaded
+            else "[bold red]● no model[/bold red]"
+        )
         render_banner(console, __version__, status, ctx)
 
     def get_prompt(self) -> str:
@@ -58,7 +65,9 @@ class InceptREPL:
             cmd_args = parts[1] if len(parts) > 1 else ""
 
             if not self.commands.has(cmd_name):
-                return f"[red]✗[/red] Unknown command: {cmd_name}. Type /help for available commands."
+                return (
+                    f"[red]✗[/red] Unknown command: {cmd_name}. Type /help for available commands."
+                )
 
             result = self.commands.dispatch(cmd_name, cmd_args)
 
@@ -84,7 +93,7 @@ class InceptREPL:
         self._chat_history.append({"role": "user", "content": text})
         self._chat_history.append({"role": "assistant", "content": resp.text})
         if len(self._chat_history) > self._MAX_HISTORY_TURNS * 2:
-            self._chat_history = self._chat_history[-(self._MAX_HISTORY_TURNS * 2):]
+            self._chat_history = self._chat_history[-(self._MAX_HISTORY_TURNS * 2) :]
 
         return self._format_response(resp, elapsed)
 
@@ -129,6 +138,7 @@ class InceptREPL:
         action = action.strip().lower()
         if action == "e" and resp.type == "command":
             from incept.cli.actions import execute_command
+
             console.print(f"  [dim]Running:[/dim] [bold]{resp.text}[/bold]")
             console.print(f"  [dim]{'─' * 40}[/dim]")
             result = execute_command(resp.text, confirmed=True)
@@ -151,10 +161,12 @@ class InceptREPL:
         from prompt_toolkit.history import FileHistory
         from prompt_toolkit.styles import Style
 
-        style = Style.from_dict({
-            "prompt": "#00d7ff bold",
-            "pound": "#5f87af",
-        })
+        style = Style.from_dict(
+            {
+                "prompt": "#00d7ff bold",
+                "pound": "#5f87af",
+            }
+        )
 
         self._print_banner()
 
@@ -188,6 +200,5 @@ class InceptREPL:
             if result is not None:
                 console.print(result)
                 # Store response for action handling
-                if self.query_history and hasattr(self, '_last_resp'):
+                if self.query_history and hasattr(self, "_last_resp"):
                     last_resp = self._last_resp
-

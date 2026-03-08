@@ -76,8 +76,16 @@ def render_banner(console: Console, version: str, model_status: str, context: st
 
     console.print()
     console.print("  [dim italic]── Offline NL → Linux Command Engine ──[/dim italic]")
-    console.print("  [dim]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/dim]")
-    console.print(f"  [dim cyan]v{version}[/dim cyan]  [dim]│[/dim]  {model_status}  [dim]│[/dim]  [dim yellow]{context}[/dim yellow]")
-    console.print("  [dim]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/dim]")
-    console.print("  [dim]Type a request in plain English, or [bold]/help[/bold] for commands. [bold]Ctrl+D[/bold] to exit.[/dim]")
+    console.print(
+        "  [dim]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/dim]"
+    )
+    console.print(
+        f"  [dim cyan]v{version}[/dim cyan]  [dim]│[/dim]  {model_status}  [dim]│[/dim]  [dim yellow]{context}[/dim yellow]"
+    )
+    console.print(
+        "  [dim]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/dim]"
+    )
+    console.print(
+        "  [dim]Type a request in plain English, or [bold]/help[/bold] for commands. [bold]Ctrl+D[/bold] to exit.[/dim]"
+    )
     console.print()

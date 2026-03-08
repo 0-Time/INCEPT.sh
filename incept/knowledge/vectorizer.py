@@ -11,6 +11,7 @@ Two vector representations for hybrid search:
   - Sparse (dict[int,float]): Raw token hashes with TF weights.
     Captures exact keyword matches for BM25-style retrieval.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -37,7 +38,7 @@ def _char_ngrams(token: str, n: int = 3) -> list[str]:
 
 def _token_bigrams(tokens: list[str]) -> list[str]:
     """Generate consecutive token bigrams."""
-    return [f"{tokens[i]}_{tokens[i+1]}" for i in range(len(tokens) - 1)]
+    return [f"{tokens[i]}_{tokens[i + 1]}" for i in range(len(tokens) - 1)]
 
 
 def _md5_int(s: str) -> int:

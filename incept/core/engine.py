@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 class EngineResponse(BaseModel):
     """Structured response from the INCEPT engine."""
 
-    text: str                                                       # The command or response text
+    text: str  # The command or response text
     type: Literal["command", "refusal", "clarification", "info", "blocked"] = "command"
     confidence: Literal["high", "medium", "low"] = "high"
     risk: Literal["safe", "caution", "dangerous", "blocked"] = "safe"
@@ -45,18 +45,20 @@ class EngineResponse(BaseModel):
 # ---------------------------------------------------------------------------
 
 _CATASTROPHIC_PATTERNS: list[tuple[re.Pattern[str], str]] = [
-    (re.compile(r"\brm\s+(-\w*r\w*f|-\w*f\w*r)\s+/(\s|$)"),       "rm -rf /"),
-    (re.compile(r"\brm\s+(-\w*r\w*f|-\w*f\w*r)\s+/\*"),            "rm -rf /*"),
-    (re.compile(r"\brm\s+--no-preserve-root"),                      "rm --no-preserve-root"),
-    (re.compile(r"\bdd\b.*of=/dev/[sh]d[a-z]"),                     "dd to disk device"),
-    (re.compile(r"\bdd\b.*of=/dev/nvme"),                           "dd to nvme device"),
-    (re.compile(r"\bmkfs\S*\s.*/dev/[sh]d[a-z]"),                   "mkfs on disk device"),
-    (re.compile(r"\bmkfs\S*\s.*/dev/nvme"),                         "mkfs on nvme device"),
-    (re.compile(r":\(\)\{.*:\|:"),                                   "fork bomb"),
-    (re.compile(r"\.\(\)\{.*\.\|\.\}"),                              "fork bomb variant"),
-    (re.compile(r"\bchmod\s+(-R\s+)?777\s+/($|\s)"),                "chmod -R 777 /"),
-    (re.compile(r"\bchmod\s+(-R\s+)?777\s+/(etc|usr|bin|sbin|boot|dev)"),
-     "chmod 777 on system dir"),
+    (re.compile(r"\brm\s+(-\w*r\w*f|-\w*f\w*r)\s+/(\s|$)"), "rm -rf /"),
+    (re.compile(r"\brm\s+(-\w*r\w*f|-\w*f\w*r)\s+/\*"), "rm -rf /*"),
+    (re.compile(r"\brm\s+--no-preserve-root"), "rm --no-preserve-root"),
+    (re.compile(r"\bdd\b.*of=/dev/[sh]d[a-z]"), "dd to disk device"),
+    (re.compile(r"\bdd\b.*of=/dev/nvme"), "dd to nvme device"),
+    (re.compile(r"\bmkfs\S*\s.*/dev/[sh]d[a-z]"), "mkfs on disk device"),
+    (re.compile(r"\bmkfs\S*\s.*/dev/nvme"), "mkfs on nvme device"),
+    (re.compile(r":\(\)\{.*:\|:"), "fork bomb"),
+    (re.compile(r"\.\(\)\{.*\.\|\.\}"), "fork bomb variant"),
+    (re.compile(r"\bchmod\s+(-R\s+)?777\s+/($|\s)"), "chmod -R 777 /"),
+    (
+        re.compile(r"\bchmod\s+(-R\s+)?777\s+/(etc|usr|bin|sbin|boot|dev)"),
+        "chmod 777 on system dir",
+    ),
 ]
 
 # Patterns for simple risk classification
@@ -258,58 +260,256 @@ def _check_catastrophic(text: str) -> str | None:
 # ---------------------------------------------------------------------------
 
 
-
-
 # ── Post-processing safety layer ─────────────────────────────
 
-_INJECTION_TRIGGERS = frozenset([
-    "ignore", "forget", "disregard", "override", "bypass",
-    "unrestricted", "jailbreak", "dan", "pretend",
-    "system prompt", "instructions", "what are you",
-    "who are you", "what model", "who created", "who made",
-    "tell me a joke", "write a poem", "write a story",
-    "repeat your", "show your prompt",
-])
+_INJECTION_TRIGGERS = frozenset(
+    [
+        "ignore",
+        "forget",
+        "disregard",
+        "override",
+        "bypass",
+        "unrestricted",
+        "jailbreak",
+        "dan",
+        "pretend",
+        "system prompt",
+        "instructions",
+        "what are you",
+        "who are you",
+        "what model",
+        "who created",
+        "who made",
+        "tell me a joke",
+        "write a poem",
+        "write a story",
+        "repeat your",
+        "show your prompt",
+    ]
+)
 
-_VALID_CMD_STARTERS = frozenset([
-    "sudo", "grep", "find", "ls", "cat", "chmod", "chown", "chgrp",
-    "mkdir", "rmdir", "rm", "cp", "mv", "touch", "head", "tail",
-    "less", "more", "wc", "sort", "uniq", "cut", "awk", "sed",
-    "tar", "zip", "unzip", "gzip", "gunzip", "bzip2", "xz",
-    "ps", "top", "htop", "kill", "pkill", "killall", "pgrep",
-    "df", "du", "free", "uptime", "date", "hostname", "uname",
-    "whoami", "who", "id", "su", "passwd", "useradd", "userdel",
-    "usermod", "groupadd", "groups", "getent", "umask", "chattr",
-    "lsattr", "setfacl", "getfacl",
-    "ip", "ifconfig", "ping", "traceroute", "tracepath", "mtr",
-    "dig", "nslookup", "host", "whois", "curl", "wget", "ssh",
-    "scp", "sftp", "rsync", "nc", "nmap", "ss", "netstat",
-    "iptables", "ufw", "firewall-cmd",
-    "systemctl", "service", "journalctl", "dmesg", "lsmod",
-    "modprobe", "lsblk", "mount", "umount", "fdisk", "lspci",
-    "lsusb", "lshw", "dmidecode", "lscpu", "sensors",
-    "docker", "podman", "kubectl", "git", "make", "gcc",
-    "python", "python3", "pip", "npm", "node",
-    "apt", "apt-get", "dnf", "yum", "pacman", "zypper", "dpkg", "rpm",
-    "crontab", "at", "watch", "screen", "tmux", "nohup",
-    "echo", "printf", "export", "env", "alias", "unalias",
-    "history", "clear", "reset", "man", "which", "whereis",
-    "type", "file", "stat", "readlink", "realpath", "basename",
-    "diff", "patch", "strings", "hexdump", "od", "xxd",
-    "lsof", "strace", "time", "timeout", "nice", "renice",
-    "shutdown", "reboot", "halt", "poweroff", "init",
-    "openssl", "gpg", "md5sum", "sha256sum", "base64",
-    "dd", "shred", "sync", "mkfs", "fsck", "resize2fs",
-    "fg", "bg", "jobs", "wait", "sleep", "seq", "yes",
-    "tee", "xargs", "parallel", "bc", "expr", "factor",
-    "tr", "rev", "tac", "nl", "fold", "fmt", "column",
-    "iconv", "dos2unix", "nano", "vi", "vim", "emacs",
-    "sysctl", "loginctl", "timedatectl", "hostnamectl",
-    "locate", "updatedb", "logrotate", "logger",
-    "chroot", "nsenter", "unshare", "flock",
-    "set", "shopt", "declare", "source", "eval",
-    "test", "[", "[[", "UNSAFE_REQUEST",
-])
+_VALID_CMD_STARTERS = frozenset(
+    [
+        "sudo",
+        "grep",
+        "find",
+        "ls",
+        "cat",
+        "chmod",
+        "chown",
+        "chgrp",
+        "mkdir",
+        "rmdir",
+        "rm",
+        "cp",
+        "mv",
+        "touch",
+        "head",
+        "tail",
+        "less",
+        "more",
+        "wc",
+        "sort",
+        "uniq",
+        "cut",
+        "awk",
+        "sed",
+        "tar",
+        "zip",
+        "unzip",
+        "gzip",
+        "gunzip",
+        "bzip2",
+        "xz",
+        "ps",
+        "top",
+        "htop",
+        "kill",
+        "pkill",
+        "killall",
+        "pgrep",
+        "df",
+        "du",
+        "free",
+        "uptime",
+        "date",
+        "hostname",
+        "uname",
+        "whoami",
+        "who",
+        "id",
+        "su",
+        "passwd",
+        "useradd",
+        "userdel",
+        "usermod",
+        "groupadd",
+        "groups",
+        "getent",
+        "umask",
+        "chattr",
+        "lsattr",
+        "setfacl",
+        "getfacl",
+        "ip",
+        "ifconfig",
+        "ping",
+        "traceroute",
+        "tracepath",
+        "mtr",
+        "dig",
+        "nslookup",
+        "host",
+        "whois",
+        "curl",
+        "wget",
+        "ssh",
+        "scp",
+        "sftp",
+        "rsync",
+        "nc",
+        "nmap",
+        "ss",
+        "netstat",
+        "iptables",
+        "ufw",
+        "firewall-cmd",
+        "systemctl",
+        "service",
+        "journalctl",
+        "dmesg",
+        "lsmod",
+        "modprobe",
+        "lsblk",
+        "mount",
+        "umount",
+        "fdisk",
+        "lspci",
+        "lsusb",
+        "lshw",
+        "dmidecode",
+        "lscpu",
+        "sensors",
+        "docker",
+        "podman",
+        "kubectl",
+        "git",
+        "make",
+        "gcc",
+        "python",
+        "python3",
+        "pip",
+        "npm",
+        "node",
+        "apt",
+        "apt-get",
+        "dnf",
+        "yum",
+        "pacman",
+        "zypper",
+        "dpkg",
+        "rpm",
+        "crontab",
+        "at",
+        "watch",
+        "screen",
+        "tmux",
+        "nohup",
+        "echo",
+        "printf",
+        "export",
+        "env",
+        "alias",
+        "unalias",
+        "history",
+        "clear",
+        "reset",
+        "man",
+        "which",
+        "whereis",
+        "type",
+        "file",
+        "stat",
+        "readlink",
+        "realpath",
+        "basename",
+        "diff",
+        "patch",
+        "strings",
+        "hexdump",
+        "od",
+        "xxd",
+        "lsof",
+        "strace",
+        "time",
+        "timeout",
+        "nice",
+        "renice",
+        "shutdown",
+        "reboot",
+        "halt",
+        "poweroff",
+        "init",
+        "openssl",
+        "gpg",
+        "md5sum",
+        "sha256sum",
+        "base64",
+        "dd",
+        "shred",
+        "sync",
+        "mkfs",
+        "fsck",
+        "resize2fs",
+        "fg",
+        "bg",
+        "jobs",
+        "wait",
+        "sleep",
+        "seq",
+        "yes",
+        "tee",
+        "xargs",
+        "parallel",
+        "bc",
+        "expr",
+        "factor",
+        "tr",
+        "rev",
+        "tac",
+        "nl",
+        "fold",
+        "fmt",
+        "column",
+        "iconv",
+        "dos2unix",
+        "nano",
+        "vi",
+        "vim",
+        "emacs",
+        "sysctl",
+        "loginctl",
+        "timedatectl",
+        "hostnamectl",
+        "locate",
+        "updatedb",
+        "logrotate",
+        "logger",
+        "chroot",
+        "nsenter",
+        "unshare",
+        "flock",
+        "set",
+        "shopt",
+        "declare",
+        "source",
+        "eval",
+        "test",
+        "[",
+        "[[",
+        "UNSAFE_REQUEST",
+    ]
+)
 
 
 def _postprocess_output(query: str, raw_output: str) -> str:
@@ -337,19 +537,25 @@ def _postprocess_output(query: str, raw_output: str) -> str:
     if check_word == "sudo" and len(output.split()) > 1:
         check_word = output.split()[1].lower()
 
-    if (first_word and first_word[0].isupper()
-            and first_word not in ("UNSAFE_REQUEST",)
-            and check_word not in _VALID_CMD_STARTERS):
+    if (
+        first_word
+        and first_word[0].isupper()
+        and first_word not in ("UNSAFE_REQUEST",)
+        and check_word not in _VALID_CMD_STARTERS
+    ):
         return "# Could not generate command"
 
     # 5. Check first word is a valid command (case-insensitive)
-    if (check_word and check_word not in _VALID_CMD_STARTERS
-            and not output.startswith(("/", "./", "~", "$", "(", "{", "!"))
-            and "=" not in first_word and "|" not in output[:20]):
+    if (
+        check_word
+        and check_word not in _VALID_CMD_STARTERS
+        and not output.startswith(("/", "./", "~", "$", "(", "{", "!"))
+        and "=" not in first_word
+        and "|" not in output[:20]
+    ):
         pass  # Don't block — might be a valid but uncommon command
 
     return output
-
 
 
 class InceptEngine:
@@ -441,7 +647,11 @@ class InceptEngine:
 
         # 1. Build prompt (with RAG examples if available)
         prompt = _build_chatml_prompt(
-            self._context_line, query, history, examples=rag_examples, think=self._think,  # type: ignore[arg-type]
+            self._context_line,
+            query,
+            history,
+            examples=rag_examples,  # type: ignore[arg-type]
+            think=self._think,
         )
 
         # 2. Run inference

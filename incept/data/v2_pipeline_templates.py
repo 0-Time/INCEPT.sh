@@ -15,8 +15,10 @@ from __future__ import annotations
 # Log files for parsing scenarios
 LOG_FILES = ["access.log", "error.log", "syslog", "auth.log", "messages", "kern.log"]
 ACCESS_LOGS = [
-    "access.log", "/var/log/nginx/access.log",
-    "/var/log/apache2/access.log", "/var/log/httpd/access_log",
+    "access.log",
+    "/var/log/nginx/access.log",
+    "/var/log/apache2/access.log",
+    "/var/log/httpd/access_log",
 ]
 AUTH_LOGS = ["auth.log", "/var/log/auth.log", "/var/log/secure"]
 
@@ -24,7 +26,18 @@ AUTH_LOGS = ["auth.log", "/var/log/auth.log", "/var/log/secure"]
 REGEX_FILES = ["access.log", "data.txt", "output.log", "server.log", "messages.log", "app.log"]
 
 # Process names
-PROC_NAMES = ["python", "node", "java", "nginx", "apache2", "postgres", "mysql", "redis", "docker", "ssh"]
+PROC_NAMES = [
+    "python",
+    "node",
+    "java",
+    "nginx",
+    "apache2",
+    "postgres",
+    "mysql",
+    "redis",
+    "docker",
+    "ssh",
+]
 
 # Awk delimiters
 AWK_DELIMITERS = [",", ":", ";", "\\t", "|", " "]
@@ -35,12 +48,24 @@ SED_NEW = ["info", "notice", "bar", "new_value", "server.example.com", "https://
 
 # Shell variables
 VAR_NAMES = ["PATH", "HOME", "EDITOR", "LANG", "MY_VAR", "APP_PORT", "DB_HOST", "LOG_LEVEL"]
-VAR_VALUES = ["/usr/local/bin", "/home/user", "vim", "en_US.UTF-8", "production", "3000", "localhost", "debug"]
+VAR_VALUES = [
+    "/usr/local/bin",
+    "/home/user",
+    "vim",
+    "en_US.UTF-8",
+    "production",
+    "3000",
+    "localhost",
+    "debug",
+]
 
 # Append/write content
 TEXT_LINES = [
-    "nameserver 8.8.8.8", "export PATH=$PATH:/usr/local/bin",
-    "alias ll='ls -la'", "127.0.0.1 myhost", "* * * * * /usr/bin/command",
+    "nameserver 8.8.8.8",
+    "export PATH=$PATH:/usr/local/bin",
+    "alias ll='ls -la'",
+    "127.0.0.1 myhost",
+    "* * * * * /usr/bin/command",
 ]
 
 # File extensions for batch rename
@@ -52,30 +77,87 @@ HTTP_CODES = ["200", "301", "403", "404", "500", "502", "503"]
 
 # Reuse from base
 FILES = [
-    "file.txt", "data.csv", "config.yaml", "app.log", "script.sh", "notes.md",
-    "report.pdf", "backup.sql", "output.json", "README.md", "index.html",
-    "server.log", "error.log", "access.log", "database.db", "Makefile",
-    "requirements.txt", "package.json", "docker-compose.yml", ".env",
+    "file.txt",
+    "data.csv",
+    "config.yaml",
+    "app.log",
+    "script.sh",
+    "notes.md",
+    "report.pdf",
+    "backup.sql",
+    "output.json",
+    "README.md",
+    "index.html",
+    "server.log",
+    "error.log",
+    "access.log",
+    "database.db",
+    "Makefile",
+    "requirements.txt",
+    "package.json",
+    "docker-compose.yml",
+    ".env",
 ]
 FILES_TEXT = [
-    "file.txt", "data.csv", "config.yaml", "app.log", "notes.md", "output.json",
-    "server.log", "error.log", "access.log", "README.md", "requirements.txt",
+    "file.txt",
+    "data.csv",
+    "config.yaml",
+    "app.log",
+    "notes.md",
+    "output.json",
+    "server.log",
+    "error.log",
+    "access.log",
+    "README.md",
+    "requirements.txt",
 ]
 DIRS = [
-    "/var/log", "/etc/nginx", "/home/user", "/tmp/build", "/opt/app",
-    "/var/www/html", "/home/user/projects", "/srv/data",
+    "/var/log",
+    "/etc/nginx",
+    "/home/user",
+    "/tmp/build",
+    "/opt/app",
+    "/var/www/html",
+    "/home/user/projects",
+    "/srv/data",
 ]
 HOSTS = [
-    "192.168.1.1", "10.0.0.1", "google.com", "example.com",
-    "server.example.com", "8.8.8.8", "1.1.1.1", "github.com",
+    "192.168.1.1",
+    "10.0.0.1",
+    "google.com",
+    "example.com",
+    "server.example.com",
+    "8.8.8.8",
+    "1.1.1.1",
+    "github.com",
 ]
 PORTS = ["22", "80", "443", "3000", "3306", "5432", "6379", "8080", "8443", "9090"]
 USERS = ["admin", "deploy", "webuser", "john", "jane", "developer", "backup", "testuser"]
 SERVICES = [
-    "nginx", "apache2", "httpd", "sshd", "docker", "postgresql", "mysql",
-    "redis", "mongod", "elasticsearch", "fail2ban", "cron", "haproxy",
+    "nginx",
+    "apache2",
+    "httpd",
+    "sshd",
+    "docker",
+    "postgresql",
+    "mysql",
+    "redis",
+    "mongod",
+    "elasticsearch",
+    "fail2ban",
+    "cron",
+    "haproxy",
 ]
-SEARCH_PATTERNS = ["error", "ERROR", "warning", "failed", "timeout", "refused", "denied", "exception"]
+SEARCH_PATTERNS = [
+    "error",
+    "ERROR",
+    "warning",
+    "failed",
+    "timeout",
+    "refused",
+    "denied",
+    "exception",
+]
 LINES_N = ["5", "10", "20", "50", "100"]
 
 # ╔══════════════════════════════════════════════════════════════════════════════╗
@@ -238,7 +320,12 @@ TEMPLATES_PIPELINE += [
         ],
         "cmd": "{cmd} 2>/dev/null",
         "slots": {
-            "cmd": ["find / -name '*.conf'", "grep -r error /var/log", "ls /root", "cat /etc/shadow"],
+            "cmd": [
+                "find / -name '*.conf'",
+                "grep -r error /var/log",
+                "ls /root",
+                "cat /etc/shadow",
+            ],
         },
     },
     {
@@ -833,7 +920,7 @@ TEMPLATES_PIPELINE += [
             "display latest SSH events from {log}",
             "check SSH log entries in {log}",
         ],
-        "cmd": "grep \"sshd\" {log} | tail -20",
+        "cmd": 'grep "sshd" {log} | tail -20',
         "slots": {"log": AUTH_LOGS},
     },
     {
@@ -852,7 +939,7 @@ TEMPLATES_PIPELINE += [
             "how many failed logins in {log}",
             "number of failed password attempts in {log}",
         ],
-        "cmd": "grep \"Failed password\" {log} | wc -l",
+        "cmd": 'grep "Failed password" {log} | wc -l',
         "slots": {"log": AUTH_LOGS},
     },
     {
@@ -990,7 +1077,7 @@ TEMPLATES_PIPELINE += [
             "filter {log} for GET requests only",
             "list all GET requests from {log}",
         ],
-        "cmd": "grep \"GET \" {log}",
+        "cmd": 'grep "GET " {log}',
         "slots": {"log": ACCESS_LOGS},
     },
     {
@@ -1061,7 +1148,7 @@ TEMPLATES_PIPELINE += [
             "show today's entries in {log}",
             "filter {log} for today's date",
         ],
-        "cmd": "grep \"$(date +%Y-%m-%d)\" {log}",
+        "cmd": 'grep "$(date +%Y-%m-%d)" {log}',
         "slots": {"log": LOG_FILES},
     },
     {
@@ -2006,7 +2093,7 @@ TEMPLATES_PIPELINE += [
             "pivot {file} so rows become columns",
             "convert rows to columns in {file}",
         ],
-        "cmd": "awk '{{for (i=1; i<=NF; i++) a[i][NR]=$i}} END {{for (i in a) {{for (j in a[i]) printf \"%s \", a[i][j]; print \"\"}}}}' {file}",
+        "cmd": 'awk \'{{for (i=1; i<=NF; i++) a[i][NR]=$i}} END {{for (i in a) {{for (j in a[i]) printf "%s ", a[i][j]; print ""}}}}\' {file}',
         "slots": {"file": FILES_TEXT},
     },
     {
@@ -2373,7 +2460,7 @@ TEMPLATES_PIPELINE += [
             "batch change extension from {old_ext} to {new_ext}",
             "convert all {old_ext} to {new_ext} in current directory",
         ],
-        "cmd": "for f in *{old_ext}; do mv \"$f\" \"${{f%{old_ext}}}{new_ext}\"; done",
+        "cmd": 'for f in *{old_ext}; do mv "$f" "${{f%{old_ext}}}{new_ext}"; done',
         "slots": {"old_ext": OLD_EXTS, "new_ext": NEW_EXTS},
     },
     {
@@ -2579,7 +2666,7 @@ TEMPLATES_PIPELINE += [
             "replace spaces with underscores in filenames in current directory",
             "rename files replacing spaces with underscores",
         ],
-        "cmd": "for f in *\\ *; do mv \"$f\" \"${f// /_}\"; done",
+        "cmd": 'for f in *\\ *; do mv "$f" "${f// /_}"; done',
         "slots": {},
     },
     {
@@ -2654,8 +2741,10 @@ TEMPLATES_PIPELINE += [
         "cmd": "curl -s {url} | jq '.'",
         "slots": {
             "url": [
-                "https://api.example.com/data", "https://api.example.com/users",
-                "https://api.example.com/status", "https://httpbin.org/get",
+                "https://api.example.com/data",
+                "https://api.example.com/users",
+                "https://api.example.com/status",
+                "https://httpbin.org/get",
             ],
         },
     },
@@ -2665,7 +2754,7 @@ TEMPLATES_PIPELINE += [
             "compute {expr}",
             "what is {expr}",
         ],
-        "cmd": "echo \"{expr}\" | bc",
+        "cmd": 'echo "{expr}" | bc',
         "slots": {"expr": ["1+2", "100*5", "2^10", "1024/8", "sqrt(144)"]},
     },
     {
@@ -2674,7 +2763,7 @@ TEMPLATES_PIPELINE += [
             "divide with decimals: {expr}",
             "compute {expr} to 2 decimal places",
         ],
-        "cmd": "echo \"scale=2; {expr}\" | bc",
+        "cmd": 'echo "scale=2; {expr}" | bc',
         "slots": {"expr": ["10/3", "100/7", "22/7", "355/113"]},
     },
     {
@@ -3005,7 +3094,7 @@ TEMPLATES_PIPELINE += [
             "iterate over text files in current directory",
             "list all txt files with a for loop",
         ],
-        "cmd": "for f in *.txt; do echo \"$f\"; done",
+        "cmd": 'for f in *.txt; do echo "$f"; done',
         "slots": {},
     },
     {
@@ -3014,7 +3103,7 @@ TEMPLATES_PIPELINE += [
             "iterate over {pattern} files",
             "list all {pattern} files using a for loop",
         ],
-        "cmd": "for f in {pattern}; do echo \"$f\"; done",
+        "cmd": 'for f in {pattern}; do echo "$f"; done',
         "slots": {"pattern": ["*.py", "*.log", "*.conf", "*.sh", "*.yaml", "*.json"]},
     },
     {
@@ -3023,7 +3112,7 @@ TEMPLATES_PIPELINE += [
             "process {file} one line at a time",
             "iterate through lines of {file}",
         ],
-        "cmd": "while read line; do echo \"$line\"; done < {file}",
+        "cmd": 'while read line; do echo "$line"; done < {file}',
         "slots": {"file": FILES_TEXT},
     },
     {
@@ -3160,8 +3249,10 @@ TEMPLATES_PIPELINE += [
         "cmd": "curl -I {url}",
         "slots": {
             "url": [
-                "https://example.com", "https://google.com",
-                "https://github.com", "https://api.example.com",
+                "https://example.com",
+                "https://google.com",
+                "https://github.com",
+                "https://api.example.com",
             ],
         },
     },
@@ -3174,7 +3265,8 @@ TEMPLATES_PIPELINE += [
         "cmd": "curl -o {file} {url}",
         "slots": {
             "url": [
-                "https://example.com/file.tar.gz", "https://example.com/data.zip",
+                "https://example.com/file.tar.gz",
+                "https://example.com/data.zip",
                 "https://example.com/script.sh",
             ],
             "file": ["download.tar.gz", "data.zip", "script.sh"],
@@ -3251,11 +3343,13 @@ TEMPLATES_PIPELINE += [
             "check HTTP status of {url}",
             "what status code does {url} return",
         ],
-        "cmd": "curl -w \"%{{http_code}}\" -s -o /dev/null {url}",
+        "cmd": 'curl -w "%{{http_code}}" -s -o /dev/null {url}',
         "slots": {
             "url": [
-                "https://example.com", "https://google.com",
-                "https://api.example.com/health", "https://httpbin.org/status/200",
+                "https://example.com",
+                "https://google.com",
+                "https://api.example.com/health",
+                "https://httpbin.org/status/200",
             ],
         },
     },
@@ -3313,11 +3407,13 @@ TEMPLATES_PIPELINE += [
             "measure how long {url} takes to respond",
             "benchmark {url} response time",
         ],
-        "cmd": "curl -w \"\\nTime: %{{time_total}}s\\n\" -s -o /dev/null {url}",
+        "cmd": 'curl -w "\\nTime: %{{time_total}}s\\n" -s -o /dev/null {url}',
         "slots": {
             "url": [
-                "https://example.com", "https://google.com",
-                "https://api.example.com", "https://github.com",
+                "https://example.com",
+                "https://google.com",
+                "https://api.example.com",
+                "https://github.com",
             ],
         },
     },
@@ -3889,7 +3985,7 @@ TEMPLATES_PIPELINE += [
             "count lines matching each search pattern in {file}",
             "how many errors vs warnings in {file}",
         ],
-        "cmd": "echo \"errors: $(grep -c error {file}), warnings: $(grep -c warning {file})\"",
+        "cmd": 'echo "errors: $(grep -c error {file}), warnings: $(grep -c warning {file})"',
         "slots": {"file": LOG_FILES},
     },
     # --- More pipeline composition ---
@@ -4068,7 +4164,7 @@ TEMPLATES_PIPELINE += [
             "extract text between quotes in {file}",
             "get quoted strings from {file} using sed",
         ],
-        "cmd": "sed -n 's/.*\"\\([^\"]*\\)\".*/\\1/p' {file}",
+        "cmd": 'sed -n \'s/.*"\\([^"]*\\)".*/\\1/p\' {file}',
         "slots": {"file": FILES_TEXT},
     },
     {
@@ -4189,7 +4285,7 @@ TEMPLATES_PIPELINE += [
             "run a command for each line in {file}",
             "execute a command per line of {file}",
         ],
-        "cmd": "while read line; do echo \"Processing: $line\"; done < {file}",
+        "cmd": 'while read line; do echo "Processing: $line"; done < {file}',
         "slots": {"file": FILES_TEXT},
     },
     {
@@ -4264,7 +4360,10 @@ TEMPLATES_PIPELINE += [
         ],
         "cmd": "curl -L -O {url}",
         "slots": {
-            "url": ["https://example.com/download", "https://github.com/user/repo/archive/main.tar.gz"],
+            "url": [
+                "https://example.com/download",
+                "https://github.com/user/repo/archive/main.tar.gz",
+            ],
         },
     },
     # --- More sysadmin patterns ---

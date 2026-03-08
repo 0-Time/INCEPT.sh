@@ -35,9 +35,9 @@ _REFUSAL_TOKENS = {
 # Intent labels (e.g. "install_package") and JSON blobs ("{...}") do not.
 _COMMAND_START_RE = re.compile(
     r"^(?:sudo\s+)?"
-    r"(?:[a-z][\w.-]*/)*"           # optional path prefix  e.g. /usr/bin/
-    r"[a-z][\w.+-]*"                # command name           e.g. apt-get, find, ls
-    r"(?:\s|$)",                     # followed by space or end
+    r"(?:[a-z][\w.-]*/)*"  # optional path prefix  e.g. /usr/bin/
+    r"[a-z][\w.+-]*"  # command name           e.g. apt-get, find, ls
+    r"(?:\s|$)",  # followed by space or end
     re.ASCII,
 )
 
@@ -112,7 +112,9 @@ def _fallback_to_legacy(
         response.status = "error"
         if legacy.responses and legacy.responses[0].error:
             err = legacy.responses[0].error
-            response.error = err.get("error", "Unknown error") if isinstance(err, dict) else err.error
+            response.error = (
+                err.get("error", "Unknown error") if isinstance(err, dict) else err.error
+            )
         elif legacy.responses and legacy.responses[0].clarification:
             response.status = "clarification"
             response.error = legacy.responses[0].clarification.question
@@ -187,7 +189,11 @@ def run_direct_pipeline(
 
     try:
         result = run_constrained_inference(
-            llm, prompt, grammar=None, max_tokens=192, temperature=0.0,
+            llm,
+            prompt,
+            grammar=None,
+            max_tokens=192,
+            temperature=0.0,
         )
     except Exception as e:
         logger.warning("Direct inference failed (%s), falling back to legacy pipeline", e)

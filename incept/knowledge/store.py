@@ -12,6 +12,7 @@ the distro field for fast filtered search.
 Graceful degradation: if zvec is not installed or index missing,
 all methods return empty results and the engine works as before.
 """
+
 from __future__ import annotations
 
 import contextlib
@@ -41,8 +42,8 @@ def _ensure_zvec_init() -> None:
 
         zvec.init(
             log_level=zvec.LogLevel.WARN,
-            query_threads=2,       # edge device: keep CPU overhead low
-            optimize_threads=1,    # background indexing uses 1 thread
+            query_threads=2,  # edge device: keep CPU overhead low
+            optimize_threads=1,  # background indexing uses 1 thread
         )
         _ZVEC_INITIALIZED = True
     except Exception:
@@ -54,9 +55,7 @@ class Example:
 
     __slots__ = ("query", "command", "distro", "score")
 
-    def __init__(
-        self, query: str, command: str, distro: str = "", score: float = 0.0
-    ):
+    def __init__(self, query: str, command: str, distro: str = "", score: float = 0.0):
         self.query = query
         self.command = command
         self.distro = distro
@@ -68,17 +67,18 @@ class KnowledgeStore:
 
     def __init__(self, db_dir: str | Path | None = None) -> None:
         self._db_dir = Path(db_dir) if db_dir else _DEFAULT_DB_DIR
-        self._zvec = None          # lazy import
-        self._examples = None      # examples collection
-        self._corrections = None   # corrections collection
+        self._zvec = None  # lazy import
+        self._examples = None  # examples collection
+        self._corrections = None  # corrections collection
         self._ready = False
-        self._hybrid = False       # True if sparse vector field exists
+        self._hybrid = False  # True if sparse vector field exists
         self._init()
 
     def _init(self) -> None:
         """Try to open existing zvec collections."""
         try:
             import zvec
+
             self._zvec = zvec
         except ImportError:
             logger.info("zvec not installed — RAG disabled")
@@ -119,18 +119,14 @@ class KnowledgeStore:
             with contextlib.suppress(Exception):
                 self._corrections = zvec.open(  # type: ignore[assignment]
                     path=str(corrections_path),
-                    option=zvec.CollectionOption(
-                        read_only=False, enable_mmap=True
-                    ),
+                    option=zvec.CollectionOption(read_only=False, enable_mmap=True),
                 )
 
     @property
     def ready(self) -> bool:
         return self._ready
 
-    def search_examples(
-        self, query: str, distro: str = "", top_k: int = 3
-    ) -> list[Example]:
+    def search_examples(self, query: str, distro: str = "", top_k: int = 3) -> list[Example]:
         """Retrieve the most similar training examples for a query.
 
         Uses hybrid search (dense + sparse with weighted fusion) when
@@ -193,12 +189,14 @@ class KnowledgeStore:
 
         examples = []
         for doc in results[:top_k]:
-            examples.append(Example(
-                query=doc.field("nl") if doc.has_field("nl") else "",
-                command=doc.field("cmd") if doc.has_field("cmd") else "",
-                distro=doc.field("distro") if doc.has_field("distro") else "",
-                score=doc.score if doc.score is not None else 0.0,
-            ))
+            examples.append(
+                Example(
+                    query=doc.field("nl") if doc.has_field("nl") else "",
+                    command=doc.field("cmd") if doc.has_field("cmd") else "",
+                    distro=doc.field("distro") if doc.has_field("distro") else "",
+                    score=doc.score if doc.score is not None else 0.0,
+                )
+            )
         return examples
 
     def search_corrections(self, query: str, top_k: int = 2) -> list[Example]:
@@ -241,12 +239,8 @@ class KnowledgeStore:
                 schema = zvec.CollectionSchema(
                     name="corrections",
                     fields=[
-                        zvec.FieldSchema(
-                            name="nl", data_type=zvec.DataType.STRING
-                        ),
-                        zvec.FieldSchema(
-                            name="cmd", data_type=zvec.DataType.STRING
-                        ),
+                        zvec.FieldSchema(name="nl", data_type=zvec.DataType.STRING),
+                        zvec.FieldSchema(name="cmd", data_type=zvec.DataType.STRING),
                     ],
                     vectors=[
                         zvec.VectorSchema(
@@ -263,23 +257,21 @@ class KnowledgeStore:
                     ],
                 )
                 corrections_path = str(self._db_dir / "corrections.zvec")
-                self._corrections = zvec.create_and_open(
-                    path=corrections_path, schema=schema
-                )
+                self._corrections = zvec.create_and_open(path=corrections_path, schema=schema)
             except Exception as exc:
                 logger.warning("Failed to create corrections collection: %s", exc)
                 return False
         try:
-            doc_id = hashlib.sha256(
-                f"{query}|{correct_command}".encode()
-            ).hexdigest()[:16]
+            doc_id = hashlib.sha256(f"{query}|{correct_command}".encode()).hexdigest()[:16]
             vec = hash_vectorize(query)
             # upsert so re-correcting the same query just updates
-            self._corrections.upsert(zvec.Doc(
-                id=doc_id,
-                vectors={"embedding": vec},
-                fields={"nl": query, "cmd": correct_command},
-            ))
+            self._corrections.upsert(
+                zvec.Doc(
+                    id=doc_id,
+                    vectors={"embedding": vec},
+                    fields={"nl": query, "cmd": correct_command},
+                )
+            )
             return True
         except Exception as exc:
             logger.warning("Failed to store correction: %s", exc)

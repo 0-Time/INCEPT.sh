@@ -23,7 +23,9 @@ def _run_repl(*, think: bool = False) -> None:
     repl.run()
 
 
-def _oneshot(query: str, *, execute: bool = False, minimal: bool = False, think: bool = False) -> None:
+def _oneshot(
+    query: str, *, execute: bool = False, minimal: bool = False, think: bool = False
+) -> None:
     """Handle a one-shot query."""
     from rich.markup import escape
 
@@ -54,6 +56,7 @@ def _oneshot(query: str, *, execute: bool = False, minimal: bool = False, think:
 
     if execute and resp.type == "command":
         from incept.cli.actions import execute_command
+
         console.print(f"  [dim]{'─' * 40}[/dim]")
         result = execute_command(resp.text, confirmed=True)
         if result.stdout:
@@ -64,11 +67,20 @@ def _oneshot(query: str, *, execute: bool = False, minimal: bool = False, think:
 
 @click.group(invoke_without_command=True)
 @click.argument("query", required=False, nargs=-1)
-@click.option("-c", "--command", "cmd_query", type=str, default=None, help="One-shot query (e.g. incept -c 'find large files')")
+@click.option(
+    "-c",
+    "--command",
+    "cmd_query",
+    type=str,
+    default=None,
+    help="One-shot query (e.g. incept -c 'find large files')",
+)
 @click.option("--exec", "execute", is_flag=True, help="Execute the generated command")
 @click.option("-m", "--minimal", is_flag=True, help="Output only the raw command (for piping)")
 @click.option("--think", is_flag=True, default=False, help="Enable model reasoning")
-@click.option("--no-think", "no_think", is_flag=True, default=False, help="Disable reasoning (default)")
+@click.option(
+    "--no-think", "no_think", is_flag=True, default=False, help="Disable reasoning (default)"
+)
 @click.version_option(__version__, prog_name="INCEPT/Sh")
 @click.pass_context
 def main(
@@ -131,6 +143,7 @@ def plugin() -> None:
 def install(shell_type: str | None) -> None:
     """Install the shell plugin (Ctrl+I keybinding)."""
     from incept.cli.shell_plugin import detect_shell, install_plugin
+
     shell = shell_type or detect_shell()
     msg = install_plugin(shell)
     click.echo(msg)
@@ -141,6 +154,7 @@ def install(shell_type: str | None) -> None:
 def uninstall(shell_type: str | None) -> None:
     """Uninstall the shell plugin."""
     from incept.cli.shell_plugin import detect_shell, uninstall_plugin
+
     shell = shell_type or detect_shell()
     msg = uninstall_plugin(shell)
     click.echo(msg)

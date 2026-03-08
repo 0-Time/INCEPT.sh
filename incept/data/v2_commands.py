@@ -18,34 +18,100 @@ from __future__ import annotations
 # ╚══════════════════════════════════════════════════════════════════════════════╝
 
 PATHS = [
-    "/home", "/var/log", "/etc", "/tmp", "/opt", "/usr/local", "/var", "/srv",
-    "/home/user", "/var/www", "/root", "/usr/share", "/var/lib", "/var/tmp",
-    "/home/user/projects", "/var/log/nginx", "/etc/nginx", "/var/cache",
+    "/home",
+    "/var/log",
+    "/etc",
+    "/tmp",
+    "/opt",
+    "/usr/local",
+    "/var",
+    "/srv",
+    "/home/user",
+    "/var/www",
+    "/root",
+    "/usr/share",
+    "/var/lib",
+    "/var/tmp",
+    "/home/user/projects",
+    "/var/log/nginx",
+    "/etc/nginx",
+    "/var/cache",
 ]
 PATHS_SHORT = ["/home", "/var/log", "/etc", "/tmp", "/opt", "/var", "/srv"]
 
 FILE_PATTERNS = [
-    "*.py", "*.log", "*.conf", "*.txt", "*.json", "*.yaml", "*.yml", "*.xml",
-    "*.csv", "*.sh", "*.md", "*.html", "*.css", "*.js", "*.tar.gz", "*.bak",
-    "*.sql", "*.env", "*.ini", "*.cfg",
+    "*.py",
+    "*.log",
+    "*.conf",
+    "*.txt",
+    "*.json",
+    "*.yaml",
+    "*.yml",
+    "*.xml",
+    "*.csv",
+    "*.sh",
+    "*.md",
+    "*.html",
+    "*.css",
+    "*.js",
+    "*.tar.gz",
+    "*.bak",
+    "*.sql",
+    "*.env",
+    "*.ini",
+    "*.cfg",
 ]
 
 FILES = [
-    "file.txt", "data.csv", "config.yaml", "app.log", "script.sh", "notes.md",
-    "report.pdf", "backup.sql", "output.json", "README.md", "index.html",
-    "server.log", "error.log", "access.log", "database.db", "Makefile",
-    "requirements.txt", "package.json", "docker-compose.yml", ".env",
+    "file.txt",
+    "data.csv",
+    "config.yaml",
+    "app.log",
+    "script.sh",
+    "notes.md",
+    "report.pdf",
+    "backup.sql",
+    "output.json",
+    "README.md",
+    "index.html",
+    "server.log",
+    "error.log",
+    "access.log",
+    "database.db",
+    "Makefile",
+    "requirements.txt",
+    "package.json",
+    "docker-compose.yml",
+    ".env",
 ]
 
 FILES_TEXT = [
-    "file.txt", "data.csv", "config.yaml", "app.log", "notes.md", "output.json",
-    "server.log", "error.log", "access.log", "README.md", "requirements.txt",
+    "file.txt",
+    "data.csv",
+    "config.yaml",
+    "app.log",
+    "notes.md",
+    "output.json",
+    "server.log",
+    "error.log",
+    "access.log",
+    "README.md",
+    "requirements.txt",
 ]
 
 DIRS = [
-    "/var/log", "/etc/nginx", "/home/user", "/tmp/build", "/opt/app",
-    "/var/www/html", "/home/user/projects", "/srv/data", "/var/lib/docker",
-    "/usr/local/bin", "/backup", "/home/user/Documents",
+    "/var/log",
+    "/etc/nginx",
+    "/home/user",
+    "/tmp/build",
+    "/opt/app",
+    "/var/www/html",
+    "/home/user/projects",
+    "/srv/data",
+    "/var/lib/docker",
+    "/usr/local/bin",
+    "/backup",
+    "/home/user/Documents",
 ]
 
 SIZES = ["10M", "50M", "100M", "500M", "1G", "5G", "10G"]
@@ -56,98 +122,319 @@ PERMISSIONS = ["755", "644", "700", "600", "777", "750", "640", "400"]
 PERMISSION_SYMBOLIC = ["+x", "u+x", "g+w", "o-r", "a+r", "u+rw", "u+rwx"]
 
 USERS = [
-    "admin", "deploy", "webuser", "john", "jane", "developer", "backup",
-    "nginx", "www-data", "postgres", "mysql", "app", "testuser", "sysadmin",
+    "admin",
+    "deploy",
+    "webuser",
+    "john",
+    "jane",
+    "developer",
+    "backup",
+    "nginx",
+    "www-data",
+    "postgres",
+    "mysql",
+    "app",
+    "testuser",
+    "sysadmin",
 ]
 
 GROUPS = [
-    "docker", "sudo", "admin", "developers", "wheel", "www-data", "staff",
-    "users", "nginx", "postgres", "ssh", "adm",
+    "docker",
+    "sudo",
+    "admin",
+    "developers",
+    "wheel",
+    "www-data",
+    "staff",
+    "users",
+    "nginx",
+    "postgres",
+    "ssh",
+    "adm",
 ]
 
 SEARCH_PATTERNS = [
-    "error", "ERROR", "warning", "WARNING", "failed", "timeout", "refused",
-    "denied", "exception", "traceback", "fatal", "critical", "TODO", "FIXME",
-    "deprecated", "null", "undefined", "404", "500", "connection",
+    "error",
+    "ERROR",
+    "warning",
+    "WARNING",
+    "failed",
+    "timeout",
+    "refused",
+    "denied",
+    "exception",
+    "traceback",
+    "fatal",
+    "critical",
+    "TODO",
+    "FIXME",
+    "deprecated",
+    "null",
+    "undefined",
+    "404",
+    "500",
+    "connection",
 ]
 
 REPLACE_OLD = ["foo", "hello", "old_value", "localhost", "http://", "DEBUG", "v1", "test"]
 REPLACE_NEW = ["bar", "world", "new_value", "0.0.0.0", "https://", "INFO", "v2", "prod"]
 
 PACKAGES_DEBIAN = [
-    "nginx", "curl", "git", "vim", "htop", "wget", "tmux", "screen", "tree",
-    "jq", "zip", "unzip", "rsync", "net-tools", "build-essential", "python3",
-    "python3-pip", "nodejs", "postgresql", "redis-server", "docker.io",
-    "fail2ban", "ufw", "certbot", "nmap", "strace", "iotop", "ncdu",
-    "apache2", "mysql-server", "sqlite3", "ffmpeg", "imagemagick",
+    "nginx",
+    "curl",
+    "git",
+    "vim",
+    "htop",
+    "wget",
+    "tmux",
+    "screen",
+    "tree",
+    "jq",
+    "zip",
+    "unzip",
+    "rsync",
+    "net-tools",
+    "build-essential",
+    "python3",
+    "python3-pip",
+    "nodejs",
+    "postgresql",
+    "redis-server",
+    "docker.io",
+    "fail2ban",
+    "ufw",
+    "certbot",
+    "nmap",
+    "strace",
+    "iotop",
+    "ncdu",
+    "apache2",
+    "mysql-server",
+    "sqlite3",
+    "ffmpeg",
+    "imagemagick",
 ]
 
 PACKAGES_RHEL = [
-    "nginx", "curl", "git", "vim-enhanced", "htop", "wget", "tmux", "screen",
-    "tree", "jq", "zip", "unzip", "rsync", "net-tools", "gcc", "python3",
-    "python3-pip", "nodejs", "postgresql-server", "redis", "docker-ce",
-    "fail2ban", "certbot", "nmap", "strace", "iotop", "ncdu",
-    "httpd", "mariadb-server", "sqlite", "ffmpeg", "ImageMagick",
+    "nginx",
+    "curl",
+    "git",
+    "vim-enhanced",
+    "htop",
+    "wget",
+    "tmux",
+    "screen",
+    "tree",
+    "jq",
+    "zip",
+    "unzip",
+    "rsync",
+    "net-tools",
+    "gcc",
+    "python3",
+    "python3-pip",
+    "nodejs",
+    "postgresql-server",
+    "redis",
+    "docker-ce",
+    "fail2ban",
+    "certbot",
+    "nmap",
+    "strace",
+    "iotop",
+    "ncdu",
+    "httpd",
+    "mariadb-server",
+    "sqlite",
+    "ffmpeg",
+    "ImageMagick",
 ]
 
 PACKAGES_ARCH = [
-    "nginx", "curl", "git", "vim", "htop", "wget", "tmux", "screen", "tree",
-    "jq", "zip", "unzip", "rsync", "net-tools", "base-devel", "python",
-    "python-pip", "nodejs", "postgresql", "redis", "docker",
-    "fail2ban", "ufw", "certbot", "nmap", "strace", "iotop", "ncdu",
-    "apache", "mariadb", "sqlite", "ffmpeg", "imagemagick",
+    "nginx",
+    "curl",
+    "git",
+    "vim",
+    "htop",
+    "wget",
+    "tmux",
+    "screen",
+    "tree",
+    "jq",
+    "zip",
+    "unzip",
+    "rsync",
+    "net-tools",
+    "base-devel",
+    "python",
+    "python-pip",
+    "nodejs",
+    "postgresql",
+    "redis",
+    "docker",
+    "fail2ban",
+    "ufw",
+    "certbot",
+    "nmap",
+    "strace",
+    "iotop",
+    "ncdu",
+    "apache",
+    "mariadb",
+    "sqlite",
+    "ffmpeg",
+    "imagemagick",
 ]
 
 PACKAGES_SUSE = [
-    "nginx", "curl", "git", "vim", "htop", "wget", "tmux", "screen", "tree",
-    "jq", "zip", "unzip", "rsync", "net-tools", "gcc", "python3",
-    "python3-pip", "nodejs", "postgresql", "redis", "docker",
-    "fail2ban", "certbot", "nmap", "strace", "iotop", "ncdu",
-    "apache2", "mariadb", "sqlite3", "ffmpeg", "ImageMagick",
+    "nginx",
+    "curl",
+    "git",
+    "vim",
+    "htop",
+    "wget",
+    "tmux",
+    "screen",
+    "tree",
+    "jq",
+    "zip",
+    "unzip",
+    "rsync",
+    "net-tools",
+    "gcc",
+    "python3",
+    "python3-pip",
+    "nodejs",
+    "postgresql",
+    "redis",
+    "docker",
+    "fail2ban",
+    "certbot",
+    "nmap",
+    "strace",
+    "iotop",
+    "ncdu",
+    "apache2",
+    "mariadb",
+    "sqlite3",
+    "ffmpeg",
+    "ImageMagick",
 ]
 
 PACKAGES_MACOS = [
-    "nginx", "curl", "git", "vim", "htop", "wget", "tmux", "screen", "tree",
-    "jq", "zip", "unzip", "rsync", "python3", "node", "postgresql", "redis",
-    "docker", "nmap", "strace", "ncdu", "ffmpeg", "imagemagick",
-    "go", "rust", "cmake", "httpd", "sqlite", "bat", "fd", "ripgrep",
+    "nginx",
+    "curl",
+    "git",
+    "vim",
+    "htop",
+    "wget",
+    "tmux",
+    "screen",
+    "tree",
+    "jq",
+    "zip",
+    "unzip",
+    "rsync",
+    "python3",
+    "node",
+    "postgresql",
+    "redis",
+    "docker",
+    "nmap",
+    "strace",
+    "ncdu",
+    "ffmpeg",
+    "imagemagick",
+    "go",
+    "rust",
+    "cmake",
+    "httpd",
+    "sqlite",
+    "bat",
+    "fd",
+    "ripgrep",
 ]
 
 SERVICES = [
-    "nginx", "apache2", "httpd", "sshd", "docker", "postgresql", "mysql",
-    "redis", "mongod", "elasticsearch", "rabbitmq-server", "memcached",
-    "fail2ban", "cron", "ufw", "firewalld", "NetworkManager", "cups",
-    "postfix", "dovecot", "named", "haproxy", "php-fpm", "jenkins",
+    "nginx",
+    "apache2",
+    "httpd",
+    "sshd",
+    "docker",
+    "postgresql",
+    "mysql",
+    "redis",
+    "mongod",
+    "elasticsearch",
+    "rabbitmq-server",
+    "memcached",
+    "fail2ban",
+    "cron",
+    "ufw",
+    "firewalld",
+    "NetworkManager",
+    "cups",
+    "postfix",
+    "dovecot",
+    "named",
+    "haproxy",
+    "php-fpm",
+    "jenkins",
 ]
 
 HOSTS = [
-    "192.168.1.1", "10.0.0.1", "google.com", "example.com",
-    "server.example.com", "db.internal", "api.example.com",
-    "8.8.8.8", "1.1.1.1", "github.com", "172.16.0.10",
+    "192.168.1.1",
+    "10.0.0.1",
+    "google.com",
+    "example.com",
+    "server.example.com",
+    "db.internal",
+    "api.example.com",
+    "8.8.8.8",
+    "1.1.1.1",
+    "github.com",
+    "172.16.0.10",
 ]
 
 PORTS = ["22", "80", "443", "3000", "3306", "5432", "6379", "8080", "8443", "9090", "27017"]
 REMOTE_PATHS = ["user@server:/home/user/", "admin@192.168.1.10:/opt/", "deploy@prod:/var/www/"]
 URLS = [
-    "https://example.com/file.tar.gz", "https://get.docker.com",
+    "https://example.com/file.tar.gz",
+    "https://get.docker.com",
     "https://raw.githubusercontent.com/user/repo/main/install.sh",
-    "https://example.com/data.zip", "https://example.com/image.iso",
-    "https://example.com/backup.sql.gz", "https://example.com/script.sh",
+    "https://example.com/data.zip",
+    "https://example.com/image.iso",
+    "https://example.com/backup.sql.gz",
+    "https://example.com/script.sh",
 ]
 
 CONTAINERS = ["web", "api", "db", "redis", "nginx", "app", "worker", "proxy"]
 IMAGES = [
-    "nginx:latest", "redis:alpine", "postgres:15", "node:20", "python:3.12",
-    "ubuntu:22.04", "alpine:latest", "mysql:8", "mongo:7", "traefik:v2",
+    "nginx:latest",
+    "redis:alpine",
+    "postgres:15",
+    "node:20",
+    "python:3.12",
+    "ubuntu:22.04",
+    "alpine:latest",
+    "mysql:8",
+    "mongo:7",
+    "traefik:v2",
 ]
 
 GIT_BRANCHES = ["main", "develop", "feature/auth", "fix/bug-123", "release/v2"]
 GIT_MESSAGES = [
-    "fix login bug", "add user authentication", "update dependencies",
-    "refactor database layer", "initial commit", "add tests", "fix typo",
+    "fix login bug",
+    "add user authentication",
+    "update dependencies",
+    "refactor database layer",
+    "initial commit",
+    "add tests",
+    "fix typo",
 ]
 GIT_REPOS = [
-    "https://github.com/user/repo.git", "git@github.com:user/project.git",
+    "https://github.com/user/repo.git",
+    "git@github.com:user/project.git",
     "https://github.com/org/app.git",
 ]
 
@@ -416,8 +703,15 @@ TEMPLATES += [
             "make all directories in the path {path}",
         ],
         "cmd": "mkdir -p {path}",
-        "slots": {"path": ["/opt/app/data/logs", "/home/user/projects/new", "/var/lib/myapp/cache",
-                           "/tmp/build/output", "/srv/www/static/images"]},
+        "slots": {
+            "path": [
+                "/opt/app/data/logs",
+                "/home/user/projects/new",
+                "/var/lib/myapp/cache",
+                "/tmp/build/output",
+                "/srv/www/static/images",
+            ]
+        },
     },
     {
         "nl": [
@@ -440,10 +734,18 @@ TEMPLATES += [
         ],
         "cmd": "ln -s {target} {link}",
         "slots": {
-            "target": ["/opt/app/current", "/etc/nginx/sites-available/mysite",
-                       "/usr/local/bin/python3.12", "/var/log/app.log"],
-            "link": ["/opt/app/latest", "/etc/nginx/sites-enabled/mysite",
-                     "/usr/local/bin/python3", "/home/user/app.log"],
+            "target": [
+                "/opt/app/current",
+                "/etc/nginx/sites-available/mysite",
+                "/usr/local/bin/python3.12",
+                "/var/log/app.log",
+            ],
+            "link": [
+                "/opt/app/latest",
+                "/etc/nginx/sites-enabled/mysite",
+                "/usr/local/bin/python3",
+                "/home/user/app.log",
+            ],
         },
     },
     {
@@ -601,8 +903,17 @@ TEMPLATES += [
             "show new lines added to {file} in real time",
         ],
         "cmd": "tail -f {file}",
-        "slots": {"file": ["app.log", "server.log", "error.log", "access.log",
-                           "/var/log/syslog", "/var/log/auth.log", "/var/log/nginx/access.log"]},
+        "slots": {
+            "file": [
+                "app.log",
+                "server.log",
+                "error.log",
+                "access.log",
+                "/var/log/syslog",
+                "/var/log/auth.log",
+                "/var/log/nginx/access.log",
+            ]
+        },
     },
     {
         "nl": [
@@ -889,7 +1200,9 @@ TEMPLATES += [
             "pack {dir} into a tar.gz file",
         ],
         "cmd": "tar czf {dir}.tar.gz {dir}",
-        "slots": {"dir": ["backup", "logs", "data", "project", "output", "/var/log", "/home/user/docs"]},
+        "slots": {
+            "dir": ["backup", "logs", "data", "project", "output", "/var/log", "/home/user/docs"]
+        },
     },
     {
         "nl": [
@@ -901,8 +1214,16 @@ TEMPLATES += [
             "unzip {archive}",
         ],
         "cmd": "tar xzf {archive}",
-        "slots": {"archive": ["backup.tar.gz", "data.tar.gz", "logs.tar.gz", "archive.tar.gz",
-                               "release.tar.gz", "project.tar.gz"]},
+        "slots": {
+            "archive": [
+                "backup.tar.gz",
+                "data.tar.gz",
+                "logs.tar.gz",
+                "archive.tar.gz",
+                "release.tar.gz",
+                "project.tar.gz",
+            ]
+        },
     },
     {
         "nl": [
@@ -977,7 +1298,9 @@ TEMPLATES += [
             "allow {file} to be executed",
         ],
         "cmd": "chmod +x {file}",
-        "slots": {"file": ["script.sh", "deploy.sh", "run.sh", "install.sh", "start.sh", "build.sh"]},
+        "slots": {
+            "file": ["script.sh", "deploy.sh", "run.sh", "install.sh", "start.sh", "build.sh"]
+        },
     },
     {
         "nl": [
@@ -1179,7 +1502,9 @@ TEMPLATES += [
             "suse": "zypper search {query}",
             "macos": "brew search {query}",
         },
-        "slots": {"query": ["nginx", "python", "docker", "redis", "postgres", "node", "go", "rust"]},
+        "slots": {
+            "query": ["nginx", "python", "docker", "redis", "postgres", "node", "go", "rust"]
+        },
     },
     {
         "nl": [
@@ -1386,7 +1711,19 @@ TEMPLATES += [
             "pgrep {name}",
         ],
         "cmd": "ps aux | grep {name}",
-        "slots": {"name": ["nginx", "python", "node", "java", "docker", "postgres", "redis", "apache", "mysql"]},
+        "slots": {
+            "name": [
+                "nginx",
+                "python",
+                "node",
+                "java",
+                "docker",
+                "postgres",
+                "redis",
+                "apache",
+                "mysql",
+            ]
+        },
     },
     {
         "nl": [
@@ -1459,8 +1796,15 @@ TEMPLATES += [
             "run {cmd} and detach it from the terminal",
         ],
         "cmd": "nohup {cmd} &",
-        "slots": {"cmd": ["python3 server.py", "./script.sh", "java -jar app.jar",
-                          "node server.js", "./run.sh"]},
+        "slots": {
+            "cmd": [
+                "python3 server.py",
+                "./script.sh",
+                "java -jar app.jar",
+                "node server.js",
+                "./run.sh",
+            ]
+        },
     },
     {
         "nl": [
@@ -1657,7 +2001,10 @@ TEMPLATES += [
             "fetch {url} and save to {file}",
         ],
         "cmd": "curl -fsSL -o {file} {url}",
-        "slots": {"url": URLS[:4], "file": ["download.tar.gz", "script.sh", "data.zip", "image.iso"]},
+        "slots": {
+            "url": URLS[:4],
+            "file": ["download.tar.gz", "script.sh", "data.zip", "image.iso"],
+        },
     },
     {
         "nl": [
@@ -1668,8 +2015,14 @@ TEMPLATES += [
             "log into {host}",
         ],
         "cmd": "ssh {host}",
-        "slots": {"host": ["user@server.example.com", "admin@192.168.1.10",
-                           "root@10.0.0.1", "deploy@prod.example.com"]},
+        "slots": {
+            "host": [
+                "user@server.example.com",
+                "admin@192.168.1.10",
+                "root@10.0.0.1",
+                "deploy@prod.example.com",
+            ]
+        },
     },
     {
         "nl": [
@@ -1753,8 +2106,14 @@ TEMPLATES += [
             "HTTP GET {url}",
         ],
         "cmd": "curl -s {url}",
-        "slots": {"url": ["https://api.example.com/status", "https://httpbin.org/get",
-                           "https://example.com", "http://localhost:8080/health"]},
+        "slots": {
+            "url": [
+                "https://api.example.com/status",
+                "https://httpbin.org/get",
+                "https://example.com",
+                "http://localhost:8080/health",
+            ]
+        },
     },
     {
         "nl": [
@@ -1765,8 +2124,11 @@ TEMPLATES += [
         ],
         "cmd": "curl -s -X POST -H 'Content-Type: application/json' -d '{data}' {url}",
         "slots": {
-            "url": ["https://api.example.com/users", "http://localhost:8080/api/data",
-                     "https://httpbin.org/post"],
+            "url": [
+                "https://api.example.com/users",
+                "http://localhost:8080/api/data",
+                "https://httpbin.org/post",
+            ],
             "data": ['{"name":"test"}', '{"key":"value"}', '{"status":"active"}'],
         },
     },
@@ -1992,8 +2354,17 @@ TEMPLATES += [
             "configure timezone as {tz}",
         ],
         "cmd": "sudo timedatectl set-timezone {tz}",
-        "slots": {"tz": ["UTC", "America/New_York", "Europe/London", "Asia/Tokyo",
-                         "America/Los_Angeles", "America/Chicago", "Europe/Berlin"]},
+        "slots": {
+            "tz": [
+                "UTC",
+                "America/New_York",
+                "Europe/London",
+                "Asia/Tokyo",
+                "America/Los_Angeles",
+                "America/Chicago",
+                "Europe/Berlin",
+            ]
+        },
     },
     {
         "nl": [
@@ -2402,8 +2773,14 @@ TEMPLATES += [
             "ssh-copy-id to {host}",
         ],
         "cmd": "ssh-copy-id {host}",
-        "slots": {"host": ["user@server.example.com", "admin@192.168.1.10",
-                           "root@10.0.0.1", "deploy@prod.example.com"]},
+        "slots": {
+            "host": [
+                "user@server.example.com",
+                "admin@192.168.1.10",
+                "root@10.0.0.1",
+                "deploy@prod.example.com",
+            ]
+        },
     },
     {
         "nl": [
@@ -2514,8 +2891,10 @@ TEMPLATES += [
             "create environment variable {var} with value {val}",
         ],
         "cmd": "export {var}={val}",
-        "slots": {"var": ["MY_VAR", "APP_ENV", "DATABASE_URL", "API_KEY", "NODE_ENV", "DEBUG"],
-                  "val": ["production", "development", "true", "false", "localhost:5432", "1"]},
+        "slots": {
+            "var": ["MY_VAR", "APP_ENV", "DATABASE_URL", "API_KEY", "NODE_ENV", "DEBUG"],
+            "val": ["production", "development", "true", "false", "localhost:5432", "1"],
+        },
     },
     {
         "nl": [
@@ -2564,8 +2943,10 @@ TEMPLATES += [
             "make {name} an alias for {cmd}",
         ],
         "cmd": "alias {name}='{cmd}'",
-        "slots": {"name": ["ll", "la", "gs", "gp", "dc"],
-                  "cmd": ["ls -la", "ls -la", "git status", "git push", "docker compose"]},
+        "slots": {
+            "name": ["ll", "la", "gs", "gp", "dc"],
+            "cmd": ["ls -la", "ls -la", "git status", "git push", "docker compose"],
+        },
     },
     {
         "nl": [
@@ -2660,8 +3041,13 @@ TEMPLATES += [
             "download {url}, run it, then delete it",
         ],
         "cmd": "curl -fsSL {url} -o /tmp/script.sh && bash /tmp/script.sh && rm /tmp/script.sh",
-        "slots": {"url": ["https://get.docker.com", "https://example.com/install.sh",
-                           "https://raw.githubusercontent.com/user/repo/main/setup.sh"]},
+        "slots": {
+            "url": [
+                "https://get.docker.com",
+                "https://example.com/install.sh",
+                "https://raw.githubusercontent.com/user/repo/main/setup.sh",
+            ]
+        },
     },
     {
         "nl": [
@@ -2671,9 +3057,11 @@ TEMPLATES += [
             "clean up old {pat} files in {path} older than {days} days",
         ],
         "cmd": "find {path} -type f -name '{pat}' -mtime +{days} -delete",
-        "slots": {"pat": ["*.log", "*.tmp", "*.bak", "*.cache"],
-                  "path": ["/var/log", "/tmp", "/var/tmp", "/home/user"],
-                  "days": ["7", "14", "30", "90"]},
+        "slots": {
+            "pat": ["*.log", "*.tmp", "*.bak", "*.cache"],
+            "path": ["/var/log", "/tmp", "/var/tmp", "/home/user"],
+            "days": ["7", "14", "30", "90"],
+        },
     },
     {
         "nl": [
@@ -2725,9 +3113,12 @@ TEMPLATES += [
             "change {old} to {new} in every {pat} file in {path}",
         ],
         "cmd": "find {path} -type f -name '{pat}' -exec sed -i 's/{old}/{new}/g' {{}} +",
-        "slots": {"old": REPLACE_OLD[:4], "new": REPLACE_NEW[:4],
-                  "pat": ["*.py", "*.conf", "*.txt", "*.yaml"],
-                  "path": ["/home/user/project", "/opt/app", "/var/www"]},
+        "slots": {
+            "old": REPLACE_OLD[:4],
+            "new": REPLACE_NEW[:4],
+            "pat": ["*.py", "*.conf", "*.txt", "*.yaml"],
+            "path": ["/home/user/project", "/opt/app", "/var/www"],
+        },
     },
     {
         "nl": [
@@ -2782,8 +3173,10 @@ TEMPLATES += [
             "archive {dir} and transfer to {remote}",
         ],
         "cmd": "tar czf - {dir} | ssh {remote} 'cat > {dir}.tar.gz'",
-        "slots": {"dir": ["backup", "data", "logs"],
-                  "remote": ["user@server.example.com", "admin@192.168.1.10"]},
+        "slots": {
+            "dir": ["backup", "data", "logs"],
+            "remote": ["user@server.example.com", "admin@192.168.1.10"],
+        },
     },
     {
         "nl": [
