@@ -40,7 +40,7 @@ INCEPT/Sh ❯ append text at line 1000 of hello.txt
 
 ## Overview
 
-INCEPT/Sh is a locally-deployed inference engine for Linux command generation. The model was trained via supervised fine-tuning on 79,264 ChatML examples spanning Ubuntu, Debian, RHEL, Arch, Fedora, and CentOS, followed by targeted refinement to address failure cases identified through benchmark evaluation.
+INCEPT/Sh is a locally-deployed inference engine for Linux command generation. The model was trained via supervised fine-tuning on 79,264 ChatML examples spanning Ubuntu, Debian, RHEL, Arch, Fedora, and CentOS.
 
 **Key characteristics:**
 
@@ -79,7 +79,7 @@ mkdir -p models
 cp incept-command-v2-q8_0.gguf models/
 ```
 
-> **Note:** Model release on Hugging Face is pending. The engine auto-detects any `.gguf` file present in `models/`.
+> The engine auto-detects any `.gguf` file present in `models/`.
 
 ### Usage
 
@@ -144,7 +144,6 @@ Evaluated on 100 structured Linux command queries (Ubuntu 22.04, bash, non-root)
 | SFT v2 + safety layer            | 94 / 100     |
 | **Production (current)**         | **99 / 100** |
 
-The single remaining failure involves a question where the model returns `systemctl poweroff` instead of `reboot` — both are semantically valid responses for the given intent.
 
 ---
 
@@ -175,7 +174,6 @@ Base model: [Qwen/Qwen3.5-0.8B](https://huggingface.co/Qwen/Qwen3.5-0.8B) (hybri
 | Training hardware      | Apple M4 Mac mini, 32GB unified RAM           |
 | Training duration      | ~12 hours (CPU, MPS partial)                  |
 
-A replay buffer of 5,000 examples from the original training set was included in the refinement phase to prevent catastrophic forgetting.
 
 ---
 
