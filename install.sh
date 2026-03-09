@@ -17,15 +17,13 @@ set -euo pipefail
 # ── Constants ────────────────────────────────────────────────────────────────
 
 REPO_URL="https://github.com/0-Time/INCEPT.sh.git"
-HF_REPO="0Time/INCEPT.sh"
 MODEL_FILENAME="incept-sh.gguf"
-MODEL_URL="https://huggingface.co/${HF_REPO}/resolve/main/${MODEL_FILENAME}"
+MODEL_URL="https://huggingface.co/0Time/INCEPT-SH/resolve/main/${MODEL_FILENAME}"
 INSTALL_DIR="/opt/incept-sh"
 BIN_LINK="/usr/local/bin/incept"
 MODEL_DIR="${INSTALL_DIR}/models"
 PYTHON_MIN_MAJOR=3
 PYTHON_MIN_MINOR=11
-LLAMA_MIN_VERSION="b3000"
 LOG_FILE="/tmp/incept-sh-install.log"
 
 # Colours
@@ -143,12 +141,10 @@ echo ""
 
 step "Checking system requirements"
 
-# OS detection
 if [[ -f /etc/os-release ]]; then
     source /etc/os-release
     DISTRO="${ID:-unknown}"
     DISTRO_LIKE="${ID_LIKE:-}"
-    DISTRO_VERSION="${VERSION_ID:-}"
     success "Detected: ${PRETTY_NAME:-$DISTRO}"
 else
     warn "Cannot detect Linux distribution — proceeding with generic install."
@@ -156,14 +152,12 @@ else
     DISTRO_LIKE=""
 fi
 
-# Architecture check
 ARCH="$(uname -m)"
 case "$ARCH" in
     x86_64|aarch64|arm64) success "Architecture: ${ARCH}" ;;
     *) die "Unsupported architecture: ${ARCH}. INCEPT.sh requires x86_64 or aarch64." ;;
 esac
 
-# RAM check (warn if < 1.5GB free)
 if command -v free &>/dev/null; then
     FREE_MB=$(free -m | awk '/^Mem:/{print $7}')
     if [[ "$FREE_MB" -lt 1500 ]]; then
@@ -173,7 +167,6 @@ if command -v free &>/dev/null; then
     fi
 fi
 
-# Disk space check (need ~2GB for install + model)
 INSTALL_PARENT="$(dirname "$INSTALL_DIR")"
 mkdir -p "$INSTALL_PARENT" 2>/dev/null || true
 FREE_DISK_MB=$(df -m "$INSTALL_PARENT" 2>/dev/null | awk 'NR==2{print $4}' || echo 9999)
@@ -229,17 +222,26 @@ step "Installing system dependencies"
 log "Updating package index..."
 eval "$PKG_UPDATE" >> "$LOG_FILE" 2>&1 || warn "Package index update failed — continuing."
 
-# Python 3.11+
+# ── Python + venv (install BOTH together on apt) ──────────────────────────────
+
 install_python() {
     log "Installing Python 3.11+..."
     case "$PKG_MANAGER" in
         apt)
-            # Ubuntu 22.04 ships 3.10 — may need deadsnakes PPA
-            if ! $PKG_INSTALL python3.11 python3.11-venv python3.11-dev >> "$LOG_FILE" 2>&1; then
+            # Install python3 + venv + dev headers in one shot
+            # Ubuntu 24.04 ships 3.12; Ubuntu 22.04 ships 3.10 (needs deadsnakes)
+            local py_ver=""
+            for v in python3.12 python3.11; do
+                if $PKG_INSTALL ${v} ${v}-venv ${v}-dev >> "$LOG_FILE" 2>&1; then
+                    py_ver="$v"
+                    break
+                fi
+            done
+            if [[ -z "$py_ver" ]]; then
                 log "Trying deadsnakes PPA for Python 3.11..."
                 $PKG_INSTALL software-properties-common >> "$LOG_FILE" 2>&1 || true
                 $SUDO add-apt-repository -y ppa:deadsnakes/ppa >> "$LOG_FILE" 2>&1 \
-                    || die "Failed to add deadsnakes PPA. Cannot install Python 3.11."
+                    || die "Failed to add deadsnakes PPA."
                 $SUDO apt-get update -qq >> "$LOG_FILE" 2>&1
                 $PKG_INSTALL python3.11 python3.11-venv python3.11-dev >> "$LOG_FILE" 2>&1 \
                     || die "Failed to install Python 3.11."
@@ -260,9 +262,21 @@ install_python() {
     esac
 }
 
+# Ensure venv package is installed for the detected Python on apt systems
+ensure_venv_package() {
+    local python_bin="$1"
+    local py_ver
+    py_ver=$("$python_bin" -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
+
+    if [[ "$PKG_MANAGER" == "apt" ]]; then
+        log "Ensuring python${py_ver}-venv is installed..."
+        $PKG_INSTALL "python${py_ver}-venv" >> "$LOG_FILE" 2>&1 || true
+    fi
+}
+
 # Detect usable Python 3.11+
 PYTHON=""
-for candidate in python3.11 python3.12 python3 python; do
+for candidate in python3.12 python3.11 python3 python; do
     if command -v "$candidate" &>/dev/null; then
         ver=$("$candidate" -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" 2>/dev/null || echo "0.0")
         major="${ver%%.*}"
@@ -277,8 +291,7 @@ done
 if [[ -z "$PYTHON" ]]; then
     warn "Python 3.11+ not found — attempting to install..."
     install_python
-    # Re-detect
-    for candidate in python3.11 python3.12 python3; do
+    for candidate in python3.12 python3.11 python3; do
         if command -v "$candidate" &>/dev/null; then
             PYTHON="$candidate"
             break
@@ -287,34 +300,38 @@ if [[ -z "$PYTHON" ]]; then
     [[ -n "$PYTHON" ]] || die "Python 3.11+ installation failed."
 fi
 
+# Always ensure the venv package matches the detected Python
+ensure_venv_package "$PYTHON"
+
 success "Python: $($PYTHON --version)"
 
-# Git
+# git
 if ! command -v git &>/dev/null; then
     log "Installing git..."
     eval "$PKG_INSTALL git" >> "$LOG_FILE" 2>&1 || die "Failed to install git."
 fi
 success "git: $(git --version)"
 
-# curl (for model download)
+# curl
 if ! command -v curl &>/dev/null; then
     log "Installing curl..."
     eval "$PKG_INSTALL curl" >> "$LOG_FILE" 2>&1 || die "Failed to install curl."
 fi
 success "curl: $(curl --version | head -1)"
 
-# pip / ensurepip
+# pip
 if ! $PYTHON -m pip --version &>/dev/null 2>&1; then
     log "Installing pip..."
     case "$PKG_MANAGER" in
-        apt) $PKG_INSTALL python3-pip >> "$LOG_FILE" 2>&1 ;;
-        dnf|yum) $PKG_INSTALL python3-pip >> "$LOG_FILE" 2>&1 ;;
-        pacman) $PKG_INSTALL python-pip >> "$LOG_FILE" 2>&1 ;;
-        zypper) $PKG_INSTALL python3-pip >> "$LOG_FILE" 2>&1 ;;
+        apt)     $PKG_INSTALL python3-pip >> "$LOG_FILE" 2>&1 || true ;;
+        dnf|yum) $PKG_INSTALL python3-pip >> "$LOG_FILE" 2>&1 || true ;;
+        pacman)  $PKG_INSTALL python-pip  >> "$LOG_FILE" 2>&1 || true ;;
+        zypper)  $PKG_INSTALL python3-pip >> "$LOG_FILE" 2>&1 || true ;;
     esac
-    $PYTHON -m pip --version &>/dev/null 2>&1 || die "pip installation failed."
 fi
-success "pip: $($PYTHON -m pip --version | awk '{print $1, $2}')"
+$PYTHON -m pip --version &>/dev/null 2>&1 \
+    && success "pip: $($PYTHON -m pip --version | awk '{print $1, $2}')" \
+    || warn "pip not available — will use venv's pip instead."
 
 # ── llama.cpp (llama-server) ──────────────────────────────────────────────────
 
@@ -323,12 +340,11 @@ step "Installing llama.cpp (llama-server)"
 install_llamacpp() {
     log "Building llama-server from source..."
 
-    # Build dependencies
     case "$PKG_MANAGER" in
-        apt)   $PKG_INSTALL build-essential cmake libgomp1 >> "$LOG_FILE" 2>&1 ;;
-        dnf|yum) $PKG_INSTALL gcc gcc-c++ cmake libgomp >> "$LOG_FILE" 2>&1 ;;
-        pacman) $PKG_INSTALL base-devel cmake >> "$LOG_FILE" 2>&1 ;;
-        zypper) $PKG_INSTALL gcc gcc-c++ cmake libgomp1 >> "$LOG_FILE" 2>&1 ;;
+        apt)     $PKG_INSTALL build-essential cmake libgomp1 >> "$LOG_FILE" 2>&1 ;;
+        dnf|yum) $PKG_INSTALL gcc gcc-c++ cmake libgomp    >> "$LOG_FILE" 2>&1 ;;
+        pacman)  $PKG_INSTALL base-devel cmake              >> "$LOG_FILE" 2>&1 ;;
+        zypper)  $PKG_INSTALL gcc gcc-c++ cmake libgomp1    >> "$LOG_FILE" 2>&1 ;;
     esac
 
     local build_dir
@@ -340,21 +356,42 @@ install_llamacpp() {
         || die "Failed to clone llama.cpp."
 
     log "Building (this may take 5–15 minutes)..."
-    cmake -S "$build_dir" -B "$build_dir/build" -DLLAMA_BUILD_SERVER=ON -DCMAKE_BUILD_TYPE=Release \
+    cmake -S "$build_dir" -B "$build_dir/build" \
+        -DLLAMA_BUILD_SERVER=ON \
+        -DCMAKE_BUILD_TYPE=Release \
         >> "$LOG_FILE" 2>&1 || die "cmake configuration failed."
+
     cmake --build "$build_dir/build" --target llama-server -j"$(nproc)" \
         >> "$LOG_FILE" 2>&1 || die "llama-server build failed."
 
     $SUDO install -m 755 "$build_dir/build/bin/llama-server" "${OPT_PREFIX}/bin/llama-server" \
         >> "$LOG_FILE" 2>&1 || die "Failed to install llama-server binary."
 
+    # Refresh shared library cache
+    $SUDO ldconfig >> "$LOG_FILE" 2>&1 || true
+
     success "llama-server built and installed to ${OPT_PREFIX}/bin/llama-server"
 }
 
+# Check if llama-server is present AND actually works (shared libs loaded)
+LLAMA_OK=false
 if command -v llama-server &>/dev/null; then
-    success "llama-server already installed: $(llama-server --version 2>&1 | head -1 || echo 'ok')"
-else
-    warn "llama-server not found — building from source."
+    if llama-server --version >> "$LOG_FILE" 2>&1; then
+        LLAMA_OK=true
+        success "llama-server: $(llama-server --version 2>&1 | head -1)"
+    else
+        warn "llama-server found but failed to run (missing shared libraries). Rebuilding..."
+        $SUDO ldconfig >> "$LOG_FILE" 2>&1 || true
+        # Retry after ldconfig
+        if llama-server --version >> "$LOG_FILE" 2>&1; then
+            LLAMA_OK=true
+            success "llama-server: OK (fixed with ldconfig)"
+        fi
+    fi
+fi
+
+if [[ "$LLAMA_OK" == false ]]; then
+    warn "llama-server not functional — building from source."
     install_llamacpp
 fi
 
@@ -380,13 +417,36 @@ step "Setting up Python environment"
 
 VENV_DIR="${INSTALL_DIR}/.venv"
 
-if [[ ! -d "$VENV_DIR" ]]; then
+# Check if existing venv is functional (not just that the dir exists)
+VENV_OK=false
+if [[ -f "${VENV_DIR}/bin/python3" ]]; then
+    if "${VENV_DIR}/bin/python3" -c "import sys" &>/dev/null 2>&1; then
+        if "${VENV_DIR}/bin/python3" -m pip --version &>/dev/null 2>&1; then
+            VENV_OK=true
+        fi
+    fi
+fi
+
+if [[ "$VENV_OK" == false ]]; then
+    if [[ -d "$VENV_DIR" ]]; then
+        log "Existing venv is broken — removing and recreating..."
+        $SUDO rm -rf "$VENV_DIR"
+    fi
     log "Creating virtual environment..."
     $SUDO "$PYTHON" -m venv "$VENV_DIR" >> "$LOG_FILE" 2>&1 \
-        || die "Failed to create virtual environment."
+        || die "Failed to create virtual environment. Try: sudo apt install python$(${PYTHON} -c 'import sys; print(f\"{sys.version_info.major}.{sys.version_info.minor}\")')-venv"
     success "Virtual environment created: ${VENV_DIR}"
+
+    # Bootstrap pip inside the venv if missing
+    if ! "${VENV_DIR}/bin/python3" -m pip --version &>/dev/null 2>&1; then
+        log "Bootstrapping pip inside venv..."
+        $SUDO "${VENV_DIR}/bin/python3" -m ensurepip --upgrade >> "$LOG_FILE" 2>&1 \
+            || $SUDO curl -fsSL https://bootstrap.pypa.io/get-pip.py \
+               | $SUDO "${VENV_DIR}/bin/python3" >> "$LOG_FILE" 2>&1 \
+            || die "Failed to install pip in virtual environment."
+    fi
 else
-    success "Virtual environment exists: ${VENV_DIR}"
+    success "Virtual environment OK: ${VENV_DIR}"
 fi
 
 VENV_PYTHON="${VENV_DIR}/bin/python3"
@@ -414,7 +474,7 @@ if [[ "$OPT_NO_MODEL" == true ]]; then
 elif [[ -f "$MODEL_PATH" ]]; then
     MODEL_SIZE=$(du -m "$MODEL_PATH" | awk '{print $1}')
     if [[ "$MODEL_SIZE" -lt 700 ]]; then
-        warn "Existing model file appears incomplete (${MODEL_SIZE}MB). Re-downloading..."
+        warn "Existing model appears incomplete (${MODEL_SIZE}MB). Re-downloading..."
         $SUDO rm -f "$MODEL_PATH"
     else
         success "Model already present: ${MODEL_PATH} (${MODEL_SIZE}MB)"
@@ -425,18 +485,16 @@ if [[ "$OPT_NO_MODEL" == false && ! -f "$MODEL_PATH" ]]; then
     log "Downloading INCEPT.sh model (774MB) from HuggingFace..."
     log "URL: ${MODEL_URL}"
 
-    # Use curl with resume support and progress
     $SUDO curl -L --progress-bar --retry 3 --retry-delay 5 \
         --continue-at - \
         -o "$MODEL_PATH" \
         "$MODEL_URL" 2>&1 | tee -a "$LOG_FILE" \
         || { $SUDO rm -f "$MODEL_PATH"; die "Model download failed. Check your connection and retry."; }
 
-    # Verify size
     MODEL_SIZE=$(du -m "$MODEL_PATH" | awk '{print $1}')
     if [[ "$MODEL_SIZE" -lt 700 ]]; then
         $SUDO rm -f "$MODEL_PATH"
-        die "Downloaded model is too small (${MODEL_SIZE}MB) — download may be corrupt."
+        die "Downloaded model is too small (${MODEL_SIZE}MB) — may be corrupt."
     fi
 
     success "Model downloaded: ${MODEL_PATH} (${MODEL_SIZE}MB)"
@@ -456,11 +514,9 @@ LAUNCHER
 
 $SUDO chmod 755 "$LAUNCHER"
 
-# Symlink to /usr/local/bin (or custom prefix)
 $SUDO mkdir -p "$(dirname "$BIN_LINK")"
 $SUDO ln -sf "$LAUNCHER" "$BIN_LINK"
 
-# Verify binary is accessible
 if command -v incept &>/dev/null; then
     success "Binary installed: ${BIN_LINK}"
 else
@@ -487,7 +543,7 @@ if command -v incept &>/dev/null; then
     if incept --version >> "$LOG_FILE" 2>&1; then
         success "Smoke test passed: $(incept --version 2>&1)"
     else
-        warn "incept --version returned non-zero. Installation may still work — check ${LOG_FILE}."
+        warn "incept --version returned non-zero. Check ${LOG_FILE} for details."
     fi
 else
     warn "incept not found on PATH — skipping smoke test."
