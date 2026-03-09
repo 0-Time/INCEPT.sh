@@ -198,8 +198,22 @@ tests/          # Test suite (2076 tests)
 
 ## Known Limitations
 
-- `llama-cpp-python` does not support Qwen3.5 GGUF natively in its current release. The engine falls back to `llama-server` automatically.
-- Mamba (SSM) layers have no Metal (MPS) kernel implementations; training runs on CPU via BLAS.
+### Model Accuracy
+
+INCEPT.sh uses a 0.8B parameter model optimized for size and speed. This comes with trade-offs:
+
+- **Compound operations** — queries combining multiple actions (e.g. *"rename X to Y and move it to /home"*) may produce a partial command. The model may handle one operation and miss the other. Workaround: split into two queries.
+- **Time unit ambiguity** — `find` queries using hours (e.g. *"files modified in the last 2 hours"*) may use `-mtime` (days) instead of `-mmin` (minutes). Be explicit: *"files modified in the last 120 minutes"*.
+- **Uncommon tools** — queries for niche or distro-specific utilities may produce a generic alternative or no result.
+- **Disk usage vs filesystem usage** — *"disk usage sorted by size"* may return `df` instead of `du`. Prefer specific phrasing: *"directory sizes sorted by size"*.
+
+These are model-level limitations. The post-processing layer ensures that malformed or hallucinated output is blocked and returns `# Could not generate command` instead of executing garbage.
+
+### Technical
+
+- `llama-cpp-python` does not support Qwen3.5 GGUF natively; the engine falls back to `llama-server` automatically.
+- First install requires building `llama-server` from source (~10 minutes on aarch64).
+- Mamba (SSM) layers have no Metal (MPS) kernel; training runs on CPU.
 
 ---
 
