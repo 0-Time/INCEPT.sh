@@ -63,7 +63,7 @@ INCEPT.sh is a locally-deployed inference engine for Linux command generation. T
 ### Installation
 
 ```bash
-git clone https://github.com/ProMohanad/INCEPT.sh
+git clone https://github.com/0-Time/INCEPT.sh
 cd INCEPT.sh
 python3 -m venv .venv
 source .venv/bin/activate

@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # =============================================================================
 #  INCEPT.sh — Installation Script
-#  https://github.com/ProMohanad/INCEPT.sh
+#  https://github.com/0-Time/INCEPT.sh
 #
 #  Installs INCEPT.sh and all dependencies on Linux (Debian/Ubuntu, RHEL/Fedora,
 #  Arch, openSUSE). Requires root or sudo access.
 #
 #  Usage:
-#    curl -fsSL https://raw.githubusercontent.com/ProMohanad/INCEPT.sh/main/install.sh | bash
+#    curl -fsSL https://raw.githubusercontent.com/0-Time/INCEPT.sh/main/install.sh | bash
 #    — or —
 #    bash install.sh [--prefix /usr/local] [--no-model] [--uninstall]
 # =============================================================================
@@ -16,7 +16,7 @@ set -euo pipefail
 
 # ── Constants ────────────────────────────────────────────────────────────────
 
-REPO_URL="https://github.com/ProMohanad/INCEPT.sh.git"
+REPO_URL="https://github.com/0-Time/INCEPT.sh.git"
 HF_REPO="0Time/INCEPT.sh"
 MODEL_FILENAME="incept-sh.gguf"
 MODEL_URL="https://huggingface.co/${HF_REPO}/resolve/main/${MODEL_FILENAME}"
@@ -136,7 +136,7 @@ cat << 'BANNER'
 BANNER
 echo -e "${RESET}"
 echo -e "  ${BOLD}Offline Command Inference Engine for Linux${RESET}"
-echo -e "  https://github.com/ProMohanad/INCEPT.sh"
+echo -e "  https://github.com/0-Time/INCEPT.sh"
 echo ""
 
 # ── System Check ─────────────────────────────────────────────────────────────
