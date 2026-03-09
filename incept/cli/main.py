@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import sys
 
 import click
@@ -114,10 +115,27 @@ def main(
     final_query = cmd_query or (" ".join(query) if query else None)
 
     if final_query is None:
-        _run_repl(think=enable_think)
+        try:
+            _run_repl(think=enable_think)
+        except Exception as exc:
+            console.print(f"  [bold red]✗ Fatal error:[/bold red] {exc}")
+            console.print("  [dim]Run with INCEPT_DEBUG=1 for full traceback.[/dim]")
+            if os.environ.get("INCEPT_DEBUG"):
+                import traceback
+
+                traceback.print_exc()
+            sys.exit(1)
         return
 
-    _oneshot(final_query, execute=execute, minimal=minimal, think=enable_think)
+    try:
+        _oneshot(final_query, execute=execute, minimal=minimal, think=enable_think)
+    except Exception as exc:
+        console.print(f"  [bold red]✗ Fatal error:[/bold red] {exc}")
+        if os.environ.get("INCEPT_DEBUG"):
+            import traceback
+
+            traceback.print_exc()
+        sys.exit(1)
 
 
 @main.command()
