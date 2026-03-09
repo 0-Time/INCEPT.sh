@@ -577,6 +577,18 @@ def _postprocess_output(query: str, raw_output: str) -> str:
     if len(output) > 200 and output.count(" ") == 0:
         return "# Could not generate command"
 
+    # 7. Block repetitive output — detect repeated phrase loops
+    # (e.g. "-T accept -T acceptall -T accept -T acceptall" repeated 50+ times)
+    if len(output) > 120:
+        words = output.split()
+        # Check if any 2-4 word sequence repeats more than 5 times
+        for window in (2, 3, 4):
+            for i in range(len(words) - window * 6):
+                phrase = " ".join(words[i : i + window])
+                rest = " ".join(words[i + window :])
+                if rest.count(phrase) >= 5:
+                    return "# Could not generate command"
+
     return output
 
 
