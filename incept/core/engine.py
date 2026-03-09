@@ -562,15 +562,20 @@ def _postprocess_output(query: str, raw_output: str) -> str:
     ):
         return "# Could not generate command"
 
-    # 5. Check first word is a valid command (case-insensitive)
-    if (
-        check_word
-        and check_word not in _VALID_CMD_STARTERS
-        and not output.startswith(("/", "./", "~", "$", "(", "{", "!"))
-        and "=" not in first_word
-        and "|" not in output[:20]
-    ):
-        pass  # Don't block — might be a valid but uncommon command
+    # 5. Hallucination detection — catch garbage output before it reaches the user
+    import re as _re
+
+    for token in output.split():
+        # Block absurdly long single tokens (hallucinated paths/hashes)
+        if len(token) > 60:
+            return "# Could not generate command"
+        # Block tokens that look like repeated hex/digit noise (e.g. 0000000...)
+        if len(token) > 15 and _re.search(r"(.)\1{10,}", token):
+            return "# Could not generate command"
+
+    # 6. Block outputs that are just a very long path with no recognizable command
+    if len(output) > 200 and output.count(" ") == 0:
+        return "# Could not generate command"
 
     return output
 
