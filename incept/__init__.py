@@ -1,3 +1,3 @@
 """INCEPT: Offline NL to Linux command compiler."""
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"

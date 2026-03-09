@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "incept"
-version = "0.1.0"
+version = "1.0.0"
 description = "Offline NL to Linux command compiler using constrained small-model decoding"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
