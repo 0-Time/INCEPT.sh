@@ -1,0 +1,36 @@
+task: intent
+mode: dpo
+base_model: Qwen/Qwen3.5-0.8B
+model_local_path: null
+max_seq_length: 512
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj]
+dpo:
+  beta: 0.1
+  learning_rate: 5.0e-5
+  num_epochs: 2
+  max_length: 512
+  max_prompt_length: 256
+  reference_model: null
+quantization:
+  load_in_4bit: false
+  load_in_8bit: false
+  bnb_4bit_compute_dtype: float16
+use_quantization: false
+learning_rate: 1.0e-5
+lr_scheduler: cosine
+warmup_ratio: 0.05
+num_epochs: 1
+per_device_batch_size: 4
+gradient_accumulation_steps: 8
+weight_decay: 0.01
+train_file: data/training/dpo_pairs.jsonl
+val_file: null
+output_dir: outputs/dpo
+save_strategy: epoch
+logging_steps: 50
+seed: 42
+device: cpu

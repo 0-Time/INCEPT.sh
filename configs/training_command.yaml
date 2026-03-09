@@ -1,0 +1,37 @@
+task: command
+base_model: Qwen/Qwen3.5-0.8B
+max_seq_length: 256
+
+lora:
+  r: 32
+  alpha: 64
+  dropout: 0.05
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj
+
+use_quantization: false
+
+learning_rate: 2.0e-4
+lr_scheduler: cosine
+warmup_ratio: 0.05
+num_epochs: 1
+per_device_batch_size: 32
+gradient_accumulation_steps: 1
+weight_decay: 0.01
+
+train_file: data/v2/train.jsonl
+val_file: data/v2/val.jsonl
+output_dir: outputs/sft-command-v2
+
+save_strategy: steps
+save_steps: 100
+resume_from_checkpoint: true
+logging_steps: 50
+seed: 42
+device: mps

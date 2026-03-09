@@ -1,0 +1,29 @@
+task: slot
+mode: sft
+base_model: Qwen/Qwen3.5-0.8B
+model_local_path: null
+max_seq_length: 256
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj]
+quantization:
+  load_in_4bit: false
+  load_in_8bit: false
+  bnb_4bit_compute_dtype: float16
+use_quantization: false
+learning_rate: 5.0e-5
+lr_scheduler: cosine
+warmup_ratio: 0.05
+num_epochs: 3
+per_device_batch_size: 8
+gradient_accumulation_steps: 4
+weight_decay: 0.01
+train_file: data/training/slot_train.jsonl
+val_file: data/assembled/val.jsonl
+output_dir: outputs/sft-slot
+save_strategy: epoch
+logging_steps: 50
+seed: 42
+device: cpu
