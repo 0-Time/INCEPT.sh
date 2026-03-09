@@ -79,7 +79,10 @@ mkdir -p models
 cp incept-command-v2-q8_0.gguf models/
 ```
 
-> The engine auto-detects any `.gguf` file present in `models/`.
+```bash
+huggingface-cli download mohanadxd/INCEPT-command-v2 \
+  incept-command-v2-q8_0.gguf --local-dir ./models
+```
 
 ### Usage
 
