@@ -59,7 +59,19 @@ class SlashCommandRegistry:
         return "\n".join(lines)
 
     def _cmd_context(self, args: str) -> str:
-        return "  [dim]Context:[/dim] (detected at startup — see banner)"
+        from incept.core.context import detect_system_context
+        from incept.core.model_loader import get_model_path
+
+        try:
+            ctx = detect_system_context()
+        except Exception:
+            ctx = "unknown"
+        model = get_model_path() or "no model loaded"
+        return (
+            f"  [bold]System context[/bold]\n"
+            f"  [dim]Context :[/dim] {ctx}\n"
+            f"  [dim]Model   :[/dim] {model}"
+        )
 
     def _cmd_safe(self, args: str) -> str:
         if args.strip().lower() == "off":
