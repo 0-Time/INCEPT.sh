@@ -13,7 +13,6 @@
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![Model](https://img.shields.io/badge/model-Qwen3.5--0.8B-orange.svg)](https://huggingface.co/Qwen/Qwen3.5-0.8B)
-[![Benchmark](https://img.shields.io/badge/benchmark-99%2F100-brightgreen.svg)](#benchmark)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
 
 </div>
@@ -44,7 +43,6 @@ INCEPT.sh is a locally-deployed inference engine for Linux command generation. T
 
 **Key characteristics:**
 
-- **99/100** on a structured 100-question Linux command benchmark
 - **~1–2 seconds** per query on Apple M4 (CPU inference via llama.cpp)
 - **Greedy decoding** (temperature = 0.0) for deterministic, reproducible output
 - **Post-processing safety layer** — suppresses prose, detects prompt injection, classifies command risk
@@ -135,21 +133,6 @@ The engine uses `llama-server` as its inference backend. `llama-cpp-python` is s
 
 ---
 
-## Benchmark
-
-Evaluated on 100 structured Linux command queries (Ubuntu 22.04, bash, non-root):
-
-| Version                          | Score        |
-|----------------------------------|--------------|
-| SFT v1 (baseline)                | 73 / 100     |
-| SFT v2 (79K examples)            | 75 / 100     |
-| SFT v2 + alternate match fixes   | 93 / 100     |
-| SFT v2 + safety layer            | 94 / 100     |
-| **Production (current)**         | **99 / 100** |
-
-
----
-
 ## Safety
 
 The post-processing layer enforces the following:
@@ -224,5 +207,5 @@ These are model-level limitations. The post-processing layer ensures that malfor
 ---
 
 <div align="center">
-Built on Apple Silicon &nbsp;·&nbsp; Deployed on Linux
+INCEPT.sh
 </div>
