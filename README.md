@@ -76,12 +76,12 @@ Place the GGUF model file in the `models/` directory:
 
 ```bash
 mkdir -p models
-cp incept-command-v2-q8_0.gguf models/
+cp incept-sh.gguf models/
 ```
 
 ```bash
-huggingface-cli download mohanadxd/INCEPT-command-v2 \
-  incept-command-v2-q8_0.gguf --local-dir ./models
+huggingface-cli download 0Time/INCEPT-SH \
+  incept-sh.gguf --local-dir ./models
 ```
 
 ### Usage
