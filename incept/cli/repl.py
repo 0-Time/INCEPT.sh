@@ -1,4 +1,4 @@
-"""Interactive REPL for INCEPT/Sh."""
+"""Interactive REPL for INCEPT-SH."""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ console = Console()
 
 
 class InceptREPL:
-    """Interactive Read-Eval-Print Loop for INCEPT/Sh."""
+    """Interactive Read-Eval-Print Loop for INCEPT-SH."""
 
     _MAX_HISTORY_TURNS = 6
 
@@ -196,7 +196,7 @@ class InceptREPL:
         while True:
             try:
                 text = session.prompt(
-                    HTML("<prompt>INCEPT/Sh</prompt> <pound>❯</pound> "),
+                    HTML("<prompt>INCEPT-SH</prompt> <pound>❯</pound> "),
                 )
             except (EOFError, KeyboardInterrupt):
                 console.print("\n  [dim cyan]🐧 Goodbye![/dim cyan]\n")

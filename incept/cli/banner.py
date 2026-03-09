@@ -1,4 +1,4 @@
-"""INCEPT/Sh banner and branding."""
+"""INCEPT-SH banner and branding."""
 
 from __future__ import annotations
 

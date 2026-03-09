@@ -20,19 +20,19 @@
 
 ---
 
-INCEPT/Sh is a fine-tuned **Qwen3.5-0.8B** model (GGUF Q8_0, 774MB) that maps plain English descriptions to Linux shell commands. It runs entirely offline — no API calls, no network dependency, no cloud backend.
+INCEPT-SH is a fine-tuned **Qwen3.5-0.8B** model (GGUF Q8_0, 774MB) that maps plain English descriptions to Linux shell commands. It runs entirely offline — no API calls, no network dependency, no cloud backend.
 
 ```bash
-INCEPT/Sh ❯ find all python files modified in the last 7 days
+INCEPT-SH ❯ find all python files modified in the last 7 days
   ✓ SAFE   $ find . -name "*.py" -mtime -7
 
-INCEPT/Sh ❯ grep for email addresses in contacts.csv
+INCEPT-SH ❯ grep for email addresses in contacts.csv
   ✓ SAFE   $ grep -oE '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}' contacts.csv
 
-INCEPT/Sh ❯ show all open ports and which process is using them
+INCEPT-SH ❯ show all open ports and which process is using them
   ✓ SAFE   $ sudo netstat -tulpn
 
-INCEPT/Sh ❯ append text at line 1000 of hello.txt
+INCEPT-SH ❯ append text at line 1000 of hello.txt
   ✓ SAFE   $ sed -i '1000a\ your text here' hello.txt
 ```
 
@@ -40,7 +40,7 @@ INCEPT/Sh ❯ append text at line 1000 of hello.txt
 
 ## Overview
 
-INCEPT/Sh is a locally-deployed inference engine for Linux command generation. The model was trained via supervised fine-tuning on 79,264 ChatML examples spanning Ubuntu, Debian, RHEL, Arch, Fedora, and CentOS.
+INCEPT-SH is a locally-deployed inference engine for Linux command generation. The model was trained via supervised fine-tuning on 79,264 ChatML examples spanning Ubuntu, Debian, RHEL, Arch, Fedora, and CentOS.
 
 **Key characteristics:**
 
