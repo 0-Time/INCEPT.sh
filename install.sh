@@ -359,15 +359,19 @@ install_llamacpp() {
     cmake -S "$build_dir" -B "$build_dir/build" \
         -DLLAMA_BUILD_SERVER=ON \
         -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=OFF \
         >> "$LOG_FILE" 2>&1 || die "cmake configuration failed."
 
-    cmake --build "$build_dir/build" --target llama-server -j"$(nproc)" \
+    cmake --build "$build_dir/build" -j"$(nproc)" \
         >> "$LOG_FILE" 2>&1 || die "llama-server build failed."
 
     $SUDO install -m 755 "$build_dir/build/bin/llama-server" "${OPT_PREFIX}/bin/llama-server" \
         >> "$LOG_FILE" 2>&1 || die "Failed to install llama-server binary."
 
-    # Refresh shared library cache
+    # Install any shared libs produced alongside llama-server
+    find "$build_dir/build" -name "*.so*" | while read -r lib; do
+        $SUDO install -m 755 "$lib" "${OPT_PREFIX}/lib/" >> "$LOG_FILE" 2>&1 || true
+    done
     $SUDO ldconfig >> "$LOG_FILE" 2>&1 || true
 
     success "llama-server built and installed to ${OPT_PREFIX}/bin/llama-server"
